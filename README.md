@@ -20,4 +20,4 @@ Il dataframe sul quale le analisi vengono svolte è salvato nell'apposito file D
 Il punto 1. rappresenta la variabile target (y) del modello statistico. I punti 2-5 rappresentano le variabili esplicative (X) del modello. 
 A seconda dell'obiettivo di pfrevisione è stato usato o una RegressioneLogistica, o un modello NaiveBayes
 
-I file .ipynb che non servono a fare Forecasting (previsinoni), servono per la raccolta e la manipolazione dei dati. Infine, i file excel servono come step intermedi per trasformare i dati nel dataframe finale
+I file .ipynb che non servono a fare Forecasting (previsioni), servono per la raccolta e la manipolazione dei dati. Infine, i file excel servono come step intermedi per trasformare i dati nel dataframe finale
