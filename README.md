@@ -3,8 +3,8 @@ Lo scopo del progetto è prevedere i risultati delle partite di calcio del campi
 Pertanto ho costruito un modello statistico che permette di calcolare le probabilità che un certo evento avvenga.
 Per ogni variabile che viene predetta esiste uno specifico notebook:
 - Forecasting 1X2: probabilità che la partita finisca in vittoria, pareggio o sconfitta per la squadra di casa.
-- Forecasting results: probabilità che la squadra di casa faccia da 0 a 8 gol e subisca da 0 a 8 gol.
-- Forecasting GG NG: probabilità che entrambe le squadre segnino (GG) oppure che almeno una delle due non faccia gol (NG)
+- Forecasting goals: probabilità che la squadra di casa faccia da 0 a 8 gol e subisca da 0 a 8 gol.
+- Forecasting GG_NG: probabilità che entrambe le squadre segnino (GG) oppure che almeno una delle due non faccia gol (NG)
 - Forecasting UO 1.5: probabilità che i gol totali della partita siano più di 2
 - Forecasting UO 2.5: probabilità che i gol totali della partita siano più di 3
 - Forecasting UO 3.5: probabilità che i gol totali della partita siano più di 4
