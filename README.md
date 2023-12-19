@@ -1,23 +1,20 @@
 # Progetto-Schedina
-Lo scopo del progetto è prevedere i risultati delle partite di calcio del campionato italiano Serie A. 
-Pertanto ho costruito un modello statistico che permette di calcolare le probabilità che un certo evento avvenga.
-Per ogni variabile che viene predetta esiste uno specifico notebook:
-- Forecasting 1X2: probabilità che la partita finisca in vittoria, pareggio o sconfitta per la squadra di casa.
-- Forecasting goals: probabilità che la squadra di casa faccia da 0 a 8 gol e subisca da 0 a 8 gol.
-- Forecasting GG_NG: probabilità che entrambe le squadre segnino (GG) oppure che almeno una delle due non faccia gol (NG)
-- Forecasting UO 1.5: probabilità che i gol totali della partita siano più di 2
-- Forecasting UO 2.5: probabilità che i gol totali della partita siano più di 3
-- Forecasting UO 3.5: probabilità che i gol totali della partita siano più di 4
-- Forecasting UO 4.5: probabilità che i gol totali della partita siano più di 5
+The aim of the project is to predict the results of football matches in the Italian Serie A championship.
+Therefore I built a statistical model that allows you to calculate the probabilities that a certain event occurs.
 
-Il dataframe sul quale le analisi vengono svolte è salvato nell'apposito file Dataframe.csv. Esso si compone dei risultati di tutte le partite di Serie A giocate dal 2019 fino a quelle attuali. Per ogni incontro sono state create le seguenti vatriabili: 
-1. i gol fatti dalla squadra di casa nella partita, i gol subiti dalla squadra di casa nella partita
-2. i 5 precedenti risultati della squadra di casa, i 5 precedenti risultati della squadra in trasferta. 
-3. i gol fatti dalla squadra di casa nelle precedenti 5 giornate, i gol subiti dalla squadra di casa nelle precedenti 5 giornate, i gol fatti dalla squadra in trasferta nelle precedenti 5 giornate, i gol subiti dalla squadra in trasferta nelle precedenti 5 giornate.
-4. la posizione in classifica della squadra di casa, la posizione in classifica della squadra in trasferta.
-5. la media gol fatti e la media gol subiti della squadra di casa, la media gol fatti e la media gol subiti della squadra in trasferta, la deviazione standard dei gol fatti e la deviazione standard dei gol subiti della squadra di casa, la deviazione standard dei gol fatti e la deviazione standard dei gol subiti della squadra di casa
+In total there are 5 events:
+- Goals scored: probability that the home team scores from 0 to 4 goals.
+- Goals received: probability that the home team concedes from 0 to 4 goals.
+- 1X2: probability that the match ends in victory (W), draw (N) or defeat (P) for the home team.
+- GG_NG: probability that both teams score (GG) or that at least one of the two does not score (NG)
+- OU 2.5: probability that the total goals of the match are greater (Over) or less (Under) than 2.5
 
-Il punto 1. rappresenta la variabile target (y) del modello statistico. I punti 2-5 rappresentano le variabili esplicative (X) del modello. 
-A seconda dell'obiettivo di pfrevisione è stato usato o una RegressioneLogistica, o un modello NaiveBayes
+The dataframe consists of the results of all Serie A matches played from 2019 to the current ones. For each meeting the following variables were created:
+1. the goals scored by the home team in the match, the goals conceded by the home team in the match
+2. the 5 previous results of the home team, the 5 previous results of the away team.
+3. the goals scored by the home team in the previous 5 matchdays, the goals conceded by the home team in the previous 5 matchdays, the goals scored by the away team in the previous 5 matchdays, the goals conceded by the away team in the previous 5 matchdays.
+4. the ranking position of the home team, the ranking position of the away team.
+5. the average goals scored and the average goals conceded of the home team, the average goals scored and the average goals conceded of the away team, the standard deviation of goals scored and the standard deviation of goals conceded of the home team, the deviation standard of goals scored and the standard deviation of goals conceded of the home team
 
-I file .ipynb che non servono a fare Forecasting (previsioni), servono per la raccolta e la manipolazione dei dati. Infine, i file excel servono come step intermedi per trasformare i dati nel dataframe finale
+Point 1. represents the target variable (y) of the statistical model. Points 2-5 represent the explanatory variables (X) of the model.
+Depending on the forecasting objective, either a Logistic Regression or a NaiveBayes model was used
