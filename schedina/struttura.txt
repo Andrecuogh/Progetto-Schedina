@@ -1,0 +1,36 @@
+Schedina
+    ├─── data
+    │	├─── dataframes
+    │	├─── forecasts
+    │	├─── rankings
+    │	├─── results
+    │	├─── scored_received
+    │ 	└─── scores
+    ├──▬ main.py
+    ├──▬ mnotebook.ipynb
+    ├─── scripts
+    │	├─── display
+    │	│   ├──▬ window_config.py
+    │	│   └──▬ window_obj.py
+    │	├─── gitconnect
+    │	│   ├──▬ gitset.py
+    │	│   ├──▬ retrieval.py
+    │	│   └──▬ transfer.py
+    │	├─── etl
+    │	│   ├──▬ scraping.py
+    │   │   ├──▬ extraction.py
+    │	│   ├──▬ update.py
+    │	│   └──▬ load.py
+    │	├─── predict
+    │	│   ├──▬ ml_functions.py
+    │	│   ├──▬ reportage.py
+    │	│   └──▬ prediction.py
+    │ 	├─── set_up
+    │   │   ├──▬ league_data.py
+    │	│   └──▬ league_season.py 
+    │ 	└─── transform
+    │	    ├──▬ creation.py
+    │       ├──▬ merge.py
+    │	    └──▬ computation.py
+    └──▬ struttura.txt
+
