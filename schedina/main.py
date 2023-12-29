@@ -1,5 +1,8 @@
 import numpy as np
 
+import ssl
+ssl._create_default_https_context = ssl._create_stdlib_context
+
 from kivy.app import App
 from kivy.core.window import Window
 from kivy.uix.floatlayout import FloatLayout
@@ -14,22 +17,22 @@ from display import window_config, window_obj
 class MainApp(App):
     def build(self):
         self.window = FloatLayout()
-        Window.clearcolor = [0.25, 0.8, 0, 1]
+        Window.clearcolor = window_config.colors['background']
 
         self.button = Button(text='Predici',
-                      font_size = 60, color = 'yellow', bold = True,
+                      font_size = 60, color = window_config.colors['text'], bold = True,
                       size_hint=(0.4, 0.2),
                       pos_hint={'center_x': .5, 'center_y': .5},
-                      background_color = 'darkgreen')
+                      background_color = window_config.colors['label'])
         self.button.bind(on_press = self.step0)
         self.window.add_widget(self.button)
 
         self.label = Button(text='',
                       halign = 'center',
-                      font_size = 60, color = 'yellow', bold = True,
+                      font_size = 60, color = window_config.colors['text'], bold = True,
                       size_hint=(0.4, 0.2),
                       pos_hint={'center_x': .5, 'center_y': .5},
-                      background_color = 'darkgreen')
+                      background_color = window_config.colors['label'])
 
         return self.window
 
@@ -44,11 +47,11 @@ class MainApp(App):
     def step1(self, event):
         window_config.applayout(self)
         self.datasets = retrieval.retrieve()
-        self.df1 = self.datasets[0].iloc[0:10]
-        self.df2 = self.datasets[0].iloc[11:21]
-        self.df3 = self.datasets[1]
-        self.df4 = self.datasets[2]
-        self.df5 = self.datasets[3]
+        self.df1 = self.datasets[0]
+        self.df2 = self.datasets[1]
+        self.df3 = self.datasets[2]
+        self.df4 = self.datasets[3]
+        self.df5 = self.datasets[4]
         Clock.schedule_once(self.step2, 0.1)
 
 
@@ -92,7 +95,7 @@ class MainApp(App):
             self.gglab.add_widget(window_obj.new_button(
                 window_obj.proba_string(self.df4, self.partita, i)))
 
-            self.uohead.add_widget(window_obj.new_button(self.df5.columns[i]))
+            self.uohead.add_widget(window_obj.new_button(self.df5.columns[i]+' 2.5'))
             self.uolab.add_widget(window_obj.new_button(
                 window_obj.proba_string(self.df5, self.partita, i)))
 
