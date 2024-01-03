@@ -1,0 +1,30 @@
+Schedina
+    ├─── data
+    │	├─── dataframes
+    │	├─── forecasts
+    │	├─── rankings
+    │	├─── results
+    │	├─── scored_received
+    │ 	└─── scores
+    ├──▬ main.py
+    ├──▬ notebook.ipynb
+    ├─── scripts
+    │	├─── display
+    │	├─── etl
+    │	│   ├──▬ scraping.py
+    │   │   ├──▬ extraction.py
+    │	│   ├──▬ update.py
+    │	│   └──▬ load.py
+    │	├─── predict
+    │	│   ├──▬ ml_functions.py
+    │	│   ├──▬ reportage.py
+    │	│   └──▬ prediction.py
+    │ 	├─── set_up
+    │   │   ├──▬ league_data.py
+    │	│   └──▬ league_season.py 
+    │ 	└─── transform
+    │	    ├──▬ creation.py
+    │       ├──▬ merge.py
+    │	    └──▬ computation.py
+    └──▬ struttura.txt
+
