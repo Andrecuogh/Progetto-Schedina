@@ -1,0 +1,10 @@
+.buildozer
+.ipynb_checkpoints
+temp_ipynb
+data
+!data/forecasts
+!data/accuracy_dashboard
+bin
+buildozer.spec
+__pycache__
+.log

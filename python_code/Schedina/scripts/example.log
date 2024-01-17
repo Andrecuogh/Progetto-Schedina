@@ -1,0 +1,44 @@
+INFO:root:Current year | 20
+INFO:root:Current year | 20
+INFO:root:Current year | 20
+INFO:root:Need to update? | False
+INFO:root:Current year | 20
+INFO:root:Targets |               Partita  Rt-5h  Rt-4h  Rt-3h  Rt-2h  Rt-1h  Classifica h  Rt-5a  \
+0         Roma-Verona    0.0    2.0    0.0    1.0    0.0           9.0    0.0   
+1       Udinese-Milan    1.0    1.0    2.0    0.0    1.0          16.0    2.0   
+2  Frosinone-Cagliari    0.0    0.0    0.0    0.0    0.0          15.0    0.0   
+3        Empoli-Monza    0.0    0.0    1.0    0.0    0.0          19.0    0.0   
+4   Salernitana-Genoa    0.0    1.0    2.0    0.0    0.0          20.0    1.0   
+5      Lecce-Juventus    2.0    0.0    0.0    1.0    0.0          13.0    1.0   
+6  Bologna-Fiorentina    2.0    2.0    0.0    1.0    0.0           7.0    2.0   
+7        Torino-Lazio    2.0    1.0    0.0    2.0    1.0          10.0    0.0   
+8     Sassuolo-Napoli    1.0    0.0    0.0    2.0    0.0          14.0    2.0   
+9      Inter-Atalanta    2.0    2.0    1.0    2.0    2.0           1.0    2.0   
+
+   Rt-4a  Rt-3a  ...  Gf-3a  Gf-2a  Gf-1a  Gs-5a  Gs-4a  Gs-3a  Gs-2a  Gs-1a  \
+0    2.0    0.0  ...    0.0    1.0    2.0    1.0    0.0    1.0    2.0    1.0   
+1    1.0    2.0  ...    1.0    3.0    3.0    0.0    2.0    0.0    0.0    1.0   
+2    0.0    1.0  ...    0.0    1.0    2.0    2.0    2.0    0.0    1.0    1.0   
+3    0.0    1.0  ...    0.0    3.0    1.0    3.0    1.0    0.0    2.0    5.0   
+4    2.0    1.0  ...    1.0    1.0    0.0    1.0    1.0    1.0    1.0    0.0   
+5    2.0    2.0  ...    1.0    2.0    3.0    1.0    1.0    0.0    1.0    0.0   
+6    2.0    2.0  ...    1.0    0.0    2.0    0.0    0.0    0.0    1.0    2.0   
+7    2.0    2.0  ...    3.0    2.0    1.0    2.0    0.0    1.0    1.0    0.0   
+8    0.0    1.0  ...    0.0    0.0    2.0    1.0    2.0    0.0    3.0    1.0   
+9    0.0    2.0  ...    1.0    1.0    5.0    1.0    1.0    0.0    1.0    0.0   
+
+   yGf  yGs  
+0  0.0  0.0  
+1  0.0  0.0  
+2  0.0  0.0  
+3  0.0  0.0  
+4  0.0  0.0  
+5  0.0  0.0  
+6  0.0  0.0  
+7  0.0  0.0  
+8  0.0  0.0  
+9  0.0  0.0  
+
+[10 rows x 43 columns]
+INFO:root:Current year | 20
+INFO:root:Folder to save | c:/Users/cuogh/Desktop/CODING/Python/Progetto-Schedina//data/2023/20/O-U.csv

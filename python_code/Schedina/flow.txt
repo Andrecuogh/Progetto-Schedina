@@ -1,0 +1,63 @@
+{
+latest_matchday: si connette a sky e prende la giornata corrente
+}
+{
+update df: if need_to_update 
+    {
+    need_to_update: crea LeagueSeason
+        {
+        LeagueSeason: carica i nomi delle squadre, se ongoing scrape sky
+            {
+            scrape sky: prende i risultati dell'anno in corso da sky
+            }
+        carica i risultati della giornata ventura
+        }
+    carica dataframe salvato in locale, se partite < (ultima giornata-5)*10 -> need upd
+    }
+league season process data
+    {
+    get ranking: calcola classifica per ogni giornata e e classifica cumulata
+        {
+        count_goals: calcola i gf e gs di una giornata
+        }
+    get results: calcola se V N o P
+    get goals: calcola Mgf, Mgs, Sgf, Sgs
+    }
+league season export csv
+    {
+    export csv: salva leagues, rankings, results, gfgs in data/categoria/anno/giorno
+    }
+carica dataframe in data/dataframes/anno.csv
+create_matchday
+    {
+    create_matchday_df: crea df per la giornata
+    }
+unisce nuovo matchday df a dataframe dell'anno
+salva dataframe in data/dataframes/ann0.csv
+}
+{
+merge df tutti gli anni
+    {
+    merge_df: unisce dataframes
+    }
+}
+{
+crea query point
+}
+{
+predici risultati
+    {
+    predict_scores: crea X e y
+        {
+        Xy split: crea X e y in base al target
+        }
+    crea ML algoritmo, fit e predict proba
+    }
+}
+{
+salva predizioni
+}
+{
+printa predizioni
+}
+    

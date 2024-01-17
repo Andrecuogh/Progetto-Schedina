@@ -1,0 +1,12 @@
+UPLOAD FOLDER IN GIT HUB
+
+W: Windows
+U: Ubuntu
+
+W: Rimuovi folder schedina in git
+U: gh repo clone Andrecuogh/Progetto-Schedina
+U: cd Progetto-Schedina/
+W: aggiungi folder schedina a ubuntu/andrecuogh/Progetto-Schedina
+U: git add .
+U: git commit -m "Add existing file"
+U: git push origin main
