@@ -39,10 +39,11 @@ class MainApp(App):
     def get_forecasts(self, event):
             
         if event.text == 'Predici':
+            self.button.text = 'Raccogliendo i dati'
+            homepage.loading(self, str(matchday_page.lday+1))
             window_config.cleaning(self, canvas=False)
-            event.text = str(matchday_page.lday)
-            homepage.loading(self, event.text)
             Clock.schedule_once(self.createcanvas, 2)
+
                 
         elif int(event.text) < 6:
             self.raise_warn(matchday_page.warning_text)
