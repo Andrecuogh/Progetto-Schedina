@@ -1,66 +1,80 @@
+import webbrowser
 import ssl
 ssl._create_default_https_context = ssl._create_stdlib_context
 
-import numpy as np
 from kivy.app import App
 from kivy.clock import Clock
 from kivy.uix.floatlayout import FloatLayout
-from display import homepage, matchday_page, major_page, window_config
+from display.window_config import AppConfigurer
+from display.homepage import Homepage
+from display.matchday_page import MatchdayPage
+from display.major_page import MajorPage
+from set_up.league_data import latest_matchday
 
+curr_version = 0.2
+lday = latest_matchday()
 
 class MainApp(App):
         
     def build(self):
-        self.window = FloatLayout(size=(1000, 750))
-        window_config.cleaning(self)
-        homepage.initializing(self)
+        self.window = FloatLayout()
+
+        self.app_con = AppConfigurer()
+        self.app_con.custom_init()
+        self.colors = self.app_con.paint()
+
+        self.hp = Homepage()
+        self.mdp = MatchdayPage(lday)
+        self.mjp = MajorPage()
+
+        self.hp.cleaning(self)
+        self.hp.initializing(self)
         self.button.bind(on_press = self.get_forecasts)
         self.archivio.bind(on_press = self.chooseday)
+        self.quitting.bind(on_press = self.stop)
         
-        if homepage.no_updated:
-            self.raise_warn(homepage.line, update=True)
-            self.ask_upd = True
+        if self.app_con.check_update(curr_version):
+            self.raise_warn(self.app_con.line, update=True)
+            self.hp.ask_upd = True
         
         return self.window
+
+    def get_forecasts(self, event):
+        if event.text == 'Predici':
+            self.button.text = 'Raccogliendo i dati'
+            self.hp.loading(self, str(lday+1))
+            self.hp.cleaning(self, canvas=False)
+            self.window.add_widget(self.button)
+            Clock.schedule_once(self.createcanvas, 2)
+         
+        elif int(event.text) < 6:
+            self.raise_warn(self.mdp.warning_text)
+                
+        else:
+            self.hp.loading(self, event.text)
+            Clock.schedule_once(self.createcanvas, 2)
     
 
     def goto_updlink(self, event):
-        import webbrowser
-        webbrowser.open(homepage.upd_link)
+        webbrowser.open(self.app_con.upd_link)
         Clock.schedule_once(self.remove_warn_box, 1)
         
 
     def chooseday(self, event):
-        matchday_page.list_matchdays(self)
+        self.mdp.list_matchdays(self)
         for b in self.daygrid.children:
             b.bind(on_press=self.get_forecasts)
-
-
-    def get_forecasts(self, event):
-            
-        if event.text == 'Predici':
-            self.button.text = 'Raccogliendo i dati'
-            homepage.loading(self, str(matchday_page.lday+1))
-            window_config.cleaning(self, canvas=False)
-            Clock.schedule_once(self.createcanvas, 2)
-
-                
-        elif int(event.text) < 6:
-            self.raise_warn(matchday_page.warning_text)
-                
-        else:
-            homepage.loading(self, event.text)
-            Clock.schedule_once(self.createcanvas, 2)
             
 
     def raise_warn(self, warn_text, fontsize = 50, update=False):
-
         self.warnlabel.text = warn_text
+        self.warnlabel.text_size = (self.window.size[0]*0.75, None)
         self.warnlabel.font_size = fontsize
         self.warnback.bind(on_press = self.remove_warn_box)
         self.window.add_widget(self.warn_box)
 
         if update:
+            self.warnlabel.text_size = (self.window.size[0]*7.5, None)
             self.warn_box.remove_widget(self.warnback)
             self.warn_box.add_widget(self.bupdate)
             self.warn_box.add_widget(self.bskip)
@@ -69,26 +83,23 @@ class MainApp(App):
 
     def remove_warn_box(self, event):
         self.window.remove_widget(self.warn_box)
-        if self.ask_upd:
+        if self.hp.ask_upd:
             self.warn_box.remove_widget(self.bupdate)
             self.warn_box.remove_widget(self.bskip)
             self.warn_box.add_widget(self.warnback)
-            self.ask_upd = False
+            self.hp.ask_upd = False
 
     def createcanvas(self, event):
+        if not self.hp.first:
+            self.mjp.initializecanvas(self)
+            self.hp.first = True
 
-        if not self.first:
-            major_page.initializecanvas(self)
-            self.first = True
-
-        major_page.paintcanvas(self)
+        self.mjp.paintcanvas(self)
         self.prec.bind(on_touch_down = self.backw)
         self.suc.bind(on_touch_down = self.forw)
         self.home.bind(on_touch_down = self.backhome)
 
-
-    def forw(self, event, touch):
-        
+    def forw(self, event, touch): 
         if event.collide_point(*touch.pos):
             self.partita += 1
             if self.partita > 9:
@@ -104,10 +115,14 @@ class MainApp(App):
 
     def backhome(self, event, touch):
         if event.collide_point(*touch.pos):
-            window_config.cleaning(self)
-            homepage.initializing(self)
+            self.mjp.cleaning(self)
+            self.hp.initializing(self)
+            self.hp.first = False
             self.button.bind(on_press = self.get_forecasts)
             self.archivio.bind(on_press = self.chooseday)
+
+    def info(self):
+        pass
         
 
 if __name__ == '__main__':

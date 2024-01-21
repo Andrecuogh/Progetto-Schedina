@@ -11,7 +11,6 @@ def retrieve(day):
         act_day = int(day) - 1
         name = f'{year}/{act_day}/{target}.csv'
         path = f'https://raw.githubusercontent.com/{repopath}/main/data/{name}'
-        print(path)
         df = pd.read_csv(path, index_col=0)
         list_df.append(df)
     return list_df

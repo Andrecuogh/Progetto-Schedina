@@ -1,172 +1,279 @@
 import numpy as np
 
 from kivy.uix.gridlayout import GridLayout
-from kivy.uix.button import Button
 from kivy.uix.label import Label
-from kivy.graphics import Ellipse, Color, RoundedRectangle
 
-from display.window_config import colors, colorbar, cleaning
+from display.window_config import CustomButton, CustomEllipse, CustomRectangle, Page, AppConfigurer
 
 
-def pagelayout(self):
+class MajorPage(Page):
 
-    self.gfgshead = GridLayout(size_hint=(0.8, 0.05), pos_hint={'center_x': .55, 'center_y': .85},
-                               cols=5, spacing = [2, 2])
+    def __init__(self):
+        self.page = 'Major'
     
-    self.gfgsdesc = Button(text='GOL', font_size = 40, color = colors['text'], size_hint=(0.1, 0.05),
-                           pos_hint={'center_x': .08, 'center_y': .85},
-                           background_color = colors['label'],background_normal = '',)
-    
-    self.gflab = GridLayout(size_hint=(0.8, 0.095), pos_hint={'center_x': .55, 'center_y': .77},
-                            cols=5, spacing = [2, 2])
-    
-    self.gslab = GridLayout(size_hint=(0.8, 0.095), pos_hint={'center_x': .55, 'center_y': .67},
-                            cols=5, spacing = [2, 2])
-    
-    
-    self.gglab = GridLayout(size_hint=(0.4, 0.1), pos_hint={'center_x': .27, 'center_y': .46},
-                            cols=2, spacing = [2, 2])
-    
-    self.gghead = GridLayout(size_hint=(0.4, 0.05), pos_hint={'center_x': .27, 'center_y': .54},
-                             cols=2, spacing = [2, 2])
-    
-    
-    self.uolab = GridLayout(size_hint=(0.4, 0.1), pos_hint={'center_x': .73, 'center_y': .46},
-                            cols=2, spacing = [2, 2])
-    
-    self.uohead = GridLayout(size_hint=(0.4, 0.05), pos_hint={'center_x': .73, 'center_y': .54},
-                             cols=2, spacing = [2, 2])
-    
-    
-    self.ox2head = GridLayout(size_hint=(0.5, 0.05), pos_hint={'center_x': .5, 'center_y': .33},
-                              cols=3, spacing = [2, 2])
-    
-    self.ox2lab = GridLayout(size_hint=(0.5, 0.1), pos_hint={'center_x': .5, 'center_y': .25},
-                             cols=3, spacing = [2, 2])
-    
-    
-    self.teamh = Button(size_hint=(0.1, 0.09), pos_hint={'center_x': .08, 'center_y': .77},
-                        font_size = 40, color = colors['text'],
-                        background_normal = '', background_color = colors['label'])
-    
-    self.teama = Button(size_hint=(0.1, 0.09), pos_hint={'center_x': .08, 'center_y': .67},
-                        font_size = 40, color = colors['text'],
-                        background_normal = '',background_color = colors['label'])
+    def pagelayout(self, screen):
+        screen.gfgshead = GridLayout(
+            size_hint=(0.8, 0.05), 
+            pos_hint={'center_x': .55, 'center_y': .85},
+            cols=5, 
+            spacing = [2, 2]
+            )
+        
+        screen.gfgsdesc = CustomButton(
+            category='label',
+            text='GOL', 
+            font_size = 40, 
+            size_hint=(0.1, 0.05),
+            pos_hint={'center_x': .08, 'center_y': .85}
+            )
+        
+        screen.gflab = GridLayout(
+            size_hint=(0.8, 0.095), 
+            pos_hint={'center_x': .55, 'center_y': .77},
+            cols=5, 
+            spacing = [2, 2]
+            )
+        
+        screen.gslab = GridLayout(
+            size_hint=(0.8, 0.095), 
+            pos_hint={'center_x': .55, 'center_y': .67},
+            cols=5, 
+            spacing = [2, 2]
+            )
+        
+        screen.gglab = GridLayout(
+            size_hint=(0.4, 0.1), 
+            pos_hint={'center_x': .27, 'center_y': .46},
+            cols=2, 
+            spacing = [2, 2]
+            )
+        
+        screen.gghead = GridLayout(
+            size_hint=(0.4, 0.05), 
+            pos_hint={'center_x': .27, 'center_y': .54},
+            cols=2, 
+            spacing = [2, 2]
+            )
+        
+        screen.uolab = GridLayout(
+            size_hint=(0.4, 0.1), 
+            pos_hint={'center_x': .73, 'center_y': .46},
+            cols=2, 
+            spacing = [2, 2]
+            )
+        
+        screen.uohead = GridLayout(
+            size_hint=(0.4, 0.05), 
+            pos_hint={'center_x': .73, 'center_y': .54},
+            cols=2, 
+            spacing = [2, 2]
+            )
+         
+        screen.ox2head = GridLayout(
+            size_hint=(0.5, 0.05), 
+            pos_hint={'center_x': .5, 'center_y': .33},
+            cols=3, 
+            spacing = [2, 2]
+            )
+        
+        screen.ox2lab = GridLayout(
+            size_hint=(0.5, 0.1), 
+            pos_hint={'center_x': .5, 'center_y': .25},
+            cols=3, 
+            spacing = [2, 2]
+            )
+          
+        screen.teamh = CustomButton(
+            category='label',
+            size_hint=(0.1, 0.09), 
+            pos_hint={'center_x': .08, 'center_y': .77},
+            font_size = 40
+            )
+        
+        screen.teama = CustomButton(
+            category='label',
+            size_hint=(0.1, 0.09), 
+            pos_hint={'center_x': .08, 'center_y': .67},
+            font_size = 40
+            )
 
-def navigation(self):
-    
-    wind_size = self.window.size
+    def navigation(self, screen):  
+        screen.prec = Label(
+            size_hint=(0.26, 0.1), 
+            pos_hint={'x': 0.09, 'y': 0.05},
+            text='Precedente',
+            font_size = 45
+            )
 
-    self.prec = Label(size_hint=(0.26, 0.1), pos_hint={'x': 0.09, 'y': 0.05},
-                       text='Precedente', font_size = 45, color = colors['text'])
-    self.suc = Label(size_hint=(0.26, 0.1), pos_hint={'x': 0.65, 'y': 0.05},
-                      text='Successivo', font_size = 45, color = colors['text'])
-    self.home = Label(size_hint=(0.1, 0.08), pos_hint={'x': 0.45, 'y': 0.06},
-                       text='Home', font_size = 35, color = colors['text'])
+        screen.suc = Label(
+            size_hint=(0.26, 0.1), 
+            pos_hint={'x': 0.65, 'y': 0.05},
+            text='Successivo', 
+            font_size = 45 
+            )
+            
+        screen.home = Label(
+            size_hint=(0.1, 0.08), 
+            pos_hint={'x': 0.45, 'y': 0.06},
+            text='Home', 
+            font_size = 35
+            )
+
+        CustomEllipse(
+            pos_hint=(0.09, 0.05),
+            size_hint=(0.26, 0.1)
+        ).draw(screen, color='button')
+
+        CustomEllipse(
+            pos_hint=(0.65, 0.05),
+            size_hint=(0.26, 0.1)
+        ).draw(screen, color='button')
+
+        CustomRectangle(
+            pos_hint=(0.45, 0.06),
+            size_hint=(0.1, 0.08)
+        ).draw(screen, color='button')
+
+    def initializecanvas(self, screen):
+        screen.partita = 0
+        
+        self.cleaning(screen)
+        self.pagelayout(screen)
+        self.navigation(screen)
+
+        objects = [
+            screen.gfgshead, 
+            screen.gfgsdesc, 
+            screen.gflab, 
+            screen.gslab,
+            screen.gglab, 
+            screen.gghead,
+            screen.uolab,
+            screen.uohead,
+            screen.ox2lab, 
+            screen.ox2head,
+            screen.teamh, 
+            screen.teama,
+            screen.prec, 
+            screen.suc, 
+            screen.home
+            ]
+
+        for obj in objects:
+            screen.window.add_widget(obj)
+        
+        for i in range(5):
+            screen.gfgshead.add_widget(
+                CustomButton(
+                    category='label',
+                    text=str(screen.df1.columns[i]),
+                    font_size=45
+                    )
+                )
+            screen.gflab.add_widget(
+                CustomButton(
+                    category='button',
+                    font_size=40
+                    )
+                )
+            screen.gslab.add_widget(
+                CustomButton(
+                    category='button',
+                    font_size=40
+                    )
+                )
+
+        for i in range(3):
+            screen.ox2head.add_widget(
+                CustomButton(
+                    category='label',
+                    text = ['1', 'X', '2'][i],
+                    font_size = 45
+                    )
+                )
+            screen.ox2lab.add_widget(
+                CustomButton(
+                    category='button',
+                    font_size=40
+                    )
+                )
+
+        for i in range(2):
+            screen.gghead.add_widget(
+                CustomButton(
+                    category='label',
+                    text=screen.df4.columns[i], 
+                    font_size=45
+                    )
+                )
+            screen.gglab.add_widget(
+                CustomButton(
+                    category='button',
+                    font_size=40
+                    )
+                )
+            screen.uohead.add_widget(
+                CustomButton(
+                    category='label',
+                    text=screen.df5.columns[i]+' 2.5',
+                    font_size=45
+                    )
+                )
+            screen.uolab.add_widget(
+                CustomButton(
+                    category='button',
+                    font_size=40
+                    )
+                )
+
+    def paintcanvas(self, screen):
+        team_home, team_away = screen.df1.index[screen.partita].split('-')
+        screen.teamh.text = team_home[0:3].upper()
+        screen.teama.text = team_away[0:3].upper()
+
+        colorbar = AppConfigurer().paint()['colorbar']
+
+        for i, but in enumerate(screen.gflab.children):
+            but.text = self.proba_string(
+                screen.df1, 
+                screen.partita, 
+                4-i
+                )
+            but.background_color = colorbar[int(screen.df1.iloc[screen.partita, 4-i]*100)]
+
+        for i, but in enumerate(screen.gslab.children):
+            but.text = self.proba_string(
+                screen.df2, 
+                screen.partita, 
+                4-i
+                )
+            but.background_color = colorbar[int(screen.df2.iloc[screen.partita, 4-i]*100)]
+
+        for i, but in enumerate(screen.ox2lab.children):
+            but.text = self.proba_string(
+                screen.df3, 
+                screen.partita, 
+                2-i
+                )
+            but.background_color = colorbar[int(screen.df3.iloc[screen.partita, 2-i]*100)]
+
+        for i, but in enumerate(screen.gglab.children):
+            but.text = self.proba_string(
+                screen.df4, 
+                screen.partita, 
+                1-i
+                )
+            but.background_color = colorbar[int(screen.df4.iloc[screen.partita, 1-i]*100)]
+
+        for i, but in enumerate(screen.uolab.children):
+            but.text = self.proba_string(
+                screen.df5, 
+                screen.partita, 
+                1-i
+                )
+            but.background_color = colorbar[int(screen.df5.iloc[screen.partita, 1-i]*100)]
 
 
-    prec_p = (self.prec.pos_hint['x']*wind_size[0]-5,
-              self.prec.pos_hint['y']*wind_size[1]-5)
-
-    suc_p = (self.suc.pos_hint['x']*wind_size[0]-5,
-             self.suc.pos_hint['y']*wind_size[1]-5)
-
-    home_p = (self.home.pos_hint['x']*wind_size[0],
-              self.home.pos_hint['y']*wind_size[1])
-
-    prec_s = (self.prec.size_hint[0]*wind_size[0]+10,
-              self.prec.size_hint[1]*wind_size[1]+10)
-
-    suc_s = (self.suc.size_hint[0]*wind_size[0]+10,
-             self.suc.size_hint[1]*wind_size[1]+10)
-
-    home_s = (self.home.size_hint[0]*wind_size[0],
-              self.home.size_hint[1]*wind_size[1])
-    
-    r,g,b,a = colors['label']
-    
-    with self.window.canvas:
-        Color(r, g, b, a)
-        Ellipse(pos=prec_p, size=prec_s)
-        Ellipse(pos=suc_p, size=suc_s)
-        RoundedRectangle(pos=home_p, size=home_s)
-
-def initializecanvas(self):
-
-    self.page = 'Major'
-    self.partita = 0
-    cleaning(self)
-
-    pagelayout(self)
-    navigation(self)
-
-
-    objects = [self.gfgshead, self.gfgsdesc, self.gflab, self.gslab,
-               self.gglab, self.gghead,
-               self.uolab,self.uohead,
-               self.ox2lab, self.ox2head,
-               self.teamh, self.teama,
-               self.prec, self.suc, self.home]
-
-    for obj in objects:
-        self.window.add_widget(obj)
-    
-    for i in range(5):
-        self.gfgshead.add_widget(new_button(str(self.df1.columns[i]), label=True))
-        self.gflab.add_widget(new_button(''))
-        self.gslab.add_widget(new_button(''))
-
-    for i in range(3):
-        self.ox2head.add_widget(new_button(['1', 'X', '2'][i], label=True))
-        self.ox2lab.add_widget(new_button(''))
-
-    for i in range(2):
-        self.gghead.add_widget(new_button(self.df4.columns[i], label=True))
-        self.gglab.add_widget(new_button(''))
-
-        self.uohead.add_widget(new_button(self.df5.columns[i]+' 2.5', label=True))
-        self.uolab.add_widget(new_button(''))
-
-def paintcanvas(self):
-
-    self.teamh.text = self.df1.index[self.partita].split('-')[0][0:3].upper()
-    self.teama.text = self.df1.index[self.partita].split('-')[1][0:3].upper()
-
-    for i, but in enumerate(self.gflab.children):
-        but.text = proba_string(self.df1, self.partita, 4-i)
-        but.background_color = colorbar[int(self.df1.iloc[self.partita, 4-i]*100)]
-
-    for i, but in enumerate(self.gslab.children):
-        but.text = proba_string(self.df2, self.partita, 4-i)
-        but.background_color = colorbar[int(self.df2.iloc[self.partita, 4-i]*100)]
-
-    for i, but in enumerate(self.ox2lab.children):
-        but.text = proba_string(self.df3, self.partita, 2-i)
-        but.background_color = colorbar[int(self.df3.iloc[self.partita, 2-i]*100)]
-
-    for i, but in enumerate(self.gglab.children):
-        but.text = proba_string(self.df4, self.partita, 1-i)
-        but.background_color = colorbar[int(self.df4.iloc[self.partita, 1-i]*100)]
-
-    for i, but in enumerate(self.uolab.children):
-        but.text = proba_string(self.df5, self.partita, 1-i)
-        but.background_color = colorbar[int(self.df5.iloc[self.partita, 1-i]*100)]
-
-
-def new_button(text, label=False):
-    button = Button(text = str(text), 
-                    color = colors['text'],
-                    background_normal = '')
-    if label:
-        button.font_size = 45
-        button.background_color = colors['label']
-    else:
-        button.font_size = 40
-        button.background_color = colors['button']
-    
-    return button
-
-
-def proba_string(df, match, index):
-    proba_label = f'{np.round(df.iloc[match, index]*100, 1)} %'
-    return proba_label 
+    def proba_string(self, df, match, index):
+        proba_label = f'{np.round(df.iloc[match, index]*100, 1)} %'
+        return proba_label 
