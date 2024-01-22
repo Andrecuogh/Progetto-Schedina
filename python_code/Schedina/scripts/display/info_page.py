@@ -10,19 +10,22 @@ class InfoPage(Page):
         self.text= response.text
         
     def informating(self, screen):
-        self.cleaning(screen)
-
         screen.infolayout = CustomButton(
             category='button',
             text = self.text,
-            pos_hint={'x': 0.2, 'y': 0.2},
-            size_hint=(0.6, 0.6)
+            font_size = 18,
+            pos_hint={'x': 0.05, 'y': 0.05},
+            size_hint=(0.9, 0.9),
+            text_size = (screen.window.size[0]*0.85, screen.window.size[0]*0.85),
+            padding = [0, 100],
+            valign = 'top',
+            markup=True
         )
 
         screen.infobackbutton = CustomButton(
             category='bbcolor',
             text = 'Ok',
-            pos_hint = {'x': 0.475, 'y': 0.675},
+            pos_hint = {'x': 0.475, 'y': 0.1},
             size_hint = (0.05, 0.05)
         )
 

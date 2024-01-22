@@ -12,12 +12,13 @@ from display.major_page import MajorPage
 from display.info_page import InfoPage
 from set_up.league_data import latest_matchday
 
-curr_version = 0.2
-lday = latest_matchday()
 
 class MainApp(App):
         
     def build(self):
+        self.curr_version = 0.3
+        self.lday = latest_matchday()
+
         self.window = FloatLayout()
 
         self.app_con = AppConfigurer()
@@ -25,35 +26,38 @@ class MainApp(App):
         self.colors = self.app_con.paint()
 
         self.hp = Homepage()
-        self.mdp = MatchdayPage(lday)
+        self.mdp = MatchdayPage(self.lday)
         self.mjp = MajorPage()
         self.ip = InfoPage()
 
         self.hp.cleaning(self)
         self.hp.initializing(self)
-        self.button.bind(on_press = self.get_forecasts)
+        self.button.bind(on_press = self.get_forecasts) 
         self.archivio.bind(on_press = self.chooseday)
-        self.quitting.bind(on_press = self.stop)
-        self.info.bind(on_press = self.infopage)
+        self.bindutils()
         
-        if self.app_con.check_update(curr_version):
+        if self.app_con.check_update(self.curr_version):
             self.raise_warn(self.app_con.line, update=True)
             self.hp.ask_upd = True
         
         return self.window
     
+    def bindutils(self):
+        self.quitting.bind(on_press = self.stop)
+        self.info.bind(on_press = self.infopage)
+    
     def infopage(self, event):
         self.ip.informating(self)
         self.infobackbutton.bind(on_press=self.infoback)
     
-    def infoback(self):
-        self.window.remove_widget(self.ip.infolayout)
-        self.window.remove_widget(self.ip.infobackbutton)
+    def infoback(self, event):
+        self.window.remove_widget(self.infolayout)
+        self.window.remove_widget(self.infobackbutton)
 
     def get_forecasts(self, event):
         if event.text == 'Predici':
             self.button.text = 'Raccogliendo i dati'
-            self.hp.loading(self, str(lday+1))
+            self.hp.loading(self, str(self.lday+1))
             self.hp.cleaning(self, canvas=False)
             self.window.add_widget(self.button)
             Clock.schedule_once(self.createcanvas, 2)
@@ -75,6 +79,7 @@ class MainApp(App):
         self.mdp.list_matchdays(self)
         for b in self.daygrid.children:
             b.bind(on_press=self.get_forecasts)
+        self.bindutils()
             
 
     def raise_warn(self, warn_text, fontsize = 50, update=False):
@@ -109,6 +114,7 @@ class MainApp(App):
         self.prec.bind(on_touch_down = self.backw)
         self.suc.bind(on_touch_down = self.forw)
         self.home.bind(on_touch_down = self.backhome)
+        self.bindutils()
 
     def forw(self, event, touch): 
         if event.collide_point(*touch.pos):
@@ -131,9 +137,7 @@ class MainApp(App):
             self.hp.first = False
             self.button.bind(on_press = self.get_forecasts)
             self.archivio.bind(on_press = self.chooseday)
-
-    def info(self):
-        pass
+            self.bindutils()
         
 
 if __name__ == '__main__':
