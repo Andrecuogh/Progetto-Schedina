@@ -9,6 +9,7 @@ from display.window_config import AppConfigurer
 from display.homepage import Homepage
 from display.matchday_page import MatchdayPage
 from display.major_page import MajorPage
+from display.info_page import InfoPage
 from set_up.league_data import latest_matchday
 
 curr_version = 0.2
@@ -26,18 +27,28 @@ class MainApp(App):
         self.hp = Homepage()
         self.mdp = MatchdayPage(lday)
         self.mjp = MajorPage()
+        self.ip = InfoPage()
 
         self.hp.cleaning(self)
         self.hp.initializing(self)
         self.button.bind(on_press = self.get_forecasts)
         self.archivio.bind(on_press = self.chooseday)
         self.quitting.bind(on_press = self.stop)
+        self.info.bind(on_press = self.infopage)
         
         if self.app_con.check_update(curr_version):
             self.raise_warn(self.app_con.line, update=True)
             self.hp.ask_upd = True
         
         return self.window
+    
+    def infopage(self, event):
+        self.ip.informating(self)
+        self.infobackbutton.bind(on_press=self.infoback)
+    
+    def infoback(self):
+        self.window.remove_widget(self.ip.infolayout)
+        self.window.remove_widget(self.ip.infobackbutton)
 
     def get_forecasts(self, event):
         if event.text == 'Predici':
