@@ -45,13 +45,14 @@ latest_year = [year for year in seasons.keys() if seasons[year]][0]
 
 targets = ['Gf', 'Gs', '1X2', 'GG-NG', 'O-U']
 
+postponed = [20]
 
 def latest_matchday():
     scrap = pd.read_html(
         'https://sport.sky.it/calcio/serie-a/calendario-risultati#giornata-38'
         )
     for i, evento in enumerate(scrap):
-        if i == 20:
+        if i in [postponed]:
             continue
         if len(evento['Squadra 2'].iloc[-1].split(' ')) < 2:
             current = i

@@ -12,6 +12,6 @@ PATH = __file__.replace(
         )
 REPOPATH = 'Andrecuogh/Progetto-Schedina'
 
-VERSION = 0.3
+VERSION = 0.4
 
 TOKEN = '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'

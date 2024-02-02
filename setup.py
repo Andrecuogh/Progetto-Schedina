@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="progetto-schedina",
-    version="0.3",
+    version="0.4",
     description="Schedina",
     long_description_content_type="text/markdown",
     author="Andrecuogh",
