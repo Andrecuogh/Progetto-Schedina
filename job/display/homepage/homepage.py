@@ -1,6 +1,6 @@
 from job.display.app_utils.custom_obj import CustomButton
 from app_utils.page import Page
-from set_up.gitconnect.retrieval import retrieve
+from set_up.retrieval import retrieve
 from transversal.warning import WarningBox
 from homepage.scoredashboard import ScoreDashboard
 

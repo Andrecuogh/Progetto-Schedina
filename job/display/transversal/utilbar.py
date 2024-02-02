@@ -2,7 +2,7 @@ from app_utils.window_config import AppConfigurer
 from app_utils.custom_obj import CustomRectangle, CustomButton
 from kivy.uix.togglebutton import ToggleButton
 from kivy.uix.gridlayout import GridLayout
-from set_up.gitconnect.gitset import repopath
+from set_up.config_var import REPOPATH
 import requests
 
 
@@ -55,7 +55,7 @@ class UtilBar():
 class Infos():
 
     def __init__(self):
-        path = f'https://raw.githubusercontent.com/{repopath}/main/README.md'
+        path = f'https://raw.githubusercontent.com/{REPOPATH}/main/README.md'
         response = requests.get(path)
         self.text= response.text
         

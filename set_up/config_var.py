@@ -1,4 +1,17 @@
 import os
 
-PATH = os.getcwd().replace('\\scripts', '').replace('\\temp_ipynb', '').replace('\\', '/')
+PATH = __file__.replace(
+    '\config_var.py', 
+    ''
+    ).replace(
+        '\set_up', 
+        ''
+        ).replace(
+            '\\',
+            '/'
+        )
+REPOPATH = 'Andrecuogh/Progetto-Schedina'
+
 VERSION = 0.3
+
+TOKEN = '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'

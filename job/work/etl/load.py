@@ -1,37 +1,61 @@
-""" load """
-
 import pandas as pd
-from set_up import config_var
+from set_up.config_var import PATH
+from set_up.league_season import Stagione
 
-path = config_var.path
+class Loader(Stagione):
 
-def load_tables(LS, g):
+    def __init__(self, ls):
+        self.year = ls.year
+        self.teams = ls.teams
+        self.leagues = ls.leagues
+        self.days = ls.days
+        self.next = ls.next
 
-    try:
-        partite = pd.read_csv(f'{path}/data/scores/{LS.year}/{g}.csv',
-                              index_col=0)
-        goals = pd.read_csv(f'{path}/data/scored_received/{LS.year}/{g}.csv',
-                            index_col=0)
-        prediction = False
+    def process(self, giorno):
 
-    except:
-        partite = LS.next
-        goals = pd.read_csv(f'{path}/data/scored_received/{LS.year}/{g-1}.csv',
-                            index_col=0)
-        prediction = True
+        try:
+            partite = pd.read_csv(
+                f'{PATH}/data/scores/{self.year}/{giorno}.csv',
+                index_col=0
+                )
+            goals = pd.read_csv(
+                f'{PATH}/data/scored_received/{self.year}/{giorno}.csv',
+                index_col=0
+                )
+            prediction = False
 
-    p_prec = [pd.read_csv(f'{path}/data/scores/{LS.year}/{n}.csv',
-                          index_col=0) for n in range(g-5, g)]
-    table = [pd.read_csv(f'{path}/data/results/{LS.year}/{n}.csv',
-                          index_col=0) for n in range(g-5, g)]
-    classifica = pd.read_csv(f'{path}/data/rankings/{LS.year}/{g-1}.csv',
-                              index_col=0)
+        except:
+            partite = self.next
+            goals = pd.read_csv(
+                f'{PATH}/data/scored_received/{self.year}/{giorno-1}.csv',
+                index_col=0
+                )
+            prediction = True
 
-    tables = {'partite': partite,
-              'goals': goals,
-              'p_prec': p_prec,
-              'table': table,
-              'classifica': classifica,
-              'prediction': prediction}
+        p_prec = [
+            pd.read_csv(
+                f'{PATH}/data/scores/{self.year}/{n}.csv',
+                index_col=0
+            ) for n in range(giorno-5, giorno)
+            ]
+        table = [
+            pd.read_csv(
+                f'{PATH}/data/results/{self.year}/{n}.csv',
+                index_col=0
+            ) for n in range(giorno-5, giorno)
+            ]
+        classifica = pd.read_csv(
+            f'{PATH}/data/rankings/{self.year}/{giorno-1}.csv',
+            index_col=0
+            )
 
-    return tables
+        tables = {
+            'partite': partite,
+            'goals': goals,
+            'p_prec': p_prec,
+            'table': table,
+            'classifica': classifica,
+            'prediction': prediction
+            }
+
+        return tables

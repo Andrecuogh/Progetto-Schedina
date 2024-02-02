@@ -5,7 +5,7 @@ import numpy as np
 import os
 import logging
 
-foldpath = config_var.path.replace("python_code/Schedina", "")
+foldpath = config_var.PATH.replace("python_code/Schedina", "")
 lat_year = league_data.latest_year
 
 def save_report(prediction_list):

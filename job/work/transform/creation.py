@@ -2,10 +2,11 @@
 
 import pandas as pd
 import numpy as np
-from etl import load
+from etl.load import Loader
 from set_up import config_var
+import logging
 
-foldpath = config_var.path
+foldpath = config_var.PATH
 
 def create_empty():
     df = pd.DataFrame(np.zeros((10, 43)))
@@ -25,14 +26,14 @@ def create_empty():
 def create_matchday_df(LS, g):
 
     df = create_empty()
-    tables = load.load_tables(LS, g)
+    tables = Loader(LS).process(g)
 
     for m in tables['partite'].index:
-        sfida = tables['partite'].loc[m,'Home'] + '-' + tables['partite'].loc[m,'Away']
+        sfida = tables['partite'].loc[m,'squadra_casa'] + '-' + tables['partite'].loc[m,'squadra_trasferta']
         df.loc[m, 'Partita'] = sfida
 
         if not tables['prediction']:
-            scoresh = tables['partite'].loc[m, 'Scoresheet'].split('-')
+            scoresh = tables['partite'].loc[m, 'risultato'].split('-')
             df.loc[m, 'yGf'] = scoresh[0]
             df.loc[m, 'yGs'] = scoresh[1]
 
@@ -45,28 +46,28 @@ def create_matchday_df(LS, g):
             teamh = incontro.split('-')[0]
             teama = incontro.split('-')[1]
 
-            if teamh in data.loc[:, 'Home'].values:
-                e = int(data['Scoresheet'][data['Home'] == teamh].values[0].split('-')[0])
+            if teamh in data.loc[:, 'squadra_casa'].values:
+                e = int(data['risultato'][data['squadra_casa'] == teamh].values[0].split('-')[0])
             else:
-                e = int(data['Scoresheet'][data['Away'] == teamh].values[0].split('-')[1])
+                e = int(data['risultato'][data['squadra_trasferta'] == teamh].values[0].split('-')[1])
             df.loc[i, st1] = e
 
-            if teama in data.loc[:, 'Home'].values:
-                e = int(data['Scoresheet'][data['Home'] == teama].values[0].split('-')[0])
+            if teama in data.loc[:, 'squadra_casa'].values:
+                e = int(data['risultato'][data['squadra_casa'] == teama].values[0].split('-')[0])
             else:
-                e = int(data['Scoresheet'][data['Away'] == teama].values[0].split('-')[1])
+                e = int(data['risultato'][data['squadra_trasferta'] == teama].values[0].split('-')[1])
             df.loc[i, st3] = e
 
-            if teamh in data.loc[:, 'Home'].values:
-                f = int(data['Scoresheet'][data['Home'] == teamh].values[0].split('-')[1])
+            if teamh in data.loc[:, 'squadra_casa'].values:
+                f = int(data['risultato'][data['squadra_casa'] == teamh].values[0].split('-')[1])
             else:
-                f = int(data['Scoresheet'][data['Away'] == teamh].values[0].split('-')[0])
+                f = int(data['risultato'][data['squadra_trasferta'] == teamh].values[0].split('-')[0])
             df.loc[i, st2] = f
 
-            if teama in data.loc[:, 'Home'].values:
-                f = int(data['Scoresheet'][data['Home'] == teama].values[0].split('-')[1])
+            if teama in data.loc[:, 'squadra_casa'].values:
+                f = int(data['risultato'][data['squadra_casa'] == teama].values[0].split('-')[1])
             else:
-                f = int(data['Scoresheet'][data['Away'] == teama].values[0].split('-')[0])
+                f = int(data['risultato'][data['squadra_trasferta'] == teama].values[0].split('-')[0])
             df.loc[i, st4] = f
 
     for i, data2 in enumerate(tables['table']):
@@ -75,7 +76,7 @@ def create_matchday_df(LS, g):
             teamh = df.loc[pair, 'Partita'].split('-')[0]
             teama = df.loc[pair, 'Partita'].split('-')[1]
 
-            rt5h = data2[data2['Squadra']==teamh]['Risultato'].values[0]
+            rt5h = data2[data2['squadra']==teamh]['esito'].values[0]
             stringa_th = 'Rt-' + str(5-i) + 'h'
             if rt5h == 'V':
                 df.loc[pair, stringa_th] = 2
@@ -84,7 +85,7 @@ def create_matchday_df(LS, g):
             else:
                 df.loc[pair, stringa_th] = 0
 
-            rt5a = data2[data2['Squadra']==teama]['Risultato'].values[0]
+            rt5a = data2[data2['squadra']==teama]['esito'].values[0]
             stringa_ta = 'Rt-' + str(5-i) + 'a'
             if rt5a == 'V':
                 df.loc[pair, stringa_ta] = 2
@@ -99,17 +100,18 @@ def create_matchday_df(LS, g):
         teama = df.loc[matchn, 'Partita'].split('-')[1]
 
         for pitch, team in zip(['h', 'a'], [teamh, teama]):
-            df.loc[matchn, 'Classifica '+pitch] = tables['classifica'].loc[team, 'Posizione']
+            df.loc[matchn, 'Classifica '+pitch] = tables['classifica'].loc[team, 'posizione']
 
-            for descr_stat in ['M', 'S']:
-                for gs_or_gr in ['Gf', 'Gs']:
+            for descr_stat in ['media', 'varianza']:
+                for gs_or_gr in ['gol_fatti', 'gol_subiti']:
                     gol_stat = descr_stat + gs_or_gr + ' ' + pitch
-                    df.loc[matchn, gol_stat] = tables['goals'].loc[team, descr_stat + gs_or_gr.lower()]
+                    df.loc[matchn, gol_stat] = tables['goals'].loc[team, descr_stat + '_' + gs_or_gr.lower()]
 
     return df
 
 
 def create_year_df(LS):
+    logging.info('Creating dataframe')
     d = []
     for g in range(5, LS.days):
         matchday_df = create_matchday_df(LS, g)
@@ -117,5 +119,3 @@ def create_year_df(LS):
 
     year_df = pd.concat(d, ignore_index=True)
     year_df.to_csv(f'{foldpath}/data/dataframes/{LS.year}.csv')
-
-    return year_df

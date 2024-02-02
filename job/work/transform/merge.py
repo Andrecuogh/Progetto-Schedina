@@ -3,7 +3,7 @@
 import pandas as pd
 from set_up import config_var
 
-foldpath = config_var.path
+foldpath = config_var.PATH
 
 def merge_df(list_LS):
 

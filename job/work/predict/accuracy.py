@@ -1,14 +1,15 @@
 import pandas as pd
+from set_up.config_var import PATH
 
 def computegf(df):
-    return [i.split(' - ')[0] for i in df['Scoresheet']]
+    return [i.split(' - ')[0] for i in df['risultato']]
 
 def computegs(df):
-    return [i.split(' - ')[1] for i in df['Scoresheet']]
+    return [i.split(' - ')[1] for i in df['risultato']]
 
 def compute1x2(df):
     newlist = []
-    for score in df['Scoresheet']:
+    for score in df['risultato']:
         s1 = int(score.split(' - ')[0])
         s2 = int(score.split(' - ')[1])
         if s1 > s2:
@@ -21,7 +22,7 @@ def compute1x2(df):
 
 def computegoals(df):
     newlist = []
-    for score in df['Scoresheet']:
+    for score in df['risultato']:
         s1 = int(score.split(' - ')[0])
         s2 = int(score.split(' - ')[1])
         if s1 > 0 and s2 > 0:
@@ -32,7 +33,7 @@ def computegoals(df):
 
 def computeOU(df):
     newlist = []
-    for score in df['Scoresheet']:
+    for score in df['risultato']:
         s1 = int(score.split(' - ')[0])
         s2 = int(score.split(' - ')[1])
         if s1 + s2 > 2:
@@ -52,9 +53,9 @@ for f, trgt in zip(fun, trgts):
     for i in range(6, lim):
         if i == 15 or i == 16:
             continue
-        df_score = pd.read_csv(f'../data/scores/2023/{i}.csv', index_col = 0)
+        df_score = pd.read_csv(f'{PATH}/data/scores/2023/{i}.csv', index_col = 0)
         scores = f(df_score)
-        df_pred = pd.read_csv(f'../data/forecasts/2023/{i}/{trgt}.csv', index_col = 0)
+        df_pred = pd.read_csv(f'{PATH}/data/2023/{i}/{trgt}.csv', index_col = 0)
         pred = df_pred.T.idxmax().values
         for j in range(10):
             if scores[j] == pred[j]:
