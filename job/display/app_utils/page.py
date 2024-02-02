@@ -1,7 +1,7 @@
 from transversal.utilbar import UtilBar
 
-class Page():
 
+class Page:
     def __init__(self):
         self.page = None
 
