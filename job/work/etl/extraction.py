@@ -17,9 +17,8 @@ class ExtractorRanking(Extractor):
         logging.info(f"Computing ranking")
 
         # set up the dataframe
-        df = pd.DataFrame(np.zeros((20, 8)))
+        df = pd.DataFrame(np.zeros((20, 7)))
         df.columns = [
-            "squadra",
             "gol_fatti",
             "gol_subiti",
             "punti",
@@ -28,8 +27,7 @@ class ExtractorRanking(Extractor):
             "sconfitta",
             "differenza_reti",
         ]
-        df["squadra"] = self.teams
-        df.set_index("squadra", inplace=True)
+        df.index = self.teams
 
         # fill the dataframe
         classifica = []
@@ -126,7 +124,6 @@ class ExtractorGoals(Extractor):
             goal_segnati = pd.concat([goal_segnati, goal["gol_fatti"]], axis=1)
             goal_subiti = pd.concat([goal_subiti, goal["gol_subiti"]], axis=1)
 
-        # che è 0?
         goal_segnati.drop(0, axis=1, inplace=True)
         goal_segnati.columns = [i for i in range(1, self.days + 1)]
 
@@ -136,7 +133,13 @@ class ExtractorGoals(Extractor):
         goal_totali = []
         for giornata in range(self.days):
             goal = pd.DataFrame(np.zeros((20, 4)))
-            goal.index = goal_segnati.index
+            goal.columns = [
+                "media_gol_fatti",
+                "varianza_gol_fatti",
+                "media_gol_subiti",
+                "varianza_gol_subiti",
+            ]
+            goal.index = self.teams
 
             goal["media_gol_fatti"] = goal_segnati.loc[:, 1 : giornata + 1].mean(axis=1)
             goal["varianza_gol_fatti"] = goal_segnati.loc[:, 1 : giornata + 1].std(

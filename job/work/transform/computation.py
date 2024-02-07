@@ -2,24 +2,19 @@
 
 import pandas as pd
 import numpy as np
+from set_up.league_data import postponed_matches
 
 
 def count_goals(LS, matchday):
     match_score = LS.leagues[matchday]
-    postponed = {
-        "Bologna-Fiorentina": 6,
-        "Torino-Lazio": 7,
-        "Sassuolo-Napoli": 8,
-        "Inter-Atalanta": 9,
-    }
 
-    for i in postponed.values():
+    for i in postponed_matches.values():
         target_match = (
             match_score.loc[i, "squadra_casa"]
             + "-"
             + match_score.loc[i, "squadra_trasferta"]
         )
-        if target_match in postponed.keys():
+        if target_match in postponed_matches.keys():
             match_score.loc[i, "risultato"] = "0 - 0"
 
     table = pd.DataFrame(np.zeros((20, 3)), dtype=np.int64)
