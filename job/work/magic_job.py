@@ -1,19 +1,18 @@
 from set_up import league_season, league_data
 from etl.update import Updater
 from transform import merge, creation
-from predict import prediction
 from predict import prediction, reportage
 
 import logging
 
-logging.basicConfig(encoding="utf-8", level=logging.DEBUG)
 logging.info("Import completed")
 
-lat_day = league_data.latest_matchday()
-logging.info(f"Next matchday | {lat_day}")
+stagione = league_season.Stagione("2023", ongoing=True)
 
-updates = Updater()
-updates.aggiornamento()
+lat_day = league_data.latest_matchday()
+logging.info(f"Next matchday: {lat_day + 1}")
+
+Updater(stagione).check_aggiornamento()
 
 list_ls = []
 for y, s in league_data.seasons.items():

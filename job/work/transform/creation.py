@@ -77,7 +77,7 @@ def create_matchday_df(LS, g):
             df.loc[m, "yGf"] = scoresh[0]
             df.loc[m, "yGs"] = scoresh[1]
 
-    for j, data in enumerate(tables["p_prec"]):
+    for j, partita_prec in enumerate(tables["p_prec"]):
         for i, incontro in enumerate(df["Partita"].values):
             st1 = "Gf-" + str(5 - j) + "h"
             st2 = "Gs-" + str(5 - j) + "h"
@@ -86,81 +86,89 @@ def create_matchday_df(LS, g):
             teamh = incontro.split("-")[0]
             teama = incontro.split("-")[1]
 
-            if teamh in data.loc[:, "squadra_casa"].values:
+            if teamh in partita_prec.loc[:, "squadra_casa"].values:
                 e = int(
-                    data["risultato"][data["squadra_casa"] == teamh]
+                    partita_prec["risultato"][partita_prec["squadra_casa"] == teamh]
                     .values[0]
                     .split("-")[0]
                 )
             else:
                 e = int(
-                    data["risultato"][data["squadra_trasferta"] == teamh]
+                    partita_prec["risultato"][
+                        partita_prec["squadra_trasferta"] == teamh
+                    ]
                     .values[0]
                     .split("-")[1]
                 )
             df.loc[i, st1] = e
 
-            if teama in data.loc[:, "squadra_casa"].values:
+            if teama in partita_prec.loc[:, "squadra_casa"].values:
                 e = int(
-                    data["risultato"][data["squadra_casa"] == teama]
+                    partita_prec["risultato"][partita_prec["squadra_casa"] == teama]
                     .values[0]
                     .split("-")[0]
                 )
             else:
                 e = int(
-                    data["risultato"][data["squadra_trasferta"] == teama]
+                    partita_prec["risultato"][
+                        partita_prec["squadra_trasferta"] == teama
+                    ]
                     .values[0]
                     .split("-")[1]
                 )
             df.loc[i, st3] = e
 
-            if teamh in data.loc[:, "squadra_casa"].values:
+            if teamh in partita_prec.loc[:, "squadra_casa"].values:
                 f = int(
-                    data["risultato"][data["squadra_casa"] == teamh]
+                    partita_prec["risultato"][partita_prec["squadra_casa"] == teamh]
                     .values[0]
                     .split("-")[1]
                 )
             else:
                 f = int(
-                    data["risultato"][data["squadra_trasferta"] == teamh]
+                    partita_prec["risultato"][
+                        partita_prec["squadra_trasferta"] == teamh
+                    ]
                     .values[0]
                     .split("-")[0]
                 )
             df.loc[i, st2] = f
 
-            if teama in data.loc[:, "squadra_casa"].values:
+            if teama in partita_prec.loc[:, "squadra_casa"].values:
                 f = int(
-                    data["risultato"][data["squadra_casa"] == teama]
+                    partita_prec["risultato"][partita_prec["squadra_casa"] == teama]
                     .values[0]
                     .split("-")[1]
                 )
             else:
                 f = int(
-                    data["risultato"][data["squadra_trasferta"] == teama]
+                    partita_prec["risultato"][
+                        partita_prec["squadra_trasferta"] == teama
+                    ]
                     .values[0]
                     .split("-")[0]
                 )
             df.loc[i, st4] = f
 
-    for i, data2 in enumerate(tables["table"]):
+    for i, risultato_prec in enumerate(tables["table"]):
         for pair in range(10):
             teamh = df.loc[pair, "Partita"].split("-")[0]
             teama = df.loc[pair, "Partita"].split("-")[1]
 
-            rt5h = data2[data2["squadra"] == teamh]["esito"].values[0]
+            rt5h = risultato_prec[risultato_prec["squadra"] == teamh]["esito"].values[0]
             stringa_th = "Rt-" + str(5 - i) + "h"
-            if rt5h == "V":
+            if rt5h == "vittoria":
                 df.loc[pair, stringa_th] = 2
-            elif rt5h == "N":
+            elif rt5h == "pareggio":
                 df.loc[pair, stringa_th] = 1
             else:
                 df.loc[pair, stringa_th] = 0
 
-            rt5a = data2[data2["squadra"] == teama]["esito"].values[0]
+            rt5a = risultato_prec[risultato_prec["squadra"] == teama]["esito"].values[0]
             stringa_ta = "Rt-" + str(5 - i) + "a"
-            if rt5a == "V":
+            if rt5a == "vittoria":
                 df.loc[pair, stringa_ta] = 2
-            elif rt5a == "N":
+            elif rt5a == "pareggio":
                 df.loc[pair, stringa_ta] = 1
             else:
                 df.loc[pair, stringa_ta] = 0

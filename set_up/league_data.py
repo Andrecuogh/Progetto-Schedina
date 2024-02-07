@@ -119,7 +119,14 @@ latest_year = [year for year in seasons.keys() if seasons[year]][0]
 
 targets = ["Gf", "Gs", "1X2", "GG-NG", "O-U"]
 
-postponed = [20]
+postponed_days = [20]
+
+postponed_matches = {
+    "Bologna-Fiorentina": 6,
+    "Torino-Lazio": 7,
+    "Sassuolo-Napoli": 8,
+    "Inter-Atalanta": 9,
+}
 
 
 def latest_matchday():
@@ -127,7 +134,7 @@ def latest_matchday():
         "https://sport.sky.it/calcio/serie-a/calendario-risultati#giornata-38"
     )
     for i, evento in enumerate(scrap):
-        if i in [postponed]:
+        if i in postponed_days:
             continue
         if len(evento["Squadra 2"].iloc[-1].split(" ")) < 2:
             current = i
