@@ -2,7 +2,7 @@ from app_utils.window_config import AppConfigurer
 from app_utils.custom_obj import CustomRectangle, CustomButton
 from kivy.uix.togglebutton import ToggleButton
 from kivy.uix.gridlayout import GridLayout
-from set_up.config_var import REPOPATH
+from set_up_kivy.config_var import REPOPATH
 import requests
 
 

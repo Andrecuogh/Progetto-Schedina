@@ -1,7 +1,10 @@
 import webbrowser
+import urllib.request as urlr
 
 import sys
 import os
+if os.getcwd().split('/')[-1] == 'display':
+    os.chdir('../..')
 sys.path.append(os.getcwd())
 
 import ssl
@@ -16,7 +19,7 @@ from homepage.homepage import Homepage
 from matchday_page.matchday_page import MatchdayPage
 from major_page.major_page import MajorPage
 from transversal.utilbar import Infos
-from set_up.config_var import VERSION, PATH
+from set_up_kivy.config_var import VERSION, PATH
 
 
 class MainApp(App):
@@ -48,9 +51,11 @@ class MainApp(App):
         return self.window
 
     def read_txt(self):
-        with open(f"{PATH}/set_up/config_app.txt", "r") as file:
-            lines = file.read().split("\n")
-            self.lat_matchday = int(lines[1].split(" = ")[1])
+        file = urlr.urlopen(
+            f"https://raw.githubusercontent.com/Andrecuogh/Progetto-Schedina/main/set_up/config_app.txt"
+            )
+        lines = file.read().decode().split('\n')
+        self.lat_matchday = int(lines[1].split(" = ")[1])
 
     def bindutils(self):
         self.quitting.bind(on_press=self.stop)
