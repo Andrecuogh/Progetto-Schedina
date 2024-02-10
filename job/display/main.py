@@ -1,4 +1,9 @@
 import webbrowser
+
+import sys
+import os
+sys.path.append(os.getcwd())
+
 import ssl
 
 ssl._create_default_https_context = ssl._create_stdlib_context
@@ -45,7 +50,7 @@ class MainApp(App):
     def read_txt(self):
         with open(f"{PATH}/set_up/config_app.txt", "r") as file:
             lines = file.read().split("\n")
-            self.lat_matchday = float(lines[0].split(" = ")[1])
+            self.lat_matchday = int(lines[1].split(" = ")[1])
 
     def bindutils(self):
         self.quitting.bind(on_press=self.stop)
