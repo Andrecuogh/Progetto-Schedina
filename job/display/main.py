@@ -11,14 +11,13 @@ from homepage.homepage import Homepage
 from matchday_page.matchday_page import MatchdayPage
 from major_page.major_page import MajorPage
 from transversal.utilbar import Infos
-from set_up.league_data import latest_matchday
-from set_up.config_var import VERSION
+from set_up.config_var import VERSION, PATH
 
 
 class MainApp(App):
     def build(self):
         self.curr_version = VERSION
-        self.lday = latest_matchday()
+        self.read_txt()
 
         self.window = FloatLayout()
 
@@ -27,7 +26,7 @@ class MainApp(App):
         self.colors = self.app_con.paint()
 
         self.hp = Homepage()
-        self.mdp = MatchdayPage(self.lday)
+        self.mdp = MatchdayPage(self.lat_matchday)
         self.mjp = MajorPage()
         self.ip = Infos()
 
@@ -42,6 +41,11 @@ class MainApp(App):
             self.hp.ask_upd = True
 
         return self.window
+
+    def read_txt(self):
+        with open(f"{PATH}/set_up/config_app.txt", "r") as file:
+            lines = file.read().split("\n")
+            self.lat_matchday = float(lines[0].split(" = ")[1])
 
     def bindutils(self):
         self.quitting.bind(on_press=self.stop)
@@ -58,7 +62,7 @@ class MainApp(App):
     def get_forecasts(self, event):
         if event.text == "Predici":
             self.button.text = "Raccogliendo i dati"
-            self.hp.loading(self, str(self.lday + 1))
+            self.hp.loading(self, str(self.lat_matchday + 1))
             self.hp.cleaning(self, canvas=False)
             self.window.add_widget(self.button)
             Clock.schedule_once(self.createcanvas, 2)

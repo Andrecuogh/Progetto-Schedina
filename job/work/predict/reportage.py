@@ -1,5 +1,6 @@
 from set_up import league_data, config_var
 from predict.accuracy import corr_dict
+from set_up.config_var import write_config
 import pandas as pd
 import numpy as np
 import os
@@ -10,7 +11,8 @@ lat_year = league_data.latest_year
 
 
 def save_report(prediction_list):
-    newpath = lat_year + "/" + str(league_data.latest_matchday())
+    latday = league_data.latest_matchday()
+    newpath = lat_year + "/" + str(latday)
     os.makedirs(f"{foldpath}/data/{newpath}", exist_ok=True)
     for forecast, category in zip(prediction_list, league_data.targets):
         if type(forecast) == list:
@@ -22,6 +24,7 @@ def save_report(prediction_list):
 
     new_df = pd.DataFrame(corr_dict, index=["Score"]).T
     new_df.to_csv(f"{foldpath}/data/accuracy_dashboard/acc_dict.csv")
+    write_config(foldpath, latday)
 
 
 def display_report(prediction_list):
