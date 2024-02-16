@@ -1,3 +1,9 @@
+import sys
+import os
+if os.getcwd().split('/')[-1] == 'display':
+    os.chdir('../..')
+sys.path.append(os.getcwd())
+
 from set_up import league_season, league_data
 from etl.update import Updater
 from transform import merge, creation

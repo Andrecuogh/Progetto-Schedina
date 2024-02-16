@@ -1,4 +1,4 @@
 VERSION = 0.4
-MATCHDAY = 23
+MATCHDAY = 24
 POSTPONED DAYS = [20]
 POSTPONED MATCHES = {'Bologna-Fiorentina': 6, 'Torino-Lazio': 7, 'Sassuolo-Napoli': 8, 'Inter-Atalanta': 9}
