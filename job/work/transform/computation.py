@@ -17,8 +17,15 @@ def count_goals(LS, matchday):
         if target_match in postponed_matches.keys():
             match_score.loc[i, "risultato"] = "0 - 0"
 
-    table = pd.DataFrame(np.zeros((20, 3)), dtype=np.int64)
-    table.columns = ["Squadra", "gol_fatti", "gol_subiti"]
+    table = pd.DataFrame(np.zeros((20, 3)))
+
+    table_dict = {
+        'Squadra': str,
+        'gol_fatti': int,
+        'gol_subiti': int
+    }
+    table.columns = table_dict.keys()
+    table = table.astype(table_dict)
 
     for i in range(10):
         table.loc[i, "Squadra"] = match_score.loc[i, "squadra_casa"]

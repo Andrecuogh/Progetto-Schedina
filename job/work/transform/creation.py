@@ -11,51 +11,54 @@ foldpath = config_var.PATH
 
 def create_empty():
     df = pd.DataFrame(np.zeros((10, 43)))
-    df.columns = [
-        "Partita",
-        "Rt-5h",
-        "Rt-4h",
-        "Rt-3h",
-        "Rt-2h",
-        "Rt-1h",
-        "Classifica h",
-        "Rt-5a",
-        "Rt-4a",
-        "Rt-3a",
-        "Rt-2a",
-        "Rt-1a",
-        "Classifica a",
-        "MGf h",
-        "MGs h",
-        "MGf a",
-        "MGs a",
-        "SGf h",
-        "SGs h",
-        "SGf a",
-        "SGs a",
-        "Gf-5h",
-        "Gf-4h",
-        "Gf-3h",
-        "Gf-2h",
-        "Gf-1h",
-        "Gs-5h",
-        "Gs-4h",
-        "Gs-3h",
-        "Gs-2h",
-        "Gs-1h",
-        "Gf-5a",
-        "Gf-4a",
-        "Gf-3a",
-        "Gf-2a",
-        "Gf-1a",
-        "Gs-5a",
-        "Gs-4a",
-        "Gs-3a",
-        "Gs-2a",
-        "Gs-1a",
-        "yGf",
-        "yGs",
-    ]
+    col_dict = {
+        "Partita": str,
+        "Rt-5h": int,
+        "Rt-4h": int,
+        "Rt-3h": int,
+        "Rt-2h": int,
+        "Rt-1h": int,
+        "Classifica h": int,
+        "Rt-5a": int,
+        "Rt-4a": int,
+        "Rt-3a": int,
+        "Rt-2a": int,
+        "Rt-1a": int,
+        "Classifica a": int,
+        "media gol_fatti h": float,
+        "media gol_subiti h": float,
+        "media gol_fatti a": float,
+        "media gol_subiti a": float,
+        "varianza gol_fatti h": float,
+        "varianza gol_subiti h": float,
+        "varianza gol_fatti a": float,
+        "varianza gol_subiti a": float,
+        "Gf-5h": int,
+        "Gf-4h": int,
+        "Gf-3h": int,
+        "Gf-2h": int,
+        "Gf-1h": int,
+        "Gs-5h": int,
+        "Gs-4h": int,
+        "Gs-3h": int,
+        "Gs-2h": int,
+        "Gs-1h": int,
+        "Gf-5a": int,
+        "Gf-4a": int,
+        "Gf-3a": int,
+        "Gf-2a": int,
+        "Gf-1a": int,
+        "Gs-5a": int,
+        "Gs-4a": int,
+        "Gs-3a": int,
+        "Gs-2a": int,
+        "Gs-1a": int,
+        "yGf": int,
+        "yGs": int,
+    }
+
+    df.columns = col_dict.keys()
+    df = df.astype(col_dict)
 
     return df
 
@@ -73,9 +76,9 @@ def create_matchday_df(LS, g):
         df.loc[m, "Partita"] = sfida
 
         if not tables["prediction"]:
-            scoresh = tables["partite"].loc[m, "risultato"].split("-")
-            df.loc[m, "yGf"] = scoresh[0]
-            df.loc[m, "yGs"] = scoresh[1]
+            scoresh = tables["partite"].loc[m, "risultato"].split(" - ")
+            df.loc[m, "yGf"] = int(scoresh[0])
+            df.loc[m, "yGs"] = int(scoresh[1])
 
     for j, partita_prec in enumerate(tables["p_prec"]):
         for i, incontro in enumerate(df["Partita"].values):
@@ -184,7 +187,7 @@ def create_matchday_df(LS, g):
 
             for descr_stat in ["media", "varianza"]:
                 for gs_or_gr in ["gol_fatti", "gol_subiti"]:
-                    gol_stat = descr_stat + gs_or_gr + " " + pitch
+                    gol_stat = descr_stat + " " + gs_or_gr + " " + pitch
                     df.loc[matchn, gol_stat] = tables["goals"].loc[
                         team, descr_stat + "_" + gs_or_gr.lower()
                     ]

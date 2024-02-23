@@ -20,7 +20,7 @@ class Updater:
                 f"{self.path}/data/dataframes/{self.year}.csv",
                 index_col=0,
             )
-            logging.info(f"Dataframe found with {len(df)//10 + 5} matchdays")
+            logging.info(f"Dataframe found with {len(df)//10 + 5 + 1} matchdays")
         except:
             df = None
         return df
