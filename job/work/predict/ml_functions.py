@@ -13,7 +13,7 @@ def Xy_split(dataframe, target):
         y = df["yGs"].copy()
 
     else:
-        df["Classe"] = 0
+        df["Classe"] = ''
         for i in df.index:
             if target == "1X2":
                 if df.loc[i, "yGf"] > df.loc[i, "yGs"]:

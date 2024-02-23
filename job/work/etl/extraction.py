@@ -82,11 +82,11 @@ class ExtractorResults(Extractor):
         logging.info(f"Computing results")
         risultati = []
         for giorno in range(self.days):
-            # load matchday scores
-            # resdf.columns = ['squadra_casa', 'squadra_trasferta', 'risultato'] risultato = 'Goal-Goal'
             df = self.leagues[giorno]
-            tabellino = pd.DataFrame(np.zeros((20, 2)))
-            tabellino.columns = ["squadra", "esito"]
+
+            tabellino = pd.DataFrame(
+                np.zeros((20, 2)), columns=["squadra", "esito"], dtype=str
+            )
 
             for i in df.index:
                 tabellino.loc[i, "squadra"] = df.loc[i, "squadra_casa"]
