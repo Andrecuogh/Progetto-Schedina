@@ -1,4 +1,4 @@
-Squadra,differenza_reti,gol_fatti,gol_subiti,pareggio,posizione,punti,sconfitta,vittoria
+squadra,differenza_reti,gol_fatti,gol_subiti,pareggio,posizione,punti,sconfitta,vittoria
 Napoli,26.0,39.0,13.0,2.0,1,44.0,1.0,14.0
 Juventus,19.0,26.0,7.0,4.0,2,37.0,2.0,11.0
 Milan,15.0,33.0,18.0,4.0,3,37.0,2.0,11.0

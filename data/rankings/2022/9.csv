@@ -1,4 +1,4 @@
-Squadra,differenza_reti,gol_fatti,gol_subiti,pareggio,posizione,punti,sconfitta,vittoria
+squadra,differenza_reti,gol_fatti,gol_subiti,pareggio,posizione,punti,sconfitta,vittoria
 Napoli,16.0,25.0,9.0,2.0,1,26.0,0.0,8.0
 Atalanta,10.0,16.0,6.0,3.0,2,24.0,0.0,7.0
 Milan,10.0,20.0,10.0,2.0,3,23.0,1.0,7.0

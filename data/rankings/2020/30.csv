@@ -1,7 +1,7 @@
-,differenza_reti,gol_fatti,gol_subiti,pareggio,posizione,punti,sconfitta,vittoria
-Inter,41.0,69.0,28.0,7.0,1,73.0,2.0,22.0
+squadra,differenza_reti,gol_fatti,gol_subiti,pareggio,posizione,punti,sconfitta,vittoria
+Inter,42.0,70.0,28.0,6.0,1,75.0,2.0,23.0
 Milan,23.0,59.0,36.0,6.0,2,66.0,5.0,20.0
-Atalanta,35.0,72.0,37.0,8.0,3,65.0,4.0,19.0
+Atalanta,34.0,72.0,38.0,7.0,3,64.0,5.0,19.0
 Juventus,33.0,61.0,28.0,8.0,4,62.0,5.0,18.0
 Napoli,31.0,66.0,35.0,3.0,5,60.0,9.0,19.0
 Lazio,10.0,51.0,41.0,5.0,6,59.0,8.0,18.0
