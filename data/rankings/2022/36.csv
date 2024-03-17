@@ -1,4 +1,4 @@
-Squadra,differenza_reti,gol_fatti,gol_subiti,pareggio,posizione,punti,sconfitta,vittoria
+squadra,differenza_reti,gol_fatti,gol_subiti,pareggio,posizione,punti,sconfitta,vittoria
 Napoli,47.0,75.0,28.0,6.0,1,87.0,4.0,27.0
 Lazio,28.0,58.0,30.0,8.0,2,71.0,8.0,21.0
 Inter,28.0,70.0,42.0,3.0,3,69.0,12.0,22.0

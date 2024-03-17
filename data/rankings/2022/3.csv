@@ -1,4 +1,4 @@
-Squadra,differenza_reti,gol_fatti,gol_subiti,pareggio,posizione,punti,sconfitta,vittoria
+squadra,differenza_reti,gol_fatti,gol_subiti,pareggio,posizione,punti,sconfitta,vittoria
 Atalanta,5.0,7.0,2.0,1.0,1,10.0,0.0,3.0
 Roma,5.0,6.0,1.0,1.0,2,10.0,0.0,3.0
 Inter,4.0,9.0,5.0,0.0,3,9.0,1.0,3.0

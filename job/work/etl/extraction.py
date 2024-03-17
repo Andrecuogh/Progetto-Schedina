@@ -15,64 +15,34 @@ class Extractor:
 class ExtractorRanking(Extractor):
     def process(self):
         logging.info(f"Computing ranking")
+        ranking = pd.DataFrame()
 
-        # set up the dataframe
-        df = pd.DataFrame(np.zeros((20, 7)))
-        df.columns = [
-            "gol_fatti",
-            "gol_subiti",
-            "punti",
-            "vittoria",
-            "pareggio",
-            "sconfitta",
-            "differenza_reti",
-        ]
-        df.index = self.teams
-
-        # fill the dataframe
         classifica = []
         for giorno in range(self.days):
-            goal_fatti = computation.count_goals(self, giorno)
-            # debug check se non sono già a zero
-            goal_fatti[["vittoria", "pareggio", "sconfitta", "punti"]] = 0
+            df = computation.count_goals(self, giorno)
 
-            for squadra in goal_fatti.index:
-                if (
-                    goal_fatti.loc[squadra, "gol_fatti"]
-                    > goal_fatti.loc[squadra, "gol_subiti"]
-                ):
-                    goal_fatti.loc[squadra, "punti"] = 3
-                    goal_fatti.loc[squadra, "vittoria"] = 1
+            df.loc[df.gol_fatti > df.gol_subiti, "esito"] = "vittoria"
+            df.loc[df.gol_fatti < df.gol_subiti, "esito"] = "sconfitta"
+            df.loc[df.gol_fatti == df.gol_subiti, "esito"] = "pareggio"
 
-                elif (
-                    goal_fatti.loc[squadra, "gol_fatti"]
-                    == goal_fatti.loc[squadra, "gol_subiti"]
-                ):
-                    goal_fatti.loc[squadra, "punti"] = 1
-                    goal_fatti.loc[squadra, "pareggio"] = 1
+            punti_map = {"vittoria": 3, "pareggio": 1, "sconfitta": 0}
+            df["punti"] = df.esito.map(punti_map)
 
-                else:
-                    goal_fatti.loc[squadra, "sconfitta"] = 1
+            df = pd.get_dummies(df, columns=["esito"], prefix="", prefix_sep="")
 
-            goal_fatti["differenza_reti"] = (
-                goal_fatti["gol_fatti"] - goal_fatti["gol_subiti"]
-            )
-            df = goal_fatti + df
-            df.sort_values(
+            df["differenza_reti"] = df.gol_fatti - df.gol_subiti
+            ranking = df.add(ranking, fill_value=0)
+            ranking.sort_values(
                 by=[
                     "punti",
                     "differenza_reti",
                     "gol_fatti",
                 ],
-                ascending=[
-                    False,
-                    False,
-                    False,
-                ],
+                ascending=False,
                 inplace=True,
             )
-            df["posizione"] = np.arange(1, 21)
-            classifica.append(df)
+            ranking["posizione"] = np.arange(1, 21)
+            classifica.append(ranking)
 
         return classifica
 
@@ -82,32 +52,15 @@ class ExtractorResults(Extractor):
         logging.info(f"Computing results")
         risultati = []
         for giorno in range(self.days):
-            df = self.leagues[giorno]
+            df = computation.count_goals(self, giorno)
 
-            tabellino = pd.DataFrame(
-                np.zeros((20, 2)), columns=["squadra", "esito"], dtype=str
-            )
+            df.loc[df.gol_fatti > df.gol_subiti, "esito"] = "vittoria"
+            df.loc[df.gol_fatti < df.gol_subiti, "esito"] = "sconfitta"
+            df.loc[df.gol_fatti == df.gol_subiti, "esito"] = "pareggio"
 
-            for i in df.index:
-                tabellino.loc[i, "squadra"] = df.loc[i, "squadra_casa"]
-                tabellino.loc[i + 10, "squadra"] = df.loc[i, "squadra_trasferta"]
+            df = df["esito"].reset_index()
 
-                risultato_casa, risultato_trasferta = df.loc[i, "risultato"].split(
-                    " - "
-                )
-                if risultato_casa > risultato_trasferta:
-                    tabellino.loc[i, "esito"] = "vittoria"
-                    tabellino.loc[i + 10, "esito"] = "sconfitta"
-
-                elif risultato_casa == risultato_trasferta:
-                    tabellino.loc[i, "esito"] = "pareggio"
-                    tabellino.loc[i + 10, "esito"] = "pareggio"
-
-                else:
-                    tabellino.loc[i, "esito"] = "sconfitta"
-                    tabellino.loc[i + 10, "esito"] = "vittoria"
-
-            risultati.append(tabellino)
+            risultati.append(df)
 
         return risultati
 
@@ -115,7 +68,7 @@ class ExtractorResults(Extractor):
 class ExtractorGoals(Extractor):
     def process(self):
         logging.info(f"Computing goals")
-        goal_segnati = pd.DataFrame(np.zeros((20, 1)))
+        goal_segnati = pd.DataFrame()
         goal_segnati.index = self.teams
         goal_subiti = goal_segnati.copy()
 
@@ -124,10 +77,7 @@ class ExtractorGoals(Extractor):
             goal_segnati = pd.concat([goal_segnati, goal["gol_fatti"]], axis=1)
             goal_subiti = pd.concat([goal_subiti, goal["gol_subiti"]], axis=1)
 
-        goal_segnati.drop(0, axis=1, inplace=True)
         goal_segnati.columns = [i for i in range(1, self.days + 1)]
-
-        goal_subiti.drop(0, axis=1, inplace=True)
         goal_subiti.columns = [i for i in range(1, self.days + 1)]
 
         goal_totali = []

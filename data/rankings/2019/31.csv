@@ -1,12 +1,12 @@
-,differenza_reti,gol_fatti,gol_subiti,pareggio,posizione,punti,sconfitta,vittoria
+squadra,differenza_reti,gol_fatti,gol_subiti,pareggio,posizione,punti,sconfitta,vittoria
 Juventus,35.0,67.0,32.0,4.0,1,76.0,4.0,24.0
 Inter,34.0,68.0,34.0,8.0,2,68.0,4.0,20.0
 Lazio,33.0,68.0,35.0,5.0,3,68.0,6.0,21.0
 Atalanta,46.0,87.0,41.0,7.0,4,67.0,5.0,20.0
 Roma,16.0,59.0,43.0,6.0,5,54.0,10.0,16.0
-Napoli,8.0,50.0,42.0,8.0,6,50.0,10.0,14.0
+Napoli,9.0,52.0,43.0,7.0,6,52.0,10.0,15.0
 Milan,4.0,45.0,41.0,8.0,7,50.0,10.0,14.0
-Sassuolo,6.0,58.0,52.0,8.0,8,47.0,11.0,13.0
+Sassuolo,5.0,59.0,54.0,7.0,8,46.0,12.0,13.0
 Verona,1.0,40.0,39.0,11.0,9,44.0,10.0,11.0
 Bologna,-5.0,46.0,51.0,9.0,10,42.0,12.0,11.0
 Cagliari,2.0,48.0,46.0,11.0,11,41.0,11.0,10.0

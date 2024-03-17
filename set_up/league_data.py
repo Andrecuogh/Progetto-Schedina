@@ -119,14 +119,8 @@ latest_year = [year for year in seasons.keys() if seasons[year]][0]
 
 targets = ["Gf", "Gs", "1X2", "GG-NG", "O-U"]
 
-postponed_days = [20]
-
-postponed_matches = {
-    "Bologna-Fiorentina": 6,
-    "Torino-Lazio": 7,
-    "Sassuolo-Napoli": 8,
-    "Inter-Atalanta": 9,
-}
+postponed_days = []
+postponed_matches = {}
 
 
 def latest_matchday():

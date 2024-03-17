@@ -1,4 +1,4 @@
-,differenza_reti,gol_fatti,gol_subiti,pareggio,posizione,punti,sconfitta,vittoria
+squadra,differenza_reti,gol_fatti,gol_subiti,pareggio,posizione,punti,sconfitta,vittoria
 Juventus,8.0,15.0,7.0,1.0,1,22.0,0.0,7.0
 Inter,11.0,18.0,7.0,0.0,2,21.0,1.0,7.0
 Atalanta,8.0,21.0,13.0,2.0,3,17.0,1.0,5.0

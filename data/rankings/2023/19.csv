@@ -1,4 +1,4 @@
-,differenza_reti,gol_fatti,gol_subiti,pareggio,posizione,punti,sconfitta,vittoria
+squadra,differenza_reti,gol_fatti,gol_subiti,pareggio,posizione,punti,sconfitta,vittoria
 Inter,39.0,49.0,10.0,3.0,1,51.0,1.0,16.0
 Juventus,20.0,32.0,12.0,4.0,2,49.0,1.0,15.0
 Milan,17.0,38.0,21.0,3.0,3,42.0,4.0,13.0
