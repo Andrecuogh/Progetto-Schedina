@@ -1,35 +1,44 @@
-import sys
-import os
-if os.getcwd().split('/')[-1] == 'display':
-    os.chdir('../..')
-sys.path.append(os.getcwd())
-
-from set_up import league_season, league_data
-from etl.update import Updater
-from transform import merge, creation
-from predict import prediction, reportage
-
+import os, extraction, creation, prediction, scraping
+import pandas as pd
+from set_up.league_data import seasons
+from predict import reportage
 import logging
 
 logging.info("Import completed")
 
-stagione = league_season.Stagione("2023", ongoing=True)
 
-lat_day = league_data.latest_matchday()
-logging.info(f"Next matchday: {lat_day + 1}")
+def validate_datafolder(seasons):
+    for year in seasons.keys():
+        is_file = os.path.isfile(f"data/leagues/{year}.csv")
+        if not is_file or seasons[year]["ongoing"]:
+            scraping.scrape_sky(
+                year=year, ongoing=seasons[year]["ongoing"], days=seasons[year]["days"]
+            )
 
-Updater(stagione).check_aggiornamento()
 
-list_ls = []
-for y, s in league_data.seasons.items():
-    list_ls.append(league_season.Stagione(year=y, ongoing=s))
+def get_data(seasons):
+    dataframe = pd.DataFrame()
+    for year in seasons.keys():
+        year_df = pd.read_csv(f"data/leagues/{year}.csv", index_col=0)
+        df = extraction.extract_features(year_df)
+        pd.concat([dataframe, df])
+    return dataframe
 
-df = merge.merge_df(list_ls)
-Xnot = creation.create_matchday_df(list_ls[-1], lat_day)
 
-predictions = [
-    prediction.predict_scores(df, target, Xnot) for target in league_data.targets
-]
+def predict():
+    pass
 
-reportage.save_report(predictions)
-reportage.display_report(predictions)
+
+def magic_flow(day):
+    validate_datafolder(seasons)
+    df = get_data(seasons)
+    Xnot = creation.create_matchday_df(list_ls[-1], lat_day)
+
+    predictions = [prediction.predict_scores(df, target, Xnot) for target in targets]
+
+    reportage.save_report(predictions)
+    reportage.display_report(predictions)
+
+
+if __name__ == "main":
+    magic_flow()
