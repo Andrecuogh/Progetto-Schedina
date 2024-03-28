@@ -1,21 +1,13 @@
+from magic_job import validate_datafolder, get_data
+from creation import create_dataset
+from prediction import Xy_split
+from set_up.league_data import seasons
 import pandas as pd
 import numpy as np
-
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.model_selection import ParameterGrid
-from predict.ml_functions import Xy_split
-
-from set_up.league_data import targets
-
-df = pd.DataFrame()
-for year in [2019, 2020, 2021, 2022, 2023]:
-    season = pd.read_csv(f"data/dataframes/{year}.csv", index_col=0)
-    season["year"] = year
-    df = pd.concat([df, season], ignore_index=True)
-    df["yGf"] = df.yGf.where(df.yGf <= 4, 4)
-    df["yGs"] = df.yGs.where(df.yGs <= 4, 4)
 
 models = {
     "lda": LinearDiscriminantAnalysis,
@@ -39,31 +31,63 @@ parameters = {
     ),
 }
 
-scores = []
-for target in targets:
+targets = ["Gf", "Gs", "1X2", "GG-NG", "O-U"]
+
+
+def train_test_split(df, target):
+    prev_year_df = df[df.anno != df.anno.max()]
+    last_year_df = df[df.anno == df.anno.max()]
+    X_train, y_train = Xy_split(prev_year_df, target)
+    X_test, y_test = Xy_split(last_year_df, target)
+    return X_train, y_train, X_test, y_test
+
+
+def tune_model(X_train, y_train, X_test, y_test, target):
+    scores = []
     print(target)
-    X_train, y_train = Xy_split(df[df.year != 2023], target)
-    X_test, y_test = Xy_split(df[df.year == 2023], target)
-    for model in models.keys():
-        algo = models[model]
-        for i, param in enumerate(parameters[model]):
-            algo_fit = algo(**param).fit(X_train, y_train)
-            score = algo_fit.score(X_test, y_test)
-            scorelist = [target, algo.__name__, str(param), np.round(score, 2)]
+    for algorithm in models.keys():
+        model = models[algorithm]
+        for i, param in enumerate(parameters[algorithm]):
+            model_fit = model(**param).fit(X_train, y_train)
+            score = model_fit.score(X_test, y_test)
+            scorelist = [target, model.__name__, str(param), np.round(score, 2)]
             scores.append(scorelist)
-            print(f"{algo.__name__} : {(i+1)}/{len(parameters[model])}", end="\r")
+            print(f"{model.__name__} : {(i+1)}/{len(parameters[algorithm])}", end="\r")
         print("")
 
-cols = [
-    "target",
-    "model",
-    "parameters",
-    "score",
-]
+    return scores
 
-scores_df = pd.DataFrame(scores, columns=cols)
-scores_df = scores_df.sort_values(by="score").drop_duplicates(
-    subset="target", keep="last"
-)
-scores_df.to_csv("data\accuracy_dashboard\ml_models_score.csv")
-print(scores_df)
+
+def update_df(df, scores):
+    cols = [
+        "target",
+        "model",
+        "parameters",
+        "score",
+    ]
+    scores_df = pd.DataFrame(scores, columns=cols)
+    df = pd.concat([df, scores_df], ignore_index=True)
+    return df
+
+
+def get_max_score(df):
+    df = df.sort_values(by=["target", "model", "score"])
+    df = df.drop_duplicates(subset=["target", "model"], keep="last")
+    return df
+
+
+def flow(season_list):
+    validate_datafolder(season_list)
+    df, Xnot = get_data(season_list)
+    df, Xnot = create_dataset(df, Xnot)
+    scores_df = pd.DataFrame()
+    for target in targets:
+        X_train, y_train, X_test, y_test = train_test_split(df, target)
+        scores = tune_model(X_train, y_train, X_test, y_test, target)
+        scores_df = update_df(scores_df, scores)
+    scores_df = get_max_score(scores_df)
+    print(scores_df)
+
+
+if __name__ == "__main__":
+    flow(seasons)

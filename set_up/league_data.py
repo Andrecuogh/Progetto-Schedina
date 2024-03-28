@@ -127,6 +127,6 @@ seasons = {
             "Sassuolo",
         ],
         "ongoing": True,
-        "days": 28,
+        "days": 5,
     },
 }

@@ -1,9 +1,11 @@
-import os, extraction, creation, prediction, scraping
+import os, extraction, prediction, scraping, creation
 import pandas as pd
 from set_up.league_data import seasons
-from predict import reportage
+from job.work import reportage
+
 import logging
 
+logging.basicConfig(encoding="utf-8", level=logging.DEBUG)
 logging.info("Import completed")
 
 
@@ -21,24 +23,19 @@ def get_data(seasons):
     for year in seasons.keys():
         year_df = pd.read_csv(f"data/leagues/{year}.csv", index_col=0)
         df = extraction.extract_features(year_df)
-        pd.concat([dataframe, df])
-    return dataframe
+        dataframe = pd.concat([dataframe, df])
+
+    next = pd.read_csv(f"data/leagues/next.csv", index_col=0)
+    return dataframe, next
 
 
-def predict():
-    pass
-
-
-def magic_flow(day):
+def magic_flow():
     validate_datafolder(seasons)
-    df = get_data(seasons)
-    Xnot = creation.create_matchday_df(list_ls[-1], lat_day)
-
-    predictions = [prediction.predict_scores(df, target, Xnot) for target in targets]
-
-    reportage.save_report(predictions)
-    reportage.display_report(predictions)
+    df, Xnot = get_data(seasons)
+    df, Xnot = creation.create_dataset(df, Xnot)
+    predictions = prediction.predict_scores(df, Xnot)
+    reportage.report(predictions)
 
 
-if __name__ == "main":
+if __name__ == "__main__":
     magic_flow()

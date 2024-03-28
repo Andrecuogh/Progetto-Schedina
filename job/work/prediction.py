@@ -1,92 +1,78 @@
 import pandas as pd
-from predict import ml_functions
-from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import GradientBoostingClassifier
+
+models = {
+    "Gf": KNeighborsClassifier(n_neighbors=67),
+    "Gs": KNeighborsClassifier(n_neighbors=210),
+    "1X2": GradientBoostingClassifier(
+        max_depth=5,
+        max_features=0.75,
+        min_samples_split=10,
+        n_estimators=150,
+        n_iter_no_change=5,
+        random_state=66,
+        subsample=0.75,
+    ),
+    "GG-NG": KNeighborsClassifier(n_neighbors=23),
+    "O-U": KNeighborsClassifier(n_neighbors=23),
+}
 
 targets = ["Gf", "Gs", "1X2", "GG-NG", "O-U"]
 
 
-def predict_scores(df, target, preds):
-    X, y = ml_functions.Xy_split(df, target=target)
-    names = preds["Partita"]
-    Xnot = preds.drop(["Partita", "yGf", "yGs"], axis=1)
-
-    if target == "Gf":
-        model = GradientBoostingClassifier(
-            n_estimators=50,
-            random_state=66,
-            max_depth=5,
-            subsample=0.8,
-            min_samples_leaf=0.01,
-            min_samples_split=50,
-        )
-
-    elif target == "Gs":
-        model = GradientBoostingClassifier(
-            n_estimators=50,
-            random_state=66,
-            max_depth=3,
-            subsample=0.8,
-            min_samples_leaf=1,
-            min_samples_split=50,
-        )
-
-    else:
-        if target == "1X2":
-            model = LinearDiscriminantAnalysis()
-
-        elif target == "GG-NG":
-            model = KNeighborsClassifier(n_neighbors=211)
-
-        elif target == "O-U":
-            model = LinearDiscriminantAnalysis()
-
-    model.fit(X, y)
-    y_pred = model.predict_proba(Xnot)
-    df = pd.DataFrame(y_pred, columns=model.classes_).set_index(names)
-
-    if target == "1X2":
-        df = df[["V", "N", "P"]]
-
-    return df
-
-
-""" ml_functions """
-
-
 def Xy_split(dataframe, target):
+
     df = dataframe.copy()
+    df["classe"] = ""
 
     if target == "Gf":
-        X = df.drop(["yGf", "yGs", "Partita"], axis=1).copy()
-        y = df["yGf"].copy()
+        df["classe"] = df["gol_fatti"]
 
     elif target == "Gs":
-        X = df.drop(["yGf", "yGs", "Partita"], axis=1).copy()
-        y = df["yGs"].copy()
+        df["classe"] = df["gol_subiti"]
+
+    elif target == "1X2":
+        df.loc[df.gol_fatti > df.gol_subiti, "classe"] = "1"
+        df.loc[df.gol_fatti == df.gol_subiti, "classe"] = "X"
+        df.loc[df.gol_fatti < df.gol_subiti, "classe"] = "2"
+
+    elif target == "GG-NG":
+        goal_mask = (df.gol_fatti > 0) & (df.gol_subiti > 0)
+        df.loc[goal_mask, "classe"] = "GG"
+        df.loc[~goal_mask, "classe"] = "NG"
+
+    elif target == "O-U":
+        o_u_mask = (df.gol_fatti + df.gol_subiti) > 2
+        df.loc[o_u_mask, "classe"] = "O"
+        df.loc[~o_u_mask, "classe"] = "U"
 
     else:
-        df["Classe"] = ""
-        if target == "1X2":
-            df.loc[df.yGf > df.yGs, "Classe"] = "V"
-            df.loc[df.yGf == df.yGs, "Classe"] = "N"
-            df.loc[df.yGf < df.yGs, "Classe"] = "P"
+        return "Invalid target"
 
-        elif target == "GG-NG":
-            goal_mask = (df.yGf > 0) & (df.yGs > 0)
-            df.loc[goal_mask, "Classe"] = "GG"
-            df.loc[~goal_mask, "Classe"] = "NG"
-
-        elif target == "O-U":
-            o_u_mask = (df.yGf + df.yGs) > 2
-            df.loc[o_u_mask, "Classe"] = "O"
-            df.loc[~o_u_mask, "Classe"] = "U"
-
-        else:
-            return "Invalid target variable"
-
-        X = df.drop(["Classe", "Partita", "yGf", "yGs"], axis=1).copy()
-        y = df["Classe"].copy()
+    X = df.drop(
+        ["classe", "squadra", "gol_fatti", "gol_subiti", "esito", "avversario"], axis=1
+    )
+    y = df["classe"]
 
     return X, y
+
+
+def predict_scores(df, Xnot):
+    probabilities = {
+        "giornata": Xnot.giornata.unique()[0],
+        "anno": Xnot.anno.unique()[0],
+    }
+    names = Xnot.squadra
+    Xnot = Xnot.drop(
+        ["gol_fatti", "gol_subiti", "esito", "avversario", "squadra"], axis=1
+    )
+    for target in targets:
+        X, y = Xy_split(df, target)
+        model = models[target]
+        model.fit(X, y)
+        y_pred = model.predict_proba(Xnot)
+        df_proba = pd.DataFrame(y_pred, columns=model.classes_, index=names)
+        probabilities.update({target: df_proba})
+
+    return probabilities

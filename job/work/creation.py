@@ -1,105 +1,52 @@
 import pandas as pd
-import logging
 
 
-def create_matchday_df(LS, g):
-    df = pd.DataFrame()
-    tables = Loader(LS).process(g)
-    gol_cols = ["goal_casa", "goal_trasferta"]
-    team_cols = ["squadra_casa", "squadra_trasferta"]
-    partita_curr = tables["partite"].copy()
-    partita_curr[gol_cols] = partita_curr.risultato.str.split(
-        " - ", expand=True
-    ).astype(int)
+def concat_tables(df, next):
+    df["status"] = "train"
+    next["status"] = "test"
+    dataframe = pd.concat([df, next])
+    return dataframe
 
-    df[team_cols] = partita_curr[team_cols]
 
-    if not tables["prediction"]:
-        df[["yGf", "yGs"]] = partita_curr[gol_cols]
+def add_previous_result(df):
+    df = df.sort_values(by=["anno", "giornata"])
+    df["esito"] = df.esito.map({"vittoria": 1, "pareggio": 0, "sconfitta": -1})
 
-    for j, partita_prec in enumerate(tables["p_prec"]):
-        partita_prec[gol_cols] = partita_prec.risultato.str.split(
-            " - ", expand=True
-        ).astype(int)
+    for t in range(1, 6):
+        for col in ["gol_fatti", "gol_subiti", "esito"]:
+            name = f"{col}_{t}"
+            df[name] = df.groupby("squadra")[col].shift(t)
 
-        pitchs = ["casa", "trasferta"]
-        for campo in pitchs:
-            merged = pd.DataFrame()
-            for i in [0, 1]:
-                str_gf = f"Gf-{str(5 - j)}-{campo}"
-                str_gs = f"Gs-{str(5 - j)}-{campo}"
-                pitch = pitchs[i]
-                other = pitchs[i - 1]
-                correspondence = partita_curr.merge(
-                    right=partita_prec,
-                    left_on=f"squadra_{campo}",
-                    right_on=f"squadra_{pitch}",
-                    suffixes=("", "_y"),
-                )
-                correspondence = correspondence[
-                    [f"squadra_{campo}", "goal_casa_y", "goal_trasferta_y"]
-                ]
-                correspondence = correspondence.rename(
-                    {f"goal_{pitch}_y": str_gf, f"goal_{other}_y": str_gs},
-                    axis=1,
-                )
-                merged = pd.concat([merged, correspondence])
-
-            df = df.merge(merged, on=f"squadra_{campo}")
-        df = df.rename(
-            {
-                f"Gf-{str(5 - j)}-casa": f"Gf-{str(5 - j)}-h",
-                f"Gs-{str(5 - j)}-casa": f"Gs-{str(5 - j)}-h",
-                f"Gf-{str(5 - j)}-trasferta": f"Gf-{str(5 - j)}-a",
-                f"Gs-{str(5 - j)}-trasferta": f"Gs-{str(5 - j)}-a",
-            },
-            axis=1,
-        )
-
-    for i, risultato_prec in enumerate(tables["table"]):
-        result_mapper = {
-            "vittoria": 2,
-            "pareggio": 1,
-            "sconfitta": 0,
-        }
-        risultato_prec["esito"] = risultato_prec.esito.map(result_mapper)
-        for pitch in ["casa", "trasferta"]:
-            str_rt = f"Rt-{str(5 - i)}"
-            df[str_rt] = df.merge(
-                right=risultato_prec,
-                left_on=f"squadra_{pitch}",
-                right_on="squadra",
-                suffixes=("-h", "-a"),
-            ).esito
-
-    for pitch in ["casa", "trasferta"]:
-        df = df.merge(
-            right=tables["classifica"].posizione,
-            left_on=f"squadra_{pitch}",
-            right_on="squadra",
-            right_index=True,
-            suffixes=("-h", "-a"),
-        )
-
-    for pitch in ["casa", "trasferta"]:
-        df = df.merge(
-            right=tables["goals"],
-            left_on=f"squadra_{pitch}",
-            right_index=True,
-            suffixes=("_h", "_a"),
-        )
-
-    df["Partita"] = df["squadra_casa"] + "-" + df["squadra_trasferta"]
-    df = df.drop(["squadra_casa", "squadra_trasferta"], axis=1)
+    cols = ["punti", "posizione", "media_gol_fatti", "media_gol_subiti"]
+    df[cols] = df.groupby("squadra")[cols].shift(1)
+    df = df[df.giornata > 4]
+    df_avversari = df[["anno", "giornata", "squadra", "posizione"]]
+    df_avversari = df_avversari.rename(columns={"squadra": "avversario"})
+    df = df.merge(
+        df_avversari,
+        on=["anno", "giornata", "avversario"],
+        suffixes=["", "_avversario"],
+    )
     return df
 
 
-def create_year_df(LS):
-    logging.info("Creating dataframe")
-    d = []
-    for g in range(5, LS.days):
-        matchday_df = create_matchday_df(LS, g)
-        d.append(matchday_df)
+def round_goals(df):
+    df["gol_fatti"] = df.gol_fatti.where(df.gol_fatti < 4, 4)
+    df["gol_subiti"] = df.gol_subiti.where(df.gol_subiti < 4, 4)
+    return df
 
-    year_df = pd.concat(d, ignore_index=True)
-    year_df.to_csv(f"data/dataframes/{LS.year}.csv")
+
+def divide_tables(df):
+    previous = df[df.status == "train"].copy()
+    previous = previous.drop("status", axis=1)
+    next = df[df.status == "test"].copy()
+    next = next.drop("status", axis=1)
+    return previous, next
+
+
+def create_dataset(df, next):
+    dataframe = concat_tables(df, next)
+    dataframe = add_previous_result(dataframe)
+    dataframe = round_goals(dataframe)
+    df, next = divide_tables(dataframe)
+    return df, next

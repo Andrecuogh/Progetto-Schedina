@@ -3,11 +3,24 @@ import logging
 
 
 def count_goals(df):
-    df_casa = df[["squadra_casa", "goal_casa", "goal_trasferta"]]
-    df_casa.columns = ["squadra", "gol_fatti", "gol_subiti"]
-    df_trasferta = df[["squadra_trasferta", "goal_casa", "goal_trasferta"]]
-    df_trasferta.columns = ["squadra", "gol_subiti", "gol_fatti"]
+    casa_mapper = {
+        "squadra_casa": "squadra",
+        "squadra_trasferta": "avversario",
+        "goal_casa": "gol_fatti",
+        "goal_trasferta": "gol_subiti",
+    }
+    df_casa = df.rename(columns=casa_mapper)
+
+    trasferta_mapper = {
+        "squadra_trasferta": "squadra",
+        "squadra_casa": "avversario",
+        "goal_casa": "gol_subiti",
+        "goal_trasferta": "gol_fatti",
+    }
+    df_trasferta = df.rename(columns=trasferta_mapper)
+
     table = pd.concat([df_casa, df_trasferta], ignore_index=True)
+    table = table.sort_values("giornata")
     return table
 
 
@@ -21,24 +34,27 @@ def assign_points(df):
 
 
 def cumulative_goals_points(df):
-    cum_cols = ["gol_fatti", "gol_subiti", "punti"]
-    df[cum_cols] = df.groupby("squadra")[cum_cols].cumsum()
-    df["differenza_reti"] = df.gol_fatti - df.gol_subiti
+    df["gol_fatti_cum"] = df.groupby("squadra").gol_fatti.cumsum()
+    df["gol_subiti_cum"] = df.groupby("squadra").gol_subiti.cumsum()
+    df["punti"] = df.groupby("squadra").punti.cumsum()
+    df["differenza_reti"] = df.gol_fatti_cum - df.gol_subiti_cum
     return df
 
 
 def rank_position(df):
-    ord_cols = ["giornata", "punti", "differenza_reti", "gol_fatti"]
+    ord_cols = ["giornata", "punti", "differenza_reti", "gol_fatti_cum"]
     df = df.sort_values(by=ord_cols, ascending=False)
-    df["posizione"] = list(range(1, 21)) * 38
+    days = len(df) // 20
+    df["posizione"] = list(range(1, 21)) * days
+    df = df.drop("differenza_reti", axis=1)
     return df
 
 
 def average_goals(df):
-    for avg_col in ["gol_fatti", "gol_subiti"]:
-        name = f"media_{avg_col}"
-        df[name] = df[avg_col] / (df.giornata + 1)
-        df.loc[df[avg_col] > 4, avg_col] = 4
+    df["media_gol_fatti"] = df.gol_fatti_cum / (df.giornata + 1)
+    df["media_gol_subiti"] = df.gol_subiti_cum / (df.giornata + 1)
+    df = df.drop(["gol_fatti_cum", "gol_subiti_cum"], axis=1)
+    return df
 
 
 def extract_features(leagues):

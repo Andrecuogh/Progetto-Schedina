@@ -32,7 +32,26 @@ def scrape_sky(year, ongoing, days):
     goal_cols = ["goal_casa", "goal_trasferta"]
     df[goal_cols] = df.risultato.str.split(" - ", expand=True).astype(int)
     df = df.drop("risultato", axis=1)
+    df["anno"] = year
     df.to_csv(f"data/leagues/{year}.csv")
 
-    next = clean_link(link, days + 1) if ongoing else None
-    next.to_csv("next.csv")
+    if ongoing:
+        next = clean_link(link, days)
+        next = next.drop("risultato", axis=1)
+        next_casa = next.rename(
+            columns={
+                "squadra_casa": "squadra",
+                "squadra_trasferta": "avversario",
+            }
+        )
+        next_trasferta = next.rename(
+            columns={
+                "squadra_casa": "avversario",
+                "squadra_trasferta": "squadra",
+            }
+        )
+        next = pd.concat([next_casa, next_trasferta], ignore_index=True)
+        next["anno"] = year
+        next.to_csv("data/leagues/next.csv")
+    else:
+        None
