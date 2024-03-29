@@ -4,6 +4,7 @@ from set_up.league_data import postponed_matches
 
 def count_goals(LS, matchday):
     df = LS.leagues[matchday]
+    df.loc[df.risultato == "-", "risultato"] = "0 - 0"
     goals = df.risultato.str.split(" - ", expand=True).astype(int)
 
     df_casa = goals.set_index(df.squadra_casa)
