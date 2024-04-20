@@ -46,22 +46,44 @@ def rank_position(df):
     df = df.sort_values(by=ord_cols, ascending=False)
     days = len(df) // 20
     df["posizione"] = list(range(1, 21)) * days
-    df = df.drop("differenza_reti", axis=1)
     return df
 
 
-def average_goals(df):
-    df["media_gol_fatti"] = df.gol_fatti_cum / (df.giornata + 1)
-    df["media_gol_subiti"] = df.gol_subiti_cum / (df.giornata + 1)
-    df = df.drop(["gol_fatti_cum", "gol_subiti_cum"], axis=1)
+def previous_gol(df):
+    df = df.sort_values(by=["anno", "giornata"])
+    df["esito"] = df.esito.map({"vittoria": 1, "pareggio": 0, "sconfitta": -1})
+    df["gol_fatti"] = df.gol_fatti.where(df.gol_fatti < 4, 4)
+    df["gol_subiti"] = df.gol_subiti.where(df.gol_subiti < 4, 4)
+    for t in range(1, 3):
+        for col in ["gol_fatti", "gol_subiti", "esito"]:
+            name = f"{col}_{t}"
+            df[name] = df.groupby("squadra")[col].shift(t)
+    df["posizione"] = df.groupby("squadra").posizione.shift(1)
+    return df
+
+
+def cleaning_df(df):
+    df = df.drop(
+        [
+            "gol_fatti_cum",
+            "gol_subiti_cum",
+            "differenza_reti",
+            "avversario",
+            "punti",
+            "esito",
+        ],
+        axis=1,
+    )
+    df = df.dropna()
     return df
 
 
 def extract_features(leagues):
+    matches = leagues.drop(["goal_casa", "goal_trasferta"], axis=1)
     dataframe = count_goals(leagues)
     dataframe = assign_points(dataframe)
     dataframe = cumulative_goals_points(dataframe)
     dataframe = rank_position(dataframe)
-    dataframe = average_goals(dataframe)
-
-    return dataframe
+    dataframe = previous_gol(dataframe)
+    dataframe = cleaning_df(dataframe)
+    return dataframe, matches

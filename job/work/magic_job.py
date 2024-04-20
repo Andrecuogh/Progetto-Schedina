@@ -19,23 +19,29 @@ def validate_datafolder(seasons):
 
 
 def get_data(seasons):
-    dataframe = pd.DataFrame()
+    goals = matches = pd.DataFrame()
     for year in seasons.keys():
         year_df = pd.read_csv(f"data/leagues/{year}.csv", index_col=0)
-        df = extraction.extract_features(year_df)
-        dataframe = pd.concat([dataframe, df])
+        goal, match = extraction.extract_features(year_df)
+        goals = pd.concat([goals, goal])
+        matches = pd.concat([matches, match])
 
-    next = pd.read_csv(f"data/leagues/next.csv", index_col=0)
-    return dataframe, next
+    dataframe = {"goals": goals, "matches": matches}
+    return dataframe
 
 
 def magic_flow():
     validate_datafolder(seasons)
-    df, Xnot = get_data(seasons)
-    df, Xnot = creation.create_dataset(df, Xnot)
-    predictions = prediction.predict_scores(df, Xnot)
+    df = get_data(seasons)
+    df = creation.create_dataset(df)
+    predictions = prediction.predict_scores(df)
     reportage.report(predictions)
 
 
 if __name__ == "__main__":
     magic_flow()
+
+"""
+ciclo for per ogni giornata
+testare app
+"""

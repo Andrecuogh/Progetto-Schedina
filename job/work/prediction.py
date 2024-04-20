@@ -27,52 +27,51 @@ def Xy_split(dataframe, target):
     df["classe"] = ""
 
     if target == "Gf":
-        df["classe"] = df["gol_fatti"]
+        df["classe"] = df["gol_fatti_casa"]
 
     elif target == "Gs":
-        df["classe"] = df["gol_subiti"]
+        df["classe"] = df["gol_fatti_trasferta"]
 
     elif target == "1X2":
-        df.loc[df.gol_fatti > df.gol_subiti, "classe"] = "1"
-        df.loc[df.gol_fatti == df.gol_subiti, "classe"] = "X"
-        df.loc[df.gol_fatti < df.gol_subiti, "classe"] = "2"
+        df.loc[df.gol_fatti_casa > df.gol_fatti_trasferta, "classe"] = "1"
+        df.loc[df.gol_fatti_casa == df.gol_fatti_trasferta, "classe"] = "X"
+        df.loc[df.gol_fatti_casa < df.gol_fatti_trasferta, "classe"] = "2"
 
     elif target == "GG-NG":
-        goal_mask = (df.gol_fatti > 0) & (df.gol_subiti > 0)
+        goal_mask = (df.gol_fatti_casa > 0) & (df.gol_fatti_trasferta > 0)
         df.loc[goal_mask, "classe"] = "GG"
         df.loc[~goal_mask, "classe"] = "NG"
 
     elif target == "O-U":
-        o_u_mask = (df.gol_fatti + df.gol_subiti) > 2
+        o_u_mask = (df.gol_fatti_casa + df.gol_fatti_trasferta) > 2
         df.loc[o_u_mask, "classe"] = "O"
         df.loc[~o_u_mask, "classe"] = "U"
 
     else:
         return "Invalid target"
 
-    X = df.drop(
-        ["classe", "squadra", "gol_fatti", "gol_subiti", "esito", "avversario"], axis=1
-    )
+    X = df.drop(["classe", "squadra", "gol_fatti_casa", "gol_fatti_trasferta"], axis=1)
     y = df["classe"]
 
     return X, y
 
 
-def predict_scores(df, Xnot):
+def predict_scores(df):
+    Xnot = df.sort_values(by=["anno", "giornata"]).iloc[-10:]
     probabilities = {
-        "giornata": Xnot.giornata.unique()[0],
-        "anno": Xnot.anno.unique()[0],
+        "giornata": Xnot.giornata.max(),
+        "anno": Xnot.anno.max(),
+        "partite": Xnot.squadra,
     }
-    names = Xnot.squadra
-    Xnot = Xnot.drop(
-        ["gol_fatti", "gol_subiti", "esito", "avversario", "squadra"], axis=1
-    )
+    Xnot = Xnot.drop(["squadra", "gol_fatti_casa", "gol_fatti_trasferta"], axis=1)
     for target in targets:
         X, y = Xy_split(df, target)
         model = models[target]
         model.fit(X, y)
         y_pred = model.predict_proba(Xnot)
-        df_proba = pd.DataFrame(y_pred, columns=model.classes_, index=names)
+        df_proba = pd.DataFrame(
+            y_pred, columns=model.classes_, index=probabilities["partite"]
+        )
         probabilities.update({target: df_proba})
 
     return probabilities

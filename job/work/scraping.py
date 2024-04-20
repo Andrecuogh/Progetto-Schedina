@@ -11,7 +11,7 @@ def clean_link(link, day):
 
     for col in ["squadra_casa", "squadra_trasferta"]:
         matchday[col] = matchday[col].str.split(" ", expand=True)[0]
-    matchday["giornata"] = day
+    matchday["giornata"] = day + 1
     return matchday
 
 
@@ -33,25 +33,14 @@ def scrape_sky(year, ongoing, days):
     df[goal_cols] = df.risultato.str.split(" - ", expand=True).astype(int)
     df = df.drop("risultato", axis=1)
     df["anno"] = year
-    df.to_csv(f"data/leagues/{year}.csv")
 
     if ongoing:
         next = clean_link(link, days)
         next = next.drop("risultato", axis=1)
-        next_casa = next.rename(
-            columns={
-                "squadra_casa": "squadra",
-                "squadra_trasferta": "avversario",
-            }
-        )
-        next_trasferta = next.rename(
-            columns={
-                "squadra_casa": "avversario",
-                "squadra_trasferta": "squadra",
-            }
-        )
-        next = pd.concat([next_casa, next_trasferta], ignore_index=True)
+        next[goal_cols] = 0
         next["anno"] = year
-        next.to_csv("data/leagues/next.csv")
+        df = pd.concat([df, next], ignore_index=True)
     else:
         None
+
+    df.to_csv(f"data/leagues/{year}.csv")
