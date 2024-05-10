@@ -1,21 +1,27 @@
 import pandas as pd
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.ensemble import GradientBoostingClassifier, RandomForestClassifier
 
 models = {
-    "Gf": KNeighborsClassifier(n_neighbors=67),
-    "Gs": KNeighborsClassifier(n_neighbors=210),
-    "1X2": GradientBoostingClassifier(
-        max_depth=5,
-        max_features=0.75,
-        min_samples_split=10,
+    "Gf": RandomForestClassifier(
+        max_depth=None,
+        max_features=1.0,
+        min_samples_leaf=0.1,
+        min_samples_split=2,
         n_estimators=150,
-        n_iter_no_change=5,
         random_state=66,
-        subsample=0.75,
     ),
-    "GG-NG": KNeighborsClassifier(n_neighbors=23),
-    "O-U": KNeighborsClassifier(n_neighbors=23),
+    "Gs": KNeighborsClassifier(n_neighbors=254),
+    "1X2": KNeighborsClassifier(n_neighbors=155),
+    "GG-NG": KNeighborsClassifier(n_neighbors=276),
+    "O-U": RandomForestClassifier(
+        max_depth=None,
+        max_features="sqrt",
+        min_samples_leaf=0.4,
+        min_samples_split=2,
+        n_estimators=50,
+        random_state=66,
+    ),
 }
 
 targets = ["Gf", "Gs", "1X2", "GG-NG", "O-U"]

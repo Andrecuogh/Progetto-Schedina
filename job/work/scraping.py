@@ -11,7 +11,7 @@ def clean_link(link, day):
 
     for col in ["squadra_casa", "squadra_trasferta"]:
         matchday[col] = matchday[col].str.split(" ", expand=True)[0]
-    matchday["giornata"] = day + 1
+    matchday["giornata"] = day
     return matchday
 
 

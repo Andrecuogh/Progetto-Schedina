@@ -54,7 +54,7 @@ def previous_gol(df):
     df["esito"] = df.esito.map({"vittoria": 1, "pareggio": 0, "sconfitta": -1})
     df["gol_fatti"] = df.gol_fatti.where(df.gol_fatti < 4, 4)
     df["gol_subiti"] = df.gol_subiti.where(df.gol_subiti < 4, 4)
-    for t in range(1, 3):
+    for t in range(1, 6):
         for col in ["gol_fatti", "gol_subiti", "esito"]:
             name = f"{col}_{t}"
             df[name] = df.groupby("squadra")[col].shift(t)
