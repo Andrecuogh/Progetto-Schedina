@@ -119,7 +119,7 @@ latest_year = [year for year in seasons.keys() if seasons[year]][0]
 
 targets = ["Gf", "Gs", "1X2", "GG-NG", "O-U"]
 
-postponed_days = []
+postponed_days = [28]
 postponed_matches = {}
 
 
