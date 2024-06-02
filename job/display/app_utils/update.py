@@ -70,12 +70,12 @@ class Loader(RepoConnector):
         self.latest_year = LATEST_YEAR
         self.targets = TARGETS
         self.metadata_path = f"{self.path}/data/metadata.csv"
-        self.dataframe_path = f"{self.path}/data/{self.latest_year}/{self.matchday}"
+        self.dataframe_path = f"{self.path}/data/{self.latest_year}"
 
     def load(self) -> dict[pd.DataFrame]:
         """Pipeline of loading process"""
-        self.get_metadata()
-        self.dfs = self.download_dataframes()
+        self.get_metadata(self.metadata_path)
+        self.dfs = self.download_dataframes(self.dataframe_path)
         return self.dfs
 
     @RepoConnector.close_connection_if_exception
@@ -89,7 +89,7 @@ class Loader(RepoConnector):
         """Download the dataframes"""
         dict_df = {}
         for target in self.targets:
-            path = f"{link}/{target}.csv"
+            path = f"{link}/{self.matchday}/{target}.csv"
             df = pd.read_csv(path, index_col=0)
             dict_df.update({target: df})
         return dict_df

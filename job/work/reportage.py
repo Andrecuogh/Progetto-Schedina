@@ -13,7 +13,7 @@ def save_report(pred: dict) -> None:
     for target in targets:
         pred[target].to_csv(f"data/{anno}/{giornata}/{target}.csv")
     metadata = pd.read_csv("data/metadata.csv")
-    metadata_to_add = pd.DataFrame({"giornata": [giornata]})
+    metadata_to_add = pd.DataFrame({"anno": [anno], "giornata": [giornata]})
     metadata = pd.concat([metadata, metadata_to_add], ignore_index=True)
     metadata.to_csv("data/metadata.csv", index=False)
 
