@@ -1,6 +1,7 @@
 import pandas as pd
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import GradientBoostingClassifier, RandomForestClassifier
+import logging
 
 models = {
     "Gf": RandomForestClassifier(
@@ -27,8 +28,8 @@ models = {
 targets = ["Gf", "Gs", "1X2", "GG-NG", "O-U"]
 
 
-def Xy_split(dataframe, target):
-
+def Xy_split(dataframe: pd.DataFrame, target: list) -> tuple[pd.DataFrame]:
+    """Split the dataframe into features (X) and target (y)"""
     df = dataframe.copy()
     df["classe"] = ""
 
@@ -62,7 +63,9 @@ def Xy_split(dataframe, target):
     return X, y
 
 
-def predict_scores(df):
+def predict_scores(df: pd.DataFrame) -> dict:
+    """Predict probabilities of events"""
+    logging.info("Predicting scores")
     Xnot = df.sort_values(by=["anno", "giornata"]).iloc[-10:]
     probabilities = {
         "giornata": Xnot.giornata.max(),

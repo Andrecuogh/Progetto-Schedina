@@ -1,4 +1,4 @@
-from magic_job import validate_datafolder, get_data
+from job.work.flow import validate_datafolder, get_data
 from creation import create_dataset
 from prediction import Xy_split
 from set_up.league_data import seasons

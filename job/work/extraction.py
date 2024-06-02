@@ -2,7 +2,11 @@ import pandas as pd
 import logging
 
 
-def count_goals(df):
+def count_goals(df: pd.DataFrame) -> pd.DataFrame:
+    """Create a dataframe for home teams
+    Create a dataframe for away teams
+    Concatenate the 2 dataframes together
+    """
     casa_mapper = {
         "squadra_casa": "squadra",
         "squadra_trasferta": "avversario",
@@ -24,7 +28,8 @@ def count_goals(df):
     return table
 
 
-def assign_points(df):
+def assign_points(df: pd.DataFrame) -> pd.DataFrame:
+    """Compute league points"""
     df.loc[df.gol_fatti > df.gol_subiti, "esito"] = "vittoria"
     df.loc[df.gol_fatti < df.gol_subiti, "esito"] = "sconfitta"
     df.loc[df.gol_fatti == df.gol_subiti, "esito"] = "pareggio"
@@ -33,7 +38,8 @@ def assign_points(df):
     return df
 
 
-def cumulative_goals_points(df):
+def cumulative_goals_points(df: pd.DataFrame) -> pd.DataFrame:
+    """Compute cumulative goals"""
     df["gol_fatti_cum"] = df.groupby("squadra").gol_fatti.cumsum()
     df["gol_subiti_cum"] = df.groupby("squadra").gol_subiti.cumsum()
     df["punti"] = df.groupby("squadra").punti.cumsum()
@@ -41,7 +47,8 @@ def cumulative_goals_points(df):
     return df
 
 
-def rank_position(df):
+def rank_position(df: pd.DataFrame) -> pd.DataFrame:
+    """Assign league rankings"""
     ord_cols = ["giornata", "punti", "differenza_reti", "gol_fatti_cum"]
     df = df.sort_values(by=ord_cols, ascending=False)
     days = len(df) // 20
@@ -49,12 +56,14 @@ def rank_position(df):
     return df
 
 
-def previous_gol(df):
+def previous_gol(df: pd.DataFrame) -> pd.DataFrame:
+    """Extract previous goals"""
     df = df.sort_values(by=["anno", "giornata"])
     df["esito"] = df.esito.map({"vittoria": 1, "pareggio": 0, "sconfitta": -1})
     df["gol_fatti"] = df.gol_fatti.where(df.gol_fatti < 4, 4)
     df["gol_subiti"] = df.gol_subiti.where(df.gol_subiti < 4, 4)
-    for t in range(1, 6):
+    PREVIOUS_MATCHES = 5
+    for t in range(1, PREVIOUS_MATCHES + 1):
         for col in ["gol_fatti", "gol_subiti", "esito"]:
             name = f"{col}_{t}"
             df[name] = df.groupby("squadra")[col].shift(t)
@@ -62,7 +71,8 @@ def previous_gol(df):
     return df
 
 
-def cleaning_df(df):
+def cleaning_df(df: pd.DataFrame) -> pd.DataFrame:
+    """Removing NAs and unnecessary columns"""
     df = df.drop(
         [
             "gol_fatti_cum",
@@ -78,11 +88,20 @@ def cleaning_df(df):
     return df
 
 
-def extract_features(leagues):
+def compute_mean_goals(df: pd.DataFrame) -> pd.DataFrame:
+    """Compute mean goals"""
+    df["media_gol_fatti"] = df.gol_fatti_cum / df.giornata
+    df["media_gol_subiti"] = df.gol_subiti_cum / df.giornata
+    return df
+
+
+def extract_features(leagues: pd.DataFrame) -> tuple[pd.DataFrame]:
+    """Extract relevant features from the data"""
     matches = leagues.drop(["goal_casa", "goal_trasferta"], axis=1)
     dataframe = count_goals(leagues)
     dataframe = assign_points(dataframe)
     dataframe = cumulative_goals_points(dataframe)
+    dataframe = compute_mean_goals(dataframe)
     dataframe = rank_position(dataframe)
     dataframe = previous_gol(dataframe)
     dataframe = cleaning_df(dataframe)

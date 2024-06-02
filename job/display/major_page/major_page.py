@@ -3,7 +3,7 @@ import numpy as np
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.label import Label
 
-from app_utils.window_config import AppConfigurer
+from job.display.app_utils.update import AppConfigurer
 from app_utils.custom_obj import CustomButton, CustomEllipse, CustomRectangle
 from app_utils.page import Page
 

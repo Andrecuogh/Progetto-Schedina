@@ -3,8 +3,9 @@ import urllib.request as urlr
 
 import sys
 import os
-if os.getcwd().split('/')[-1] == 'display':
-    os.chdir('../..')
+
+if os.getcwd().split("/")[-1] == "display":
+    os.chdir("../..")
 sys.path.append(os.getcwd())
 
 import ssl
@@ -13,49 +14,53 @@ ssl._create_default_https_context = ssl._create_stdlib_context
 
 from kivy.app import App
 from kivy.clock import Clock
-from kivy.uix.floatlayout import FloatLayout
-from app_utils.window_config import AppConfigurer
-from homepage.homepage import Homepage
-from matchday_page.matchday_page import MatchdayPage
-from major_page.major_page import MajorPage
-from transversal.utilbar import Infos
-from set_up_kivy.config_var import VERSION, PATH
+from job.display.app_utils.update import Updater, Loader
+
+# from job.display.app_utils.update import Updater
+from job.display.homepage.homepage import HomePage
+
+# from job.display.matchday_page.matchday_page import MatchdayPage
+# from job.display.major_page.major_page import MajorPage
+# from job.display.transversal.utilbar import Infos
+from set_up.config_var import VERSION, PATH
+from job.display.app_utils.page import Page
 
 
 class MainApp(App):
+    def __init__(self):
+        super().__init__()
+
     def build(self):
-        self.curr_version = VERSION
-        self.read_txt()
+        self.draw_canvas()
+        self.check_update()
+        self.download_data()
+        self.draw_homepage()
 
-        self.window = FloatLayout()
-
-        self.app_con = AppConfigurer()
-        self.app_con.custom_init()
-        self.colors = self.app_con.paint()
-
-        self.hp = Homepage()
-        self.mdp = MatchdayPage(self.lat_matchday)
-        self.mjp = MajorPage()
-        self.ip = Infos()
-
-        self.hp.cleaning(self)
-        self.hp.initializing(self)
-        self.button.bind(on_press=self.get_forecasts)
-        self.archivio.bind(on_press=self.chooseday)
-        self.bindutils()
-
-        if self.app_con.check_update(self.curr_version):
-            self.raise_warn(self.app_con.line, update=True)
-            self.hp.ask_upd = True
-
+        # self.app_con = AppConfigurer()
+        # self.app_con.custom_init()
+        # self.colors = self.app_con.paint()
+        # self.hp = Homepage()
+        # self.mdp = MatchdayPage(self.lat_matchday)
+        # self.mjp = MajorPage()
+        # self.ip = Infos()
+        # self.hp.cleaning(self)
+        # self.hp.initializing(self)
+        # self.button.bind(on_press=self.get_forecasts)
+        # self.archivio.bind(on_press=self.chooseday)
+        # self.bindutils()
         return self.window
 
-    def read_txt(self):
-        file = urlr.urlopen(
-            f"https://raw.githubusercontent.com/Andrecuogh/Progetto-Schedina/main/set_up/config_app.txt"
-            )
-        lines = file.read().decode().split('\n')
-        self.lat_matchday = int(lines[1].split(" = ")[1])
+    def draw_canvas(self):
+        Page().config(self)
+
+    def check_update(self):
+        Updater().search_update()
+
+    def draw_homepage(self):
+        HomePage().draw(self)
+
+    def download_data(self):
+        self.dfs = Loader().load()
 
     def bindutils(self):
         self.quitting.bind(on_press=self.stop)
@@ -83,10 +88,6 @@ class MainApp(App):
         else:
             self.hp.loading(self, event.text)
             Clock.schedule_once(self.createcanvas, 2)
-
-    def goto_updlink(self, event):
-        webbrowser.open(self.app_con.upd_link)
-        Clock.schedule_once(self.remove_warn_box, 1)
 
     def chooseday(self, event):
         self.mdp.list_matchdays(self)
