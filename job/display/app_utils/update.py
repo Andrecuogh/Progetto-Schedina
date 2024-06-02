@@ -24,7 +24,7 @@ class RepoConnector:
     def close_connection_if_exception(method):
         def wrapper(self, *args, **kwargs):
             try:
-                method(self, *args, **kwargs)
+                return method(self, *args, **kwargs)
             except:
                 link = args[0]
                 raise GitConnectionError(link)
@@ -75,21 +75,20 @@ class Loader(RepoConnector):
     def load(self) -> dict[pd.DataFrame]:
         """Pipeline of loading process"""
         self.get_metadata(self.metadata_path)
-        self.dfs = self.download_dataframes(self.dataframe_path)
-        return self.dfs
+        dfs = self.download_dataframes(self.dataframe_path)
+        return dfs
 
     @RepoConnector.close_connection_if_exception
     def get_metadata(self, link):
         """Get metadata information"""
-        metadata = pd.read_csv(link, index_col=0)
-        self.matchday = metadata[metadata.year == self.latest_year].matchday.max()
+        metadata = pd.read_csv(link)
+        self.matchday = metadata[metadata.anno == self.latest_year].giornata.max()
 
     @RepoConnector.close_connection_if_exception
     def download_dataframes(self, link) -> dict[pd.DataFrame]:
         """Download the dataframes"""
-        dict_df = {}
-        for target in self.targets:
-            path = f"{link}/{self.matchday}/{target}.csv"
-            df = pd.read_csv(path, index_col=0)
-            dict_df.update({target: df})
+        dict_df = {
+            target: pd.read_csv(f"{link}/{self.matchday}/{target}.csv", index_col=0)
+            for target in self.targets
+        }
         return dict_df
