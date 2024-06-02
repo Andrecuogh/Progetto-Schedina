@@ -4,4 +4,4 @@ temp_ipynb
 bin
 __pycache__
 .log
-.venv
+.env
