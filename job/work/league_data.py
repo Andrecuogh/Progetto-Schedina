@@ -130,6 +130,3 @@ seasons = {
         "days": 38,
     },
 }
-
-TARGETS = ["Gf", "Gs", "1X2", "GG-NG", "O-U"]
-LATEST_YEAR = 2023

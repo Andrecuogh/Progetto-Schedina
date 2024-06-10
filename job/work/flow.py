@@ -4,7 +4,7 @@ sys.path.append(os.getcwd().replace("\\", "/").replace("/job/work", ""))
 
 import extraction, prediction, scraping, creation
 import pandas as pd
-from set_up.league_data import seasons
+from job.work.league_data import seasons
 from job.work import reportage
 
 import logging

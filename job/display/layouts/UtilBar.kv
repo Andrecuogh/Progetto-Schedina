@@ -1,0 +1,36 @@
+<UtilsButton@Button>:
+    background_color: app.colors["label"]
+    background_normal: ""
+    font_size: 50
+    bold: True
+
+
+<UtilBar@FloatLayout>:
+    canvas:
+        Color:
+            rgba: app.colors["utilbar"]
+        RoundedRectangle:
+            pos: root.size[0] * 0.01, root.size[1] * 0.905
+            size: root.size[0] * 0.98, root.size[1] * 0.09
+    GridLayout:
+        cols: 3
+        pos_hint: {'x': 0.02, 'y': 0.92}
+        size_hint: 0.96, 0.06
+        spacing: 20, 0
+        UtilsButton:
+            text: "Help"
+            on_press:
+                app.sm.current_screen.add_widget(app.tutorial_boxes[app.sm.current])
+            on_release:
+                app.sm.current_screen.remove_widget(app.tutorial_boxes[app.sm.current])         
+        UtilsButton:
+            text: "About"
+            on_press:
+                app.sm.current_screen.add_widget(app.about_box)
+            on_release:
+                app.sm.current_screen.remove_widget(app.about_box)
+        UtilsButton:
+            text: "Quit"
+            on_press:
+                app.stop()
+    

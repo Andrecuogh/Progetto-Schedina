@@ -1,8 +1,8 @@
 import pandas as pd
+import re
 import webbrowser
-import urllib
-from set_up.config_var import VERSION, REPOPATH
-from set_up.league_data import LATEST_YEAR, TARGETS
+import requests
+from utils.config import VERSION, REPOPATH, CURRENT_YEAR, TARGETS
 
 
 class GitConnectionError(Exception):
@@ -41,11 +41,10 @@ class Updater(RepoConnector):
         self.upd_link = f"{self.path}/data/version/latest.apk"
         self.line = "Nuovo aggiornamento disponibile."
 
-    def search_update(self):
+    def search_update(self) -> bool:
         """Search new updates and, if available, update the app"""
         need_to_update = self.check_update(self.version_path)
-        if need_to_update:
-            self.update_app()
+        return need_to_update
 
     @RepoConnector.close_connection_if_exception
     def check_update(self, link):
@@ -67,10 +66,10 @@ class Loader(RepoConnector):
 
     def __init__(self):
         super().__init__()
-        self.latest_year = LATEST_YEAR
+        self.current_year = CURRENT_YEAR
         self.targets = TARGETS
         self.metadata_path = f"{self.path}/data/metadata.csv"
-        self.dataframe_path = f"{self.path}/data/{self.latest_year}"
+        self.dataframe_path = f"{self.path}/data/{self.current_year}"
 
     def load(self) -> dict[pd.DataFrame]:
         """Pipeline of loading process"""
@@ -82,7 +81,7 @@ class Loader(RepoConnector):
     def get_metadata(self, link):
         """Get metadata information"""
         metadata = pd.read_csv(link)
-        self.matchday = metadata[metadata.anno == self.latest_year].giornata.max()
+        self.matchday = metadata[metadata.anno == self.current_year].giornata.max()
 
     @RepoConnector.close_connection_if_exception
     def download_dataframes(self, link) -> dict[pd.DataFrame]:
@@ -92,3 +91,14 @@ class Loader(RepoConnector):
             for target in self.targets
         }
         return dict_df
+
+    def download_readme(self) -> str:
+        url = f"{self.path}/README.md"
+        content = requests.get(url).text
+        md_to_kv_translator = {
+            r"\*\*(.*?)\*\*": r"[b]\1[/b]",  # header 1
+            r"# (.*?)(?=\n|$)": r"[size=30]\1[/size]",  # bold
+        }
+        for md, kv in md_to_kv_translator.items():
+            content = re.sub(md, kv, content)
+        return content

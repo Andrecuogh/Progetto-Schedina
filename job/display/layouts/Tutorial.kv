@@ -1,0 +1,71 @@
+#: import Window kivy.core.window.Window
+
+<TutorialLabel@Button>:
+    background_color: app.colors["tutorial"]
+    background_normal: ""
+    font_size: 20
+    text_size: self.size
+    valign: "top"
+    line_height: 1.25
+    padding: Window.size[0] * 0.01
+
+FloatLayout:
+    FloatLayout:
+        TutorialLabel:
+            text: "Clicca qui per saperne di più sul progetto"
+            size_hint: (0.15, 0.15)
+            pos_hint: {"center_x": 0.5, "center_y": 0.85}
+        TutorialLabel:
+            text: "Clicca qui per uscire"
+            size_hint: (0.15, 0.15)
+            pos_hint: {"center_x": 0.8, "center_y": 0.85}
+        TutorialLabel:
+            text: "Queste sono le probabilità di segnare da 0 a 4 gol"
+            size_hint: (0.25, 0.15)
+            pos_hint: {"center_x": 0.20, "center_y": 0.72}
+        TutorialLabel:
+            text: "Queste sono le probabilità di Over 2.5 ('O') e Under 2.5 ('U')"
+            size_hint: (0.25, 0.13)
+            pos_hint: {"center_x": 0.25, "center_y": 0.49}
+        TutorialLabel:
+            text: "Queste sono le probabilità di 1 ('V') e X ('N') o 2 ('P')"
+            size_hint: (0.25, 0.13)
+            pos_hint: {"center_x": 0.5, "center_y": 0.28}
+        TutorialLabel:
+            text: "Queste sono le probabilità di Gol ('GG') e No Gol ('NG')"
+            size_hint: (0.25, 0.13)
+            pos_hint: {"center_x": 0.75, "center_y": 0.49}
+        TutorialLabel:
+            text: "Vai alla partita successiva"
+            size_hint: (0.15, 0.1)
+            pos_hint: {"center_x": 0.8, "center_y": 0.12}
+        TutorialLabel:
+            text: "Vai alla partita precedente"
+            size_hint: (0.15, 0.1)
+            pos_hint: {"center_x": 0.2, "center_y": 0.12}
+        TutorialLabel:
+            text: "Torna alla homepage"
+            size_hint: (0.15, 0.1)
+            pos_hint: {"center_x": 0.5, "center_y": 0.12}
+    FloatLayout:
+        TutorialLabel:
+            text: "Clicca qui per saperne di più sul progetto"
+            size_hint: (0.15, 0.15)
+            pos_hint: {"center_x": 0.5, "center_y": 0.85}
+        TutorialLabel:
+            text: "Clicca qui per uscire"
+            size_hint: (0.15, 0.15)
+            pos_hint: {"center_x": 0.8, "center_y": 0.85}
+        TutorialLabel:
+            text: "Clicca qui per ottenere le previsioni delle partite"
+            size_hint: (0.25, 0.1)
+            pos_hint: {"center_x": 0.25, "center_y": 0.35}
+    FloatLayout:
+        TutorialLabel:
+            text: "Clicca qui per saperne di più sul progetto"
+            size_hint: (0.15, 0.1)
+            pos_hint: {"center_x": 0.5, "center_y": 0.875}
+        TutorialLabel:
+            text: "Clicca qui per uscire"
+            size_hint: (0.15, 0.1)
+            pos_hint: {"center_x": 0.8, "center_y": 0.875}

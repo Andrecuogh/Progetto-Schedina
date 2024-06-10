@@ -1,0 +1,168 @@
+<LabelButton@Button>:
+    background_color: app.colors["label"]
+    background_normal: ""
+    font_size: 45
+
+
+<ProbabilityButton@Button>:
+    background_normal: ""
+    font_size: 40
+    text: "default"
+
+
+<CustomGrid@GridLayout>:
+    spacing: [2, 2]
+    orientation: "rl-tb"
+
+
+<NavigationButton@Button>:
+    background_color: app.colors["button"]
+    background_normal: ""
+    size_hint: (0.2, 0.05)
+    font_size: 45
+
+
+<HomeButton@Button>:
+    background_color: app.colors["button"]
+    background_normal: ""
+    size_hint: (0.08, 0.06)
+    pos_hint: {"x": 0.46, "y": 0.07}
+    text: "Home"
+    font_size: 35
+    on_press:
+        app.sm.transition.direction = 'right'
+        app.sm.current = "homepage"
+
+
+<NavigationBar@FloatLayout>:
+    name: "Navigation bar"
+    canvas:
+        Color:
+            rgba: app.colors["button"]
+        RoundedRectangle:
+            pos: root.size[0] * 0.45, root.size[1] * 0.06
+            size: root.size[0] * 0.1, root.size[1] * 0.08
+        Ellipse:
+            pos: root.size[0] * 0.09, root.size[1] * 0.05
+            size: root.size[0] * 0.26, root.size[1] * 0.1
+        Ellipse:
+            pos: root.size[0] * 0.65, root.size[1] * 0.05
+            size: root.size[0] * 0.26, root.size[1] * 0.1
+
+    NavigationButton:
+        text: "Precedente"
+        pos_hint: {"x": 0.12, "y": 0.075}
+        on_press:
+            app.change_match(-1)
+
+    NavigationButton:
+        text: "Successivo"
+        pos_hint: {"x": 0.68, "y": 0.075}
+        on_press:
+            app.change_match(1)
+
+    HomeButton:
+
+
+<ScorePage@Screen>:
+    name: "scorepage"
+
+    UtilBar:
+
+    FloatLayout:
+        area: "ScoredReceived"
+        LabelButton:
+            text: "GOL"
+            size_hint: (0.1, 0.05)
+            pos_hint: {"center_x": 0.08, "center_y": 0.85}
+            font_size: 40
+        LabelButton:
+            text: "Home"
+            size_hint: (0.1, 0.09)
+            pos_hint: {"center_x": 0.08, "center_y": 0.77}
+            font_size: 40
+        LabelButton:
+            text: "Away"
+            size_hint: (0.1, 0.09)
+            pos_hint: {"center_x": 0.08, "center_y": 0.67}
+            font_size: 40
+        CustomGrid: 
+            cols: 5
+            size_hint: (0.8, 0.05)
+            pos_hint: {"center_x": 0.55, "center_y": 0.85}
+            LabelButton:
+            LabelButton:
+            LabelButton:
+            LabelButton:
+            LabelButton:
+        CustomGrid:
+            cols: 5
+            size_hint: (0.8, 0.095)
+            pos_hint: {"center_x": 0.55, "center_y": 0.77}
+            ProbabilityButton:
+            ProbabilityButton:
+            ProbabilityButton:
+            ProbabilityButton:
+            ProbabilityButton:
+        CustomGrid:
+            cols: 5
+            size_hint: (0.8, 0.095)
+            pos_hint: {"center_x": 0.55, "center_y": 0.67}
+            ProbabilityButton:
+            ProbabilityButton:
+            ProbabilityButton:
+            ProbabilityButton:
+            ProbabilityButton:
+            
+    FloatLayout:
+        area: "1X2"
+        CustomGrid:
+            cols: 3
+            size_hint: (0.5, 0.05)
+            pos_hint: {"center_x": 0.5, "center_y": 0.33}
+            LabelButton:
+            LabelButton:
+            LabelButton:
+            
+        CustomGrid:
+            cols: 3
+            size_hint: (0.5, 0.1)
+            pos_hint: {"center_x": 0.5, "center_y": 0.25}
+            ProbabilityButton:
+            ProbabilityButton:
+            ProbabilityButton:
+
+    FloatLayout:
+        area: "Gol-NoGol"
+        CustomGrid:
+            cols: 2
+            size_hint: (0.4, 0.05)
+            pos_hint: {"center_x": 0.73, "center_y": 0.54}
+            LabelButton:
+            LabelButton:
+            
+        CustomGrid:
+            cols: 2
+            size_hint: (0.4, 0.1)
+            pos_hint: {"center_x": 0.27, "center_y": 0.46}
+            ProbabilityButton:
+            ProbabilityButton:  
+    
+    FloatLayout:
+        area: "OverUnder"
+        CustomGrid:
+            cols: 2
+            size_hint: (0.4, 0.05)
+            pos_hint: {"center_x": 0.27, "center_y": 0.54}
+            LabelButton:
+            LabelButton:
+            
+        CustomGrid:
+            cols: 2
+            size_hint: (0.4, 0.1)
+            pos_hint: {"center_x": 0.73, "center_y": 0.46}
+            ProbabilityButton:
+            ProbabilityButton:
+
+    NavigationBar:          
+        
