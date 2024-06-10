@@ -1,7 +1,7 @@
 <UtilsButton@Button>:
     background_color: app.colors["label"]
     background_normal: ""
-    font_size: 50
+    font_size: 50*app.scale_factor
     bold: True
 
 
@@ -16,7 +16,7 @@
         cols: 3
         pos_hint: {'x': 0.02, 'y': 0.92}
         size_hint: 0.96, 0.06
-        spacing: 20, 0
+        spacing: [20*app.scale_factor, 0*app.scale_factor]
         UtilsButton:
             text: "Help"
             on_press:

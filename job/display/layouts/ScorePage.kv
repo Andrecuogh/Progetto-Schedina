@@ -1,17 +1,17 @@
 <LabelButton@Button>:
     background_color: app.colors["label"]
     background_normal: ""
-    font_size: 45
+    font_size: 45*app.scale_factor
 
 
 <ProbabilityButton@Button>:
     background_normal: ""
-    font_size: 40
+    font_size: 40*app.scale_factor
     text: "default"
 
 
 <CustomGrid@GridLayout>:
-    spacing: [2, 2]
+    spacing: [2*app.scale_factor, 2*app.scale_factor]
     orientation: "rl-tb"
 
 
@@ -19,7 +19,7 @@
     background_color: app.colors["button"]
     background_normal: ""
     size_hint: (0.2, 0.05)
-    font_size: 45
+    font_size: 45*app.scale_factor
 
 
 <HomeButton@Button>:
@@ -28,7 +28,7 @@
     size_hint: (0.08, 0.06)
     pos_hint: {"x": 0.46, "y": 0.07}
     text: "Home"
-    font_size: 35
+    font_size: 35*app.scale_factor
     on_press:
         app.sm.transition.direction = 'right'
         app.sm.current = "homepage"
@@ -75,17 +75,17 @@
             text: "GOL"
             size_hint: (0.1, 0.05)
             pos_hint: {"center_x": 0.08, "center_y": 0.85}
-            font_size: 40
+            font_size: 40*app.scale_factor
         LabelButton:
             text: "Home"
             size_hint: (0.1, 0.09)
             pos_hint: {"center_x": 0.08, "center_y": 0.77}
-            font_size: 40
+            font_size: 40*app.scale_factor
         LabelButton:
             text: "Away"
             size_hint: (0.1, 0.09)
             pos_hint: {"center_x": 0.08, "center_y": 0.67}
-            font_size: 40
+            font_size: 40*app.scale_factor
         CustomGrid: 
             cols: 5
             size_hint: (0.8, 0.05)

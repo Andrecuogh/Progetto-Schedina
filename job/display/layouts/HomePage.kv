@@ -6,7 +6,7 @@
 
 <PredictButton@StandardButton>:
     text: "Predici"
-    font_size: 60
+    font_size: 60*app.scale_factor
     pos_hint: {"center_x": 0.5, "center_y": 0.275}
     on_press:
         app.sm.transition.direction = 'left'
@@ -16,7 +16,7 @@
 
 <LoadingButton@StandardButton>:
     text: "Caricando i dati..."
-    font_size: 50
+    font_size: 50*app.scale_factor
     pos_hint: {"center_x": 0.5, "center_y": 0.5}
 
 

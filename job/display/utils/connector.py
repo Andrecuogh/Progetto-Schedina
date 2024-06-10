@@ -54,6 +54,7 @@ class Updater(RepoConnector):
         versions = pd.read_csv(link)
         self.latest_version = versions[versions["Latest"]]["Version"].values[0]
         self.no_updated = self.latest_version > self.curr_version
+        print(self.no_updated)
         return self.no_updated
 
     def update_app(self):
@@ -97,7 +98,7 @@ class Loader(RepoConnector):
         content = requests.get(url).text
         md_to_kv_translator = {
             r"\*\*(.*?)\*\*": r"[b]\1[/b]",  # header 1
-            r"# (.*?)(?=\n|$)": r"[size=30]\1[/size]",  # bold
+            r"# (.*?)(?=\n|$)": r"[size=25]\1[/size]",  # bold
         }
         for md, kv in md_to_kv_translator.items():
             content = re.sub(md, kv, content)

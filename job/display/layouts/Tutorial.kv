@@ -3,22 +3,22 @@
 <TutorialLabel@Button>:
     background_color: app.colors["tutorial"]
     background_normal: ""
-    font_size: 20
+    font_size: 37.5*app.scale_factor
     text_size: self.size
     valign: "top"
-    line_height: 1.25
+    line_height: sp(1.25)
     padding: Window.size[0] * 0.01
 
 FloatLayout:
     FloatLayout:
         TutorialLabel:
             text: "Clicca qui per saperne di più sul progetto"
-            size_hint: (0.15, 0.15)
+            size_hint: (0.25, 0.15)
             pos_hint: {"center_x": 0.5, "center_y": 0.85}
         TutorialLabel:
             text: "Clicca qui per uscire"
-            size_hint: (0.15, 0.15)
-            pos_hint: {"center_x": 0.8, "center_y": 0.85}
+            size_hint: (0.25, 0.075)
+            pos_hint: {"center_x": 0.825, "center_y": 0.9}
         TutorialLabel:
             text: "Queste sono le probabilità di segnare da 0 a 4 gol"
             size_hint: (0.25, 0.15)
@@ -50,12 +50,12 @@ FloatLayout:
     FloatLayout:
         TutorialLabel:
             text: "Clicca qui per saperne di più sul progetto"
-            size_hint: (0.15, 0.15)
+            size_hint: (0.25, 0.15)
             pos_hint: {"center_x": 0.5, "center_y": 0.85}
         TutorialLabel:
             text: "Clicca qui per uscire"
-            size_hint: (0.15, 0.15)
-            pos_hint: {"center_x": 0.8, "center_y": 0.85}
+            size_hint: (0.25, 0.075)
+            pos_hint: {"center_x": 0.825, "center_y": 0.9}
         TutorialLabel:
             text: "Clicca qui per ottenere le previsioni delle partite"
             size_hint: (0.25, 0.1)
@@ -63,9 +63,9 @@ FloatLayout:
     FloatLayout:
         TutorialLabel:
             text: "Clicca qui per saperne di più sul progetto"
-            size_hint: (0.15, 0.1)
+            size_hint: (0.25, 0.1)
             pos_hint: {"center_x": 0.5, "center_y": 0.875}
         TutorialLabel:
             text: "Clicca qui per uscire"
-            size_hint: (0.15, 0.1)
-            pos_hint: {"center_x": 0.8, "center_y": 0.875}
+            size_hint: (0.25, 0.075)
+            pos_hint: {"center_x": 0.825, "center_y": 0.9}

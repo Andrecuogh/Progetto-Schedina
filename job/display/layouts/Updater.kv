@@ -1,8 +1,8 @@
 <UpdateButton@Button>:
     background_color: app.colors["label"]
     background_normal: ""
-    size_hint: (0.15, 0.1)
-    font_size: 20
+    size_hint: (0.225, 0.05)
+    font_size: 40*app.scale_factor
 
 <Updater@Screen>:
     name: "updatebox"
@@ -20,21 +20,23 @@
                 size: root.size[0] * 0.56, root.size[1] * 0.56
         UpdateButton:
             text: "Aggiorna"
-            pos_hint: {"center_x": 0.35, "center_y": 0.35}
+            pos_hint: {"center_x": 0.375, "center_y": 0.35}
             on_press:
                 app.updater.update_app()
         UpdateButton:
             text: "Non ora"
-            pos_hint: {"center_x": 0.65, "center_y": 0.35}
+            pos_hint: {"center_x": 0.625, "center_y": 0.35}
             on_press:
                 app.sm.transition.direction = 'up'
                 app.sm.current = "homepage"
         Label:
-            text: "E' disponibile un nuovo aggiornamento.\nAggiornare?"
+            text: "E' disponibile un nuovo aggiornamento.\n\nAggiornare?"
             halign: "center"
             size_hint: (0.5, 0.2)
             pos_hint: {"center_x": 0.5, "center_y": 0.6}
-            font_size: 30
+            font_size: 50*app.scale_factor
+            text_size: self.size
+            valign: 'middle'
         UtilBar:
 
 
