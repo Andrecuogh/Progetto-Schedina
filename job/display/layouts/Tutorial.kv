@@ -6,10 +6,19 @@
     font_size: 37.5*app.scale_factor
     text_size: self.size
     valign: "top"
-    line_height: sp(1.25)
+    line_height: 1.25
     padding: Window.size[0] * 0.01
 
 FloatLayout:
+    FloatLayout:
+        TutorialLabel:
+            text: "Clicca qui per saperne di più sul progetto"
+            size_hint: (0.25, 0.1)
+            pos_hint: {"center_x": 0.5, "center_y": 0.875}
+        TutorialLabel:
+            text: "Clicca qui per uscire"
+            size_hint: (0.25, 0.075)
+            pos_hint: {"center_x": 0.825, "center_y": 0.9}
     FloatLayout:
         TutorialLabel:
             text: "Clicca qui per saperne di più sul progetto"
@@ -60,12 +69,3 @@ FloatLayout:
             text: "Clicca qui per ottenere le previsioni delle partite"
             size_hint: (0.25, 0.1)
             pos_hint: {"center_x": 0.25, "center_y": 0.35}
-    FloatLayout:
-        TutorialLabel:
-            text: "Clicca qui per saperne di più sul progetto"
-            size_hint: (0.25, 0.1)
-            pos_hint: {"center_x": 0.5, "center_y": 0.875}
-        TutorialLabel:
-            text: "Clicca qui per uscire"
-            size_hint: (0.25, 0.075)
-            pos_hint: {"center_x": 0.825, "center_y": 0.9}
