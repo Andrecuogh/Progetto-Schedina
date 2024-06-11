@@ -1,11 +1,8 @@
-import os, sys
-
-sys.path.append(os.getcwd().replace("\\", "/").replace("/job/work", ""))
-
-import extraction, prediction, scraping, creation
+import os
 import pandas as pd
-from job.work.league_data import seasons
-from job.work import reportage
+from league_data import seasons
+from etl_utils import extraction, prediction, scraping, creation, reportage
+
 
 import logging
 
@@ -49,6 +46,4 @@ def magic_flow(seasons: dict) -> None:
 
 
 if __name__ == "__main__":
-    for day in range(5, 6):
-        seasons["2023"]["days"] = day
-        magic_flow(seasons)
+    magic_flow(seasons)

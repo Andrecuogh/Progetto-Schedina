@@ -1,9 +1,7 @@
-from job.work.flow import validate_datafolder, get_data
-from creation import create_dataset
-from prediction import Xy_split
-from job.work.league_data import seasons
 import pandas as pd
 import numpy as np
+import logging
+import logging.config
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import (
@@ -11,67 +9,71 @@ from sklearn.ensemble import (
     RandomForestClassifier,
     AdaBoostClassifier,
 )
-from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import GridSearchCV, GroupKFold
+from league_data import seasons
+from flow import validate_datafolder, get_data
+from etl_utils.creation import create_dataset
+from etl_utils.prediction import Xy_split
+from etl_config.log import LOG_CONFIG
+
+logging.config.dictConfig(LOG_CONFIG)
+logger = logging.getLogger("etl_flow")
+
 
 models = {
-    "lda": LinearDiscriminantAnalysis(),
-    "knn": KNeighborsClassifier(),
-    "gb": GradientBoostingClassifier(),
-    "rf": RandomForestClassifier(),
-    "ada": AdaBoostClassifier(),
-}
-
-parameters = {
-    "lda": {"solver": ["svd"]},
-    "knn": {"n_neighbors": np.arange(1, 298, 11)},
+    "lda": {
+        "algorithm": LinearDiscriminantAnalysis(),
+        "parameters": {"solver": ["svd"]},
+    },
+    "knn": {
+        "algorithm": KNeighborsClassifier(),
+        "parameters": {"n_neighbors": np.arange(1, 298, 11)},
+    },
     "gb": {
-        "n_estimators": [50, 100, 150],
-        "learning_rate": [0.1, 0.3],
-        "max_depth": [3, 5],
-        "subsample": [0.75, 1.0],
-        "max_features": [1.0, 0.75],
-        "random_state": [66],
+        "algorithm": GradientBoostingClassifier(),
+        "parameters": {
+            "n_estimators": [50],
+            "learning_rate": [0.1, 0.3],
+            "max_depth": [3],
+            "subsample": [0.75, 1.0],
+            "max_features": [1.0, 0.75],
+            "random_state": [66],
+        },
     },
     "rf": {
-        "n_estimators": [100],
-        "max_depth": [None, 3, 5],
-        "max_features": ["sqrt", 1.0],
-        "random_state": [66],
+        "algorithm": RandomForestClassifier(),
+        "parameters": {
+            "n_estimators": [50],
+            "max_depth": [3, 5],
+            "max_features": ["sqrt", 1.0],
+            "random_state": [66],
+        },
     },
     "ada": {
-        "n_estimators": [50, 100, 150],
-        "algorithm": ["SAMME"],
-        "random_state": [66],
+        "algorithm": AdaBoostClassifier(),
+        "parameters": {
+            "n_estimators": [50],
+            "algorithm": ["SAMME"],
+            "random_state": [66],
+        },
     },
 }
-
 targets = ["Gf", "Gs", "1X2", "GG-NG", "O-U"]
 
 
-def tune_model(X, y, target):
-    scores = []
-    print(target)
-    for algorithm in models.keys():
-        model = models[algorithm]
-        params = parameters[algorithm]
-        gscv = GridSearchCV(
-            estimator=model,
-            param_grid=params,
-            scoring="accuracy",
-            cv=4,
-            verbose=1,
-            n_jobs=2,
-        )
-        gscv.fit(X, y)
-        scorelist = [
-            target,
-            str(gscv.best_estimator_),
-            str(gscv.best_params_),
-            gscv.best_score_,
-        ]
-        scores.append(scorelist)
+def tune_model(X, y, model, cross_val):
+    gscv = GridSearchCV(
+        estimator=model["algorithm"],
+        param_grid=model["parameters"],
+        scoring="accuracy",
+        cv=cross_val,
+        n_jobs=2,
+    )
+    gscv.fit(X, y, groups=X["anno"])
 
-    return scores
+    logger.info(f"Estimator: {gscv.estimator}")
+    logger.info(f"Parameters: {gscv.best_params_}")
+    logger.info(f"Score: {np.round(gscv.best_score_, 2)}\n")
 
 
 def update_df(df, scores):
@@ -99,15 +101,10 @@ def flow(season_list):
     scores_df = pd.DataFrame()
     for target in targets:
         X, y = Xy_split(df, target)
-        scores = tune_model(X, y, target)
-        scores_df = update_df(scores_df, scores)
-    scores_df = get_max_score(scores_df)
-    results = scores_df.sort_values(by="score", ascending=False)
-    results = results.drop_duplicates(subset="target")
-    for t in results.target:
-        param = results[results.target == t].parameters.item()
-        score = results[results.target == t].score.item()
-        print(f"\n{t}\n{param}\n{score}")
+        group_kfold = GroupKFold(n_splits=len(df["anno"].unique()))
+        logger.info(f"Target: {target}")
+        for model in models.values():
+            tune_model(X, y, model, group_kfold)
 
 
 if __name__ == "__main__":

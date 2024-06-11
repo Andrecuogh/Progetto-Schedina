@@ -1,0 +1,80 @@
+2024-06-11 17:56:32,722 [INFO] etl_flow: Target: Gf
+2024-06-11 17:56:35,822 [INFO] etl_flow: Estimator: LinearDiscriminantAnalysis()
+2024-06-11 17:56:35,822 [INFO] etl_flow: Parameters: {'solver': 'svd'}
+2024-06-11 17:56:35,822 [INFO] etl_flow: Score: 0.35
+2024-06-11 17:56:40,626 [INFO] etl_flow: Estimator: KNeighborsClassifier()
+2024-06-11 17:56:40,626 [INFO] etl_flow: Parameters: {'n_neighbors': 23}
+2024-06-11 17:56:40,626 [INFO] etl_flow: Score: 0.31
+2024-06-11 17:57:01,101 [INFO] etl_flow: Estimator: GradientBoostingClassifier()
+2024-06-11 17:57:01,101 [INFO] etl_flow: Parameters: {'learning_rate': 0.3, 'max_depth': 3, 'max_features': 1.0, 'n_estimators': 50, 'random_state': 66, 'subsample': 0.75}
+2024-06-11 17:57:01,101 [INFO] etl_flow: Score: 0.33
+2024-06-11 17:57:03,910 [INFO] etl_flow: Estimator: RandomForestClassifier()
+2024-06-11 17:57:03,910 [INFO] etl_flow: Parameters: {'max_depth': 3, 'max_features': 1.0, 'n_estimators': 50, 'random_state': 66}
+2024-06-11 17:57:03,910 [INFO] etl_flow: Score: 0.29
+2024-06-11 17:57:04,987 [INFO] etl_flow: Estimator: AdaBoostClassifier()
+2024-06-11 17:57:04,987 [INFO] etl_flow: Parameters: {'algorithm': 'SAMME', 'n_estimators': 50, 'random_state': 66}
+2024-06-11 17:57:04,987 [INFO] etl_flow: Score: 0.37
+2024-06-11 17:57:04,987 [INFO] etl_flow: Target: Gs
+2024-06-11 17:57:05,071 [INFO] etl_flow: Estimator: LinearDiscriminantAnalysis()
+2024-06-11 17:57:05,071 [INFO] etl_flow: Parameters: {'solver': 'svd'}
+2024-06-11 17:57:05,071 [INFO] etl_flow: Score: 0.35
+2024-06-11 17:57:11,392 [INFO] etl_flow: Estimator: KNeighborsClassifier()
+2024-06-11 17:57:11,392 [INFO] etl_flow: Parameters: {'n_neighbors': 56}
+2024-06-11 17:57:11,392 [INFO] etl_flow: Score: 0.37
+2024-06-11 17:57:34,191 [INFO] etl_flow: Estimator: GradientBoostingClassifier()
+2024-06-11 17:57:34,191 [INFO] etl_flow: Parameters: {'learning_rate': 0.3, 'max_depth': 3, 'max_features': 1.0, 'n_estimators': 50, 'random_state': 66, 'subsample': 1.0}
+2024-06-11 17:57:34,191 [INFO] etl_flow: Score: 0.35
+2024-06-11 17:57:37,013 [INFO] etl_flow: Estimator: RandomForestClassifier()
+2024-06-11 17:57:37,013 [INFO] etl_flow: Parameters: {'max_depth': 5, 'max_features': 'sqrt', 'n_estimators': 50, 'random_state': 66}
+2024-06-11 17:57:37,013 [INFO] etl_flow: Score: 0.31
+2024-06-11 17:57:38,089 [INFO] etl_flow: Estimator: AdaBoostClassifier()
+2024-06-11 17:57:38,089 [INFO] etl_flow: Parameters: {'algorithm': 'SAMME', 'n_estimators': 50, 'random_state': 66}
+2024-06-11 17:57:38,089 [INFO] etl_flow: Score: 0.35
+2024-06-11 17:57:38,105 [INFO] etl_flow: Target: 1X2
+2024-06-11 17:57:38,205 [INFO] etl_flow: Estimator: LinearDiscriminantAnalysis()
+2024-06-11 17:57:38,205 [INFO] etl_flow: Parameters: {'solver': 'svd'}
+2024-06-11 17:57:38,205 [INFO] etl_flow: Score: 0.46
+2024-06-11 17:57:44,415 [INFO] etl_flow: Estimator: KNeighborsClassifier()
+2024-06-11 17:57:44,415 [INFO] etl_flow: Parameters: {'n_neighbors': 45}
+2024-06-11 17:57:44,415 [INFO] etl_flow: Score: 0.44
+2024-06-11 17:57:59,476 [INFO] etl_flow: Estimator: GradientBoostingClassifier()
+2024-06-11 17:57:59,476 [INFO] etl_flow: Parameters: {'learning_rate': 0.1, 'max_depth': 3, 'max_features': 1.0, 'n_estimators': 50, 'random_state': 66, 'subsample': 0.75}
+2024-06-11 17:57:59,477 [INFO] etl_flow: Score: 0.5
+2024-06-11 17:58:02,727 [INFO] etl_flow: Estimator: RandomForestClassifier()
+2024-06-11 17:58:02,727 [INFO] etl_flow: Parameters: {'max_depth': 5, 'max_features': 1.0, 'n_estimators': 50, 'random_state': 66}
+2024-06-11 17:58:02,727 [INFO] etl_flow: Score: 0.46
+2024-06-11 17:58:04,054 [INFO] etl_flow: Estimator: AdaBoostClassifier()
+2024-06-11 17:58:04,054 [INFO] etl_flow: Parameters: {'algorithm': 'SAMME', 'n_estimators': 50, 'random_state': 66}
+2024-06-11 17:58:04,054 [INFO] etl_flow: Score: 0.46
+2024-06-11 17:58:04,054 [INFO] etl_flow: Target: GG-NG
+2024-06-11 17:58:04,150 [INFO] etl_flow: Estimator: LinearDiscriminantAnalysis()
+2024-06-11 17:58:04,150 [INFO] etl_flow: Parameters: {'solver': 'svd'}
+2024-06-11 17:58:04,150 [INFO] etl_flow: Score: 0.54
+2024-06-11 17:58:10,612 [INFO] etl_flow: Estimator: KNeighborsClassifier()
+2024-06-11 17:58:10,612 [INFO] etl_flow: Parameters: {'n_neighbors': 12}
+2024-06-11 17:58:10,612 [INFO] etl_flow: Score: 0.52
+2024-06-11 17:58:15,706 [INFO] etl_flow: Estimator: GradientBoostingClassifier()
+2024-06-11 17:58:15,707 [INFO] etl_flow: Parameters: {'learning_rate': 0.1, 'max_depth': 3, 'max_features': 1.0, 'n_estimators': 50, 'random_state': 66, 'subsample': 0.75}
+2024-06-11 17:58:15,707 [INFO] etl_flow: Score: 0.56
+2024-06-11 17:58:18,995 [INFO] etl_flow: Estimator: RandomForestClassifier()
+2024-06-11 17:58:18,996 [INFO] etl_flow: Parameters: {'max_depth': 3, 'max_features': 'sqrt', 'n_estimators': 50, 'random_state': 66}
+2024-06-11 17:58:18,996 [INFO] etl_flow: Score: 0.52
+2024-06-11 17:58:20,248 [INFO] etl_flow: Estimator: AdaBoostClassifier()
+2024-06-11 17:58:20,248 [INFO] etl_flow: Parameters: {'algorithm': 'SAMME', 'n_estimators': 50, 'random_state': 66}
+2024-06-11 17:58:20,248 [INFO] etl_flow: Score: 0.58
+2024-06-11 17:58:20,263 [INFO] etl_flow: Target: O-U
+2024-06-11 17:58:20,356 [INFO] etl_flow: Estimator: LinearDiscriminantAnalysis()
+2024-06-11 17:58:20,356 [INFO] etl_flow: Parameters: {'solver': 'svd'}
+2024-06-11 17:58:20,356 [INFO] etl_flow: Score: 0.57
+2024-06-11 17:58:26,864 [INFO] etl_flow: Estimator: KNeighborsClassifier()
+2024-06-11 17:58:26,865 [INFO] etl_flow: Parameters: {'n_neighbors': 1}
+2024-06-11 17:58:26,866 [INFO] etl_flow: Score: 0.51
+2024-06-11 17:58:32,597 [INFO] etl_flow: Estimator: GradientBoostingClassifier()
+2024-06-11 17:58:32,598 [INFO] etl_flow: Parameters: {'learning_rate': 0.1, 'max_depth': 3, 'max_features': 1.0, 'n_estimators': 50, 'random_state': 66, 'subsample': 1.0}
+2024-06-11 17:58:32,598 [INFO] etl_flow: Score: 0.58
+2024-06-11 17:58:35,760 [INFO] etl_flow: Estimator: RandomForestClassifier()
+2024-06-11 17:58:35,760 [INFO] etl_flow: Parameters: {'max_depth': 3, 'max_features': 1.0, 'n_estimators': 50, 'random_state': 66}
+2024-06-11 17:58:35,760 [INFO] etl_flow: Score: 0.55
+2024-06-11 17:58:36,935 [INFO] etl_flow: Estimator: AdaBoostClassifier()
+2024-06-11 17:58:36,935 [INFO] etl_flow: Parameters: {'algorithm': 'SAMME', 'n_estimators': 50, 'random_state': 66}
+2024-06-11 17:58:36,935 [INFO] etl_flow: Score: 0.59
