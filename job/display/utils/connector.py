@@ -97,7 +97,7 @@ class Loader(RepoConnector):
         content = requests.get(url).text
         md_to_kv_translator = {
             r"\*\*(.*?)\*\*": r"[b]\1[/b]",  # header 1
-            r"# (.*?)(?=\n|$)": r"[size=25]\1[/size]",  # bold
+            r"# (.*?)(?=\n|$)": r"[size=50]\1[/size]",  # bold
         }
         for md, kv in md_to_kv_translator.items():
             content = re.sub(md, kv, content)
