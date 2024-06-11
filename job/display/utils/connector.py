@@ -38,7 +38,7 @@ class Updater(RepoConnector):
         super().__init__()
         self.curr_version = VERSION
         self.version_path = f"{self.path}/data/version/versions.csv"
-        self.upd_link = f"{self.path}/data/version/latest.apk"
+        self.upd_link = f"{self.path}/data/version/schedina.apk"
         self.line = "Nuovo aggiornamento disponibile."
 
     def search_update(self) -> bool:
@@ -52,9 +52,8 @@ class Updater(RepoConnector):
         the project's GitHub repository
         """
         versions = pd.read_csv(link)
-        self.latest_version = versions[versions["Latest"]]["Version"].values[0]
-        self.no_updated = self.latest_version > self.curr_version
-        print(self.no_updated)
+        self.latest_version = versions[versions["latest"]]["version"].values[0]
+        self.no_updated = self.latest_version != self.curr_version
         return self.no_updated
 
     def update_app(self):

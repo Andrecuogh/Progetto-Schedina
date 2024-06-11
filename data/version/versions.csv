@@ -1,7 +1,8 @@
-Version,Latest
-0.1,False
-0.2,False
-0.3,False
-0.4,False
-0.5,False
-0.51,True
+version,latest
+"0.1.0",False
+"0.2.0",False
+"0.3.0",False
+"0.4.0",False
+"0.5.0",False
+"0.5.1",False
+"1.0.0",True

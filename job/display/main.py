@@ -14,7 +14,7 @@ ssl._create_default_https_context = ssl._create_stdlib_context
 
 class MainApp(App):
     def __init__(self, *args, **kwargs):
-        self.scale_factor = 0.3
+        self.scale_factor = 1.0
         super().__init__(*args, **kwargs)
         self.kv_directory = "layouts"
         self.match_id = 0
@@ -25,7 +25,7 @@ class MainApp(App):
         )
         self.colors = cmap
         Window.clearcolor = self.colors["background"]
-        Window.size = (1080 * self.scale_factor, 2400 * self.scale_factor)
+        # Window.size = (1080 * self.scale_factor, 2400 * self.scale_factor)  # only for testing in pc
         self.dfs = Loader().load()
 
     def build(self) -> ScreenManager:
