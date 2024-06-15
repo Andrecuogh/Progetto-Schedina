@@ -37,8 +37,8 @@ class Updater(RepoConnector):
     def __init__(self):
         super().__init__()
         self.curr_version = VERSION
-        self.version_path = f"{self.path}/data/version/versions.csv"
-        self.upd_link = f"{self.path}/data/version/schedina.apk"
+        self.version_path = f"{self.path}/data/versions/versions.csv"
+        self.upd_link = f"{self.path}/data/versions/schedina.apk"
         self.line = "Nuovo aggiornamento disponibile."
 
     def search_update(self) -> bool:
@@ -70,8 +70,9 @@ class Loader(RepoConnector):
         self.targets = TARGETS
         self.metadata_path = f"{self.path}/data/metadata.csv"
         self.dataframe_path = f"{self.path}/data/predictions/{self.current_year}"
+        self.accessories_path = f"{self.path}/data/accessories"
 
-    def load(self) -> dict[pd.DataFrame]:
+    def load_dfs(self) -> dict[pd.DataFrame]:
         """Pipeline of loading process"""
         self.get_metadata(self.metadata_path)
         dfs = self.download_dataframes(self.dataframe_path)
@@ -102,3 +103,7 @@ class Loader(RepoConnector):
         for md, kv in md_to_kv_translator.items():
             content = re.sub(md, kv, content)
         return content
+
+    def extract_previous_encounters(self):
+        df = pd.read_csv(f"{self.accessories_path}/previous_encounters.csv")
+        return df

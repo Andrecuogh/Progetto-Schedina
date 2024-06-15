@@ -5,26 +5,6 @@ import pandas as pd
 targets = ["Gf", "Gs", "1X2", "GG-NG", "O-U"]
 
 
-def save_report(pred: dict) -> None:
-    """Save predictions"""
-    anno = pred["anno"]
-    giornata = pred["giornata"]
-    os.makedirs(f"data/predictions/{anno}/{giornata}", exist_ok=True)
-    for target in targets:
-        pred[target].to_csv(f"data/predictions/{anno}/{giornata}/{target}.csv")
-    metadata = pd.read_csv("data/metadata.csv")
-    metadata_to_add = pd.DataFrame({"anno": [anno], "giornata": [giornata]})
-    metadata = pd.concat([metadata, metadata_to_add], ignore_index=True)
-    metadata.to_csv("data/metadata.csv", index=False)
-
-
-def display_report(pred: dict) -> None:
-    """Print predictions"""
-    for name, df in pred.items():
-        print(name)
-        print(df, end="\n\n")
-
-
 def formatt(pred: dict) -> dict:
     """Format predictions dataframes"""
     pred["Gf"].columns = pred["Gf"].columns.astype(int)
@@ -43,10 +23,39 @@ def compatible(pred: dict) -> dict:
     return pred
 
 
-def report(pred: dict) -> None:
+def save_report(pred: dict) -> None:
+    """Save predictions"""
+    anno = pred["anno"]
+    giornata = pred["giornata"]
+    os.makedirs(f"data/predictions/{anno}/{giornata}", exist_ok=True)
+    for target in targets:
+        pred[target].to_csv(f"data/predictions/{anno}/{giornata}/{target}.csv")
+    metadata = pd.read_csv("data/metadata.csv")
+    metadata_to_add = pd.DataFrame({"anno": [anno], "giornata": [giornata]})
+    metadata = pd.concat([metadata, metadata_to_add], ignore_index=True)
+    metadata.to_csv("data/metadata.csv", index=False)
+
+
+def save_accessories_tables(accessories: dict) -> None:
+    path = "data/accessories"
+    os.makedirs(path, exist_ok=True)
+    accessories["previous_encounters"].to_csv(
+        f"{path}/previous_encounters.csv", index=False
+    )
+
+
+def display_report(pred: dict) -> None:
+    """Print predictions"""
+    for name, df in pred.items():
+        print(name)
+        print(df, end="\n\n")
+
+
+def report(accessories: dict, pred: dict) -> None:
     """Report the results of predictions"""
     logging.info("Reporting results")
     pred = formatt(pred)
     pred = compatible(pred)
     save_report(pred)
+    save_accessories_tables(accessories)
     display_report(pred)

@@ -28,27 +28,33 @@ def validate_datafolder(seasons: dict) -> None:
 
 def get_data(seasons: dict) -> dict[pd.DataFrame]:
     """Load data tables"""
-    goals = matches = pd.DataFrame()
+    goals = matches = prev_enc = pd.DataFrame()
     for year in seasons.keys():
         year_df = pd.read_csv(f"data/leagues/{year}.csv", index_col=0)
         goal, match = extraction.extract_features(year_df)
         goals = pd.concat([goals, goal])
         matches = pd.concat([matches, match])
+        prev_enc = pd.concat([prev_enc, year_df])
 
-    next = goals.sort_values(by=["anno", "giornata"]).iloc[-20:]
-    next.to_csv("data/leagues/next.csv", index=False)
+    prev_enc = creation.transform_previous_encounters(prev_enc)
 
-    dataframe = {"goals": goals, "matches": matches}
-    return dataframe
+    dataframe = {
+        "goals": goals,
+        "matches": matches,
+    }
+    accessories = {
+        "previous_encounters": prev_enc,
+    }
+    return dataframe, accessories
 
 
 def magic_flow(seasons: dict) -> None:
     """Pipeline of the flow: loading, transformation, prediction"""
     validate_datafolder(seasons)
-    df = get_data(seasons)
+    df, accessories = get_data(seasons)
     df = creation.create_dataset(df)
     predictions = prediction.predict_scores(df)
-    reportage.report(predictions)
+    reportage.report(accessories, predictions)
 
 
 if __name__ == "__main__":

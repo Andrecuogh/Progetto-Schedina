@@ -43,3 +43,14 @@ def create_dataset(df: pd.DataFrame) -> pd.DataFrame:
     df = create_match_label(df)
     df = standardize_goals(df)
     return df
+
+
+def transform_previous_encounters(df: pd.DataFrame) -> pd.DataFrame:
+    df["partita"] = df["squadra_casa"] + " - " + df["squadra_trasferta"]
+    df["risultato"] = (
+        df["goal_casa"].astype(str) + " - " + df["goal_trasferta"].astype(str)
+    )
+    df = df.drop(
+        ["squadra_casa", "squadra_trasferta", "goal_casa", "goal_trasferta"], axis=1
+    )
+    return df

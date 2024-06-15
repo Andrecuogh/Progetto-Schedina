@@ -14,7 +14,7 @@ ssl._create_default_https_context = ssl._create_stdlib_context
 
 class MainApp(App):
     def __init__(self, *args, **kwargs):
-        self.scale_factor = 1.0
+        self.scale_factor = 0.3  # prod: 1.0 test 0.3
         super().__init__(*args, **kwargs)
         self.kv_directory = "layouts"
         self.match_id = 0
@@ -25,10 +25,19 @@ class MainApp(App):
         )
         self.colors = cmap
         Window.clearcolor = self.colors["background"]
-        # Window.size = (1080 * self.scale_factor, 2400 * self.scale_factor)  # only for testing in pc
-        self.dfs = Loader().load()
+        Window.size = (
+            1080 * self.scale_factor,
+            2400 * self.scale_factor,
+        )  # only for testing in pc
+
+    def get_data(self):
+        loader = Loader()
+        self.dfs = loader.load_dfs()
+        self.readme = loader.download_readme()
+        self.previous_encounters = loader.extract_previous_encounters()
 
     def build(self) -> ScreenManager:
+        self.get_data()
         self.sm = Builder.load_file(f"{self.kv_directory}/Schedina.kv")
         self.tutorial_boxes = self.load_tutorial()
         self.about_box = self.add_about_box()
@@ -53,9 +62,8 @@ class MainApp(App):
         return tut_boxes
 
     def add_about_box(self) -> Button:
-        readme = Loader().download_readme()
         about = Builder.load_file(f"{self.kv_directory}/About.kv")
-        about.text = readme
+        about.text = self.readme
         return about
 
     def add_labels(self):
