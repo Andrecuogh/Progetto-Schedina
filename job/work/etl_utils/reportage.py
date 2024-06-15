@@ -43,7 +43,7 @@ def save_accessories_tables(accessories: dict) -> None:
         f"{path}/previous_encounters.csv", index=False
     )
     accessories["momentum"].to_csv(f"{path}/momentum.csv")
-    accessories["ranking"].to_csv(f"{path}/ranking.csv", index=False)
+    accessories["ranking"].to_csv(f"{path}/ranking.csv")
 
 
 def display_report(pred: dict) -> None:

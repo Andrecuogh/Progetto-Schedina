@@ -107,3 +107,7 @@ class Loader(RepoConnector):
     def extract_previous_encounters(self):
         df = pd.read_csv(f"{self.accessories_path}/previous_encounters.csv")
         return df
+
+    def load_ranking(self):
+        df = pd.read_csv(f"{self.accessories_path}/ranking.csv")
+        return df

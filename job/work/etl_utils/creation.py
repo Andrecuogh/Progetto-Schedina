@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 
 
 def merge_df(df: pd.DataFrame) -> pd.DataFrame:
@@ -80,15 +81,18 @@ def view_ranking(leagues: dict) -> pd.DataFrame:
     df = leagues["goals"].copy()
     df = filter_latest_day(df, step=1)
     df = df.sort_values(by=["posizione"])
+    df["posizione"] = df.posizione.astype(int)
+    df["squadra"] = df["squadra"].apply(reduce_teams_names)
     df = df[
         [
             "squadra",
-            "giornata",
+            "posizione",
             "gol_fatti_cum",
             "gol_subiti_cum",
         ]
     ]
-    df["squadra"] = df["squadra"].apply(reduce_teams_names)
+    df.columns = ["squadra", "posizione", "Gf", "Gs"]
+    df = df.set_index("posizione")
     return df
 
 

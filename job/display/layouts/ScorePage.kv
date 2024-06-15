@@ -104,14 +104,29 @@
         ProbabilityButton:
 
 
+<Ranking@ScrollView>:
+    area: "Ranking"
+    pos_hint: {'x': 0.03, 'y': 0.165}
+    size_hint: (0.45, 0.17)
+    GridLayout:
+        size_hint_y: None
+        size: (root.size[0], root.size[1]*3)
+        rows: 20
+        cols: 4
+        scroll_y: 0
+        orientation: 'lr-tb'
+        do_scroll_x: False
+        always_overscroll: False
+    
+        
+        
+
+
 <ScorePage@Screen>:
     name: "scorepage"
     canvas:
         Color:
             rgba: app.colors["label"]
-        # RoundedRectangle:
-           # pos: root.size[0] * 0.0165, root.size[1] * 0.49
-            # size: root.size[0] * 0.95, root.size[1] * 0.41
         RoundedRectangle:
             pos: root.size[0] * 0.0165, root.size[1] * 0.36
             size: root.size[0] * 0.9525, root.size[1] * 0.12
@@ -219,3 +234,4 @@
 
     NavigationBar:          
     PrevEncounter:
+    Ranking:

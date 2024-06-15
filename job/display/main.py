@@ -35,6 +35,7 @@ class MainApp(App):
         self.dfs = loader.load_dfs()
         self.readme = loader.download_readme()
         self.prev_enc = loader.extract_previous_encounters()
+        self.ranking = loader.load_ranking()
 
     def build(self) -> ScreenManager:
         self.get_data()
@@ -87,6 +88,7 @@ class MainApp(App):
         self.add_value_text(target="O-U", area_name="OverUnder")
         self.add_teams_labels()
         self.add_previous_encounters()
+        self.add_ranking()
 
     def add_value_text(self, target: str, area_name: str, grid_id: int = 0):
         area = self.get_area_from_name(area_name)
@@ -128,6 +130,15 @@ class MainApp(App):
             res_label.text = top.loc[i, "label"]
             year_label = year_grid.children[i]
             year_label.text = str(top.loc[i, "anno"])
+
+    def add_ranking(self):
+        area = self.get_area_from_name("Ranking")
+        grid = area.children[0]
+        labels = self.ranking.values.reshape(-1, 1)
+        for label in labels:
+            button = Builder.load_file(f"{self.kv_directory}/Ranking.kv")
+            grid.add_widget(button)
+            button.text = str(label[0])
 
     def change_match(self, move):
         self.match_id += move
