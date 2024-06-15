@@ -74,8 +74,6 @@ def cleaning_df(df: pd.DataFrame) -> pd.DataFrame:
     """Removing NAs and unnecessary columns"""
     df = df.drop(
         [
-            "gol_fatti_cum",
-            "gol_subiti_cum",
             "differenza_reti",
             "avversario",
             "punti",

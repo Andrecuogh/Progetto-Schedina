@@ -33,7 +33,17 @@ def create_match_label(df: pd.DataFrame) -> pd.DataFrame:
 
 def standardize_goals(df: pd.DataFrame) -> pd.DataFrame:
     """Drop columns"""
-    df = df.drop(["gol_subiti_casa", "gol_subiti_trasferta"], axis=1)
+    df = df.drop(
+        [
+            "gol_subiti_casa",
+            "gol_subiti_trasferta",
+            "gol_fatti_cum_casa",
+            "gol_subiti_cum_trasferta",
+            "gol_fatti_cum_trasferta",
+            "gol_subiti_cum_casa",
+        ],
+        axis=1,
+    )
     return df
 
 
@@ -45,6 +55,15 @@ def create_dataset(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
+def reduce_teams_names(squadra: str, single=True) -> str:
+    if single:
+        return squadra[0:3].upper()
+    else:
+        squadre = squadra.split(" - ")
+        abbreviazioni = [squadra[:3].upper() for squadra in squadre]
+        return " - ".join(abbreviazioni)
+
+
 def transform_previous_encounters(df: pd.DataFrame) -> pd.DataFrame:
     df["partita"] = df["squadra_casa"] + " - " + df["squadra_trasferta"]
     df["risultato"] = (
@@ -53,14 +72,23 @@ def transform_previous_encounters(df: pd.DataFrame) -> pd.DataFrame:
     df = df.drop(
         ["squadra_casa", "squadra_trasferta", "goal_casa", "goal_trasferta"], axis=1
     )
+    df["partita_short"] = df["partita"].apply(reduce_teams_names, single=False)
     return df
 
 
 def view_ranking(leagues: dict) -> pd.DataFrame:
     df = leagues["goals"].copy()
-    df = filter_latest_day(df)
+    df = filter_latest_day(df, step=1)
     df = df.sort_values(by=["posizione"])
-    df = df[["squadra", "giornata", "gol_fatti", "gol_subiti"]]
+    df = df[
+        [
+            "squadra",
+            "giornata",
+            "gol_fatti_cum",
+            "gol_subiti_cum",
+        ]
+    ]
+    df["squadra"] = df["squadra"].apply(reduce_teams_names)
     return df
 
 
@@ -73,7 +101,7 @@ def view_momentum(leagues: dict) -> pd.DataFrame:
     return df
 
 
-def filter_latest_day(df: pd.DataFrame) -> pd.DataFrame:
+def filter_latest_day(df: pd.DataFrame, step: int = 0) -> pd.DataFrame:
     df = df[df.anno == df.anno.max()]
-    df = df[df.giornata == df.giornata.max()]
+    df = df[df.giornata == df.giornata.max() - step]
     return df
