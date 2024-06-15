@@ -19,6 +19,7 @@ LOG_CONFIG = {
             "level": "DEBUG",
             "formatter": "standard",
             "class": "logging.FileHandler",
+            "mode": "w",
             "filename": log_file_path,
         },
     },

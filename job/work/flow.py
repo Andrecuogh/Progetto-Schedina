@@ -1,23 +1,29 @@
 import os
 import pandas as pd
-from league_data import seasons
-from etl_utils import extraction, prediction, scraping, creation, reportage
-
-
 import logging
+import logging.config
+from etl_config.league_data import seasons
+from etl_utils import extraction, prediction, scraping, creation, reportage
+from etl_config.log import LOG_CONFIG
 
-logging.basicConfig(encoding="utf-8", level=logging.DEBUG)
-logging.info("Import completed")
+
+logging.config.dictConfig(LOG_CONFIG)
+logger = logging.getLogger("etl_flow")
+logger.info("Import completed")
 
 
 def validate_datafolder(seasons: dict) -> None:
     """Check the validity of the folder of data"""
     for year in seasons.keys():
+        logger.info(f"checking available data for year {year}...")
         is_file = os.path.isfile(f"data/leagues/{year}.csv")
-        if not is_file or seasons[year]["ongoing"]:
+        if not is_file or seasons[year]["days"] != 38:
+            logger.info("Output: False. Downloading data from skysport.com")
             scraping.scrape_sky(
                 year=year, ongoing=seasons[year]["ongoing"], days=seasons[year]["days"]
             )
+        else:
+            logger.info("Output: True")
 
 
 def get_data(seasons: dict) -> dict[pd.DataFrame]:

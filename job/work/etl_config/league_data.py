@@ -126,7 +126,7 @@ seasons = {
             "Napoli",
             "Sassuolo",
         ],
-        "ongoing": False,
-        "days": 38,
+        "ongoing": True,
+        "days": 5,
     },
 }

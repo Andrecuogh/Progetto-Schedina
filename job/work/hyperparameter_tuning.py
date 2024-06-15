@@ -7,13 +7,12 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import (
     GradientBoostingClassifier,
     RandomForestClassifier,
-    AdaBoostClassifier,
 )
-from sklearn.model_selection import GridSearchCV, GroupKFold
-from league_data import seasons
+from sklearn.model_selection import GridSearchCV, TimeSeriesSplit
 from flow import validate_datafolder, get_data
 from etl_utils.creation import create_dataset
 from etl_utils.prediction import Xy_split
+from etl_config.league_data import seasons
 from etl_config.log import LOG_CONFIG
 
 logging.config.dictConfig(LOG_CONFIG)
@@ -49,19 +48,11 @@ models = {
             "random_state": [66],
         },
     },
-    "ada": {
-        "algorithm": AdaBoostClassifier(),
-        "parameters": {
-            "n_estimators": [50],
-            "algorithm": ["SAMME"],
-            "random_state": [66],
-        },
-    },
 }
 targets = ["Gf", "Gs", "1X2", "GG-NG", "O-U"]
 
 
-def tune_model(X, y, model, cross_val):
+def tune_model(X, y, model, cross_val, names):
     gscv = GridSearchCV(
         estimator=model["algorithm"],
         param_grid=model["parameters"],
@@ -69,42 +60,29 @@ def tune_model(X, y, model, cross_val):
         cv=cross_val,
         n_jobs=2,
     )
-    gscv.fit(X, y, groups=X["anno"])
-
+    gscv.fit(X, y)
     logger.info(f"Estimator: {gscv.estimator}")
     logger.info(f"Parameters: {gscv.best_params_}")
-    logger.info(f"Score: {np.round(gscv.best_score_, 2)}\n")
-
-
-def update_df(df, scores):
-    cols = [
-        "target",
-        "model",
-        "parameters",
-        "score",
-    ]
-    scores_df = pd.DataFrame(scores, columns=cols)
-    df = pd.concat([df, scores_df], ignore_index=True)
-    return df
-
-
-def get_max_score(df):
-    df = df.sort_values(by=["target", "model", "score"])
-    df = df.drop_duplicates(subset=["target", "model"], keep="last")
-    return df
+    logger.info(f"Score: {np.round(gscv.best_score_, 2)}")
+    log_df = X[(X.anno == 2023) & (X.giornata == 10)]
+    log_pred = gscv.predict_proba(log_df)
+    log_df = pd.DataFrame(log_pred, columns=gscv.classes_, index=names)
+    log_df["y_hat"] = gscv.predict(X[(X.anno == 2023) & (X.giornata == 10)])
+    log_df["y_true"] = y[(X.anno == 2023) & (X.giornata == 10)].values
+    logger.info(f"10th match:\n{log_df}\n")
 
 
 def flow(season_list):
     validate_datafolder(season_list)
     df = get_data(season_list)
     df = create_dataset(df)
-    scores_df = pd.DataFrame()
     for target in targets:
         X, y = Xy_split(df, target)
-        group_kfold = GroupKFold(n_splits=len(df["anno"].unique()))
+        names = df[(df.anno == 2023) & (df.giornata == 10)].squadra
+        tscv = TimeSeriesSplit(n_splits=4)
         logger.info(f"Target: {target}")
         for model in models.values():
-            tune_model(X, y, model, group_kfold)
+            tune_model(X, y, model, tscv, names)
 
 
 if __name__ == "__main__":

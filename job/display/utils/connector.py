@@ -69,7 +69,7 @@ class Loader(RepoConnector):
         self.current_year = CURRENT_YEAR
         self.targets = TARGETS
         self.metadata_path = f"{self.path}/data/metadata.csv"
-        self.dataframe_path = f"{self.path}/data/{self.current_year}"
+        self.dataframe_path = f"{self.path}/data/predictions/{self.current_year}"
 
     def load(self) -> dict[pd.DataFrame]:
         """Pipeline of loading process"""

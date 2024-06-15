@@ -9,7 +9,7 @@ def save_report(pred: dict) -> None:
     """Save predictions"""
     anno = pred["anno"]
     giornata = pred["giornata"]
-    os.makedirs(f"data/{anno}/{giornata}", exist_ok=True)
+    os.makedirs(f"data/predictions/{anno}/{giornata}", exist_ok=True)
     for target in targets:
         pred[target].to_csv(f"data/predictions/{anno}/{giornata}/{target}.csv")
     metadata = pd.read_csv("data/metadata.csv")

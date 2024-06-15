@@ -1,26 +1,36 @@
 import pandas as pd
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.ensemble import GradientBoostingClassifier, RandomForestClassifier
+from sklearn.ensemble import GradientBoostingClassifier
 import logging
 
 models = {
-    "Gf": RandomForestClassifier(
-        max_depth=None,
+    "Gf": GradientBoostingClassifier(
+        n_estimators=50,
         max_features=1.0,
-        min_samples_leaf=0.1,
-        min_samples_split=2,
-        n_estimators=150,
+        subsample=0.75,
         random_state=66,
     ),
-    "Gs": KNeighborsClassifier(n_neighbors=254),
-    "1X2": KNeighborsClassifier(n_neighbors=155),
-    "GG-NG": KNeighborsClassifier(n_neighbors=276),
-    "O-U": RandomForestClassifier(
-        max_depth=None,
-        max_features="sqrt",
-        min_samples_leaf=0.4,
-        min_samples_split=2,
+    "Gs": GradientBoostingClassifier(
         n_estimators=50,
+        max_features=1.0,
+        subsample=1.0,
+        random_state=66,
+    ),
+    "1X2": GradientBoostingClassifier(
+        n_estimators=50,
+        max_features=1.0,
+        subsample=0.75,
+        random_state=66,
+    ),
+    "GG-NG": GradientBoostingClassifier(
+        n_estimators=50,
+        max_features=1.0,
+        subsample=0.75,
+        random_state=66,
+    ),
+    "O-U": GradientBoostingClassifier(
+        n_estimators=50,
+        max_features=0.75,
+        subsample=0.75,
         random_state=66,
     ),
 }
