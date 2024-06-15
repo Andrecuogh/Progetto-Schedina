@@ -42,6 +42,8 @@ def save_accessories_tables(accessories: dict) -> None:
     accessories["previous_encounters"].to_csv(
         f"{path}/previous_encounters.csv", index=False
     )
+    accessories["momentum"].to_csv(f"{path}/momentum.csv")
+    accessories["ranking"].to_csv(f"{path}/momentum.csv")
 
 
 def display_report(pred: dict) -> None:

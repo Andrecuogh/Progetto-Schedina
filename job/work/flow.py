@@ -52,6 +52,8 @@ def magic_flow(seasons: dict) -> None:
     """Pipeline of the flow: loading, transformation, prediction"""
     validate_datafolder(seasons)
     df, accessories = get_data(seasons)
+    accessories["ranking"] = creation.view_ranking(df)
+    accessories["momentum"] = creation.view_momentum(df)
     df = creation.create_dataset(df)
     predictions = prediction.predict_scores(df)
     reportage.report(accessories, predictions)

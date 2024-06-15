@@ -5,6 +5,7 @@
 
 
 <ProbabilityButton@Button>:
+    background_color: app.colors["colorbar"][50]
     background_normal: ""
     font_size: 50*app.scale_factor
     text: "default"
@@ -26,7 +27,7 @@
     background_color: app.colors["button"]
     background_normal: ""
     size_hint: (0.08, 0.06)
-    pos_hint: {"x": 0.46, "y": 0.07}
+    pos_hint: {"x": 0.46, "y": 0.05}
     text: "Home"
     font_size: 35*app.scale_factor
     on_press:
@@ -40,65 +41,117 @@
         Color:
             rgba: app.colors["button"]
         RoundedRectangle:
-            pos: root.size[0] * 0.45, root.size[1] * 0.06
+            pos: root.size[0] * 0.45, root.size[1] * 0.04
             size: root.size[0] * 0.1, root.size[1] * 0.08
         Ellipse:
-            pos: root.size[0] * 0.09, root.size[1] * 0.05
+            pos: root.size[0] * 0.09, root.size[1] * 0.03
             size: root.size[0] * 0.26, root.size[1] * 0.1
         Ellipse:
-            pos: root.size[0] * 0.65, root.size[1] * 0.05
+            pos: root.size[0] * 0.65, root.size[1] * 0.03
             size: root.size[0] * 0.26, root.size[1] * 0.1
 
     NavigationButton:
         text: "Precedente"
-        pos_hint: {"x": 0.12, "y": 0.075}
+        pos_hint: {"x": 0.12, "y": 0.055}
         on_press:
             app.change_match(-1)
 
     NavigationButton:
         text: "Successivo"
-        pos_hint: {"x": 0.68, "y": 0.075}
+        pos_hint: {"x": 0.68, "y": 0.055}
         on_press:
             app.change_match(1)
 
     HomeButton:
 
+<Momentum@GridLayout>:
+    area: "previous_encounters"
+    pos_hint: {'x': 0.025, 'y': 0.3635}
+    size_hint: (0.935, 0.113)
+    rows: 3
+    Button:
+    Button:
+    Button:
+
+<PrevEncounter@FloatLayout>:
+    area: "PreviousEncounters"
+    FloatLayout:
+        LabelButton:
+            pos_hint: {'x': 0.512, 'y': 0.31}
+            size_hint: (0.135, 0.035)
+            text: "Anno"
+        LabelButton:
+            pos_hint: {'x': 0.652, 'y': 0.31}
+            size_hint: (0.308, 0.035)
+            text: "Precedenti"
+    GridLayout:
+        pos_hint: {'x': 0.512, 'y': 0.152}
+        size_hint: (0.135, 0.155)
+        rows: 3
+        orientation: "lr-bt"
+        spacing: 5*app.scale_factor
+        ProbabilityButton:
+        ProbabilityButton:
+        ProbabilityButton:
+    GridLayout:
+        pos_hint: {'x': 0.652, 'y': 0.152}
+        size_hint: (0.308, 0.155)
+        rows: 3
+        orientation: "lr-bt"
+        spacing: 5*app.scale_factor
+        ProbabilityButton:
+        ProbabilityButton:
+        ProbabilityButton:
+
 
 <ScorePage@Screen>:
     name: "scorepage"
-
+    canvas:
+        Color:
+            rgba: app.colors["label"]
+        # RoundedRectangle:
+           # pos: root.size[0] * 0.0165, root.size[1] * 0.49
+            # size: root.size[0] * 0.95, root.size[1] * 0.41
+        RoundedRectangle:
+            pos: root.size[0] * 0.0165, root.size[1] * 0.36
+            size: root.size[0] * 0.9525, root.size[1] * 0.12
+        RoundedRectangle:
+            pos: root.size[0] * 0.0165, root.size[1] * 0.15
+            size: root.size[0] * 0.4725, root.size[1] * 0.2
+        RoundedRectangle:
+            pos: root.size[0] * 0.5, root.size[1] * 0.15
+            size: root.size[0] * 0.4725, root.size[1] * 0.2
     UtilBar:
-
     FloatLayout:
         area: "ScoredReceived"
         LabelButton:
             text: "GOL"
-            size_hint: (0.1, 0.05)
-            pos_hint: {"center_x": 0.08, "center_y": 0.85}
+            size_hint: (0.1, 0.03)
+            pos_hint: {"center_x": 0.08, "center_y": 0.88}
             font_size: 40*app.scale_factor
         LabelButton:
             text: "Home"
-            size_hint: (0.1, 0.09)
-            pos_hint: {"center_x": 0.08, "center_y": 0.77}
+            size_hint: (0.1, 0.05)
+            pos_hint: {"center_x": 0.08, "center_y": 0.835}
             font_size: 40*app.scale_factor
         LabelButton:
             text: "Away"
-            size_hint: (0.1, 0.09)
-            pos_hint: {"center_x": 0.08, "center_y": 0.67}
+            size_hint: (0.1, 0.05)
+            pos_hint: {"center_x": 0.08, "center_y": 0.78}
             font_size: 40*app.scale_factor
         CustomGrid: 
             cols: 5
+            size_hint: (0.8, 0.03)
+            pos_hint: {"center_x": 0.55, "center_y": 0.88}
+            LabelButton:
+            LabelButton:
+            LabelButton:
+            LabelButton:
+            LabelButton:
+        CustomGrid:
+            cols: 5
             size_hint: (0.8, 0.05)
-            pos_hint: {"center_x": 0.55, "center_y": 0.85}
-            LabelButton:
-            LabelButton:
-            LabelButton:
-            LabelButton:
-            LabelButton:
-        CustomGrid:
-            cols: 5
-            size_hint: (0.8, 0.095)
-            pos_hint: {"center_x": 0.55, "center_y": 0.77}
+            pos_hint: {"center_x": 0.55, "center_y": 0.835}
             ProbabilityButton:
             ProbabilityButton:
             ProbabilityButton:
@@ -106,8 +159,8 @@
             ProbabilityButton:
         CustomGrid:
             cols: 5
-            size_hint: (0.8, 0.095)
-            pos_hint: {"center_x": 0.55, "center_y": 0.67}
+            size_hint: (0.8, 0.05)
+            pos_hint: {"center_x": 0.55, "center_y": 0.78}
             ProbabilityButton:
             ProbabilityButton:
             ProbabilityButton:
@@ -118,16 +171,16 @@
         area: "1X2"
         CustomGrid:
             cols: 3
-            size_hint: (0.5, 0.05)
-            pos_hint: {"center_x": 0.5, "center_y": 0.33}
+            size_hint: (0.925, 0.03)
+            pos_hint: {"center_x": 0.49, "center_y": 0.725}
             LabelButton:
             LabelButton:
             LabelButton:
             
         CustomGrid:
             cols: 3
-            size_hint: (0.5, 0.1)
-            pos_hint: {"center_x": 0.5, "center_y": 0.25}
+            size_hint: (0.925, 0.04)
+            pos_hint: {"center_x": 0.49, "center_y": 0.685}
             ProbabilityButton:
             ProbabilityButton:
             ProbabilityButton:
@@ -136,15 +189,15 @@
         area: "Gol-NoGol"
         CustomGrid:
             cols: 2
-            size_hint: (0.4, 0.05)
-            pos_hint: {"center_x": 0.73, "center_y": 0.54}
+            size_hint: (0.925, 0.03)
+            pos_hint: {"center_x": 0.49, "center_y": 0.64}
             LabelButton:
             LabelButton:
             
         CustomGrid:
             cols: 2
-            size_hint: (0.4, 0.1)
-            pos_hint: {"center_x": 0.27, "center_y": 0.46}
+            size_hint: (0.925, 0.04)
+            pos_hint: {"center_x": 0.49, "center_y": 0.60}
             ProbabilityButton:
             ProbabilityButton:  
     
@@ -152,17 +205,17 @@
         area: "OverUnder"
         CustomGrid:
             cols: 2
-            size_hint: (0.4, 0.05)
-            pos_hint: {"center_x": 0.27, "center_y": 0.54}
+            size_hint: (0.925, 0.03)
+            pos_hint: {"center_x": 0.49, "center_y": 0.555}
             LabelButton:
             LabelButton:
             
         CustomGrid:
             cols: 2
-            size_hint: (0.4, 0.1)
-            pos_hint: {"center_x": 0.73, "center_y": 0.46}
+            size_hint: (0.925, 0.04)
+            pos_hint: {"center_x": 0.49, "center_y": 0.515}
             ProbabilityButton:
             ProbabilityButton:
 
     NavigationBar:          
-        
+    PrevEncounter:

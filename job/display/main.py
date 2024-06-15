@@ -34,7 +34,7 @@ class MainApp(App):
         loader = Loader()
         self.dfs = loader.load_dfs()
         self.readme = loader.download_readme()
-        self.previous_encounters = loader.extract_previous_encounters()
+        self.prev_enc = loader.extract_previous_encounters()
 
     def build(self) -> ScreenManager:
         self.get_data()
@@ -86,6 +86,7 @@ class MainApp(App):
         self.add_value_text(target="GG-NG", area_name="Gol-NoGol")
         self.add_value_text(target="O-U", area_name="OverUnder")
         self.add_teams_labels()
+        self.add_previous_encounters()
 
     def add_value_text(self, target: str, area_name: str, grid_id: int = 0):
         area = self.get_area_from_name(area_name)
@@ -106,6 +107,27 @@ class MainApp(App):
         for child in screen.children:
             if child.area == area_name:
                 return child
+
+    def add_previous_encounters(self):
+        home, away = self.dfs["Gf"].index[self.match_id].split("-")
+        home_match = f"{home} - {away}"
+        away_match = f"{away} - {home}"
+        df = self.prev_enc[self.prev_enc.partita.isin([home_match, away_match])]
+        df = df.sort_values(by=["anno", "giornata"], ascending=False)
+        N_RESULT = 3
+        top = df.head(N_RESULT).copy()
+        top["label"] = top.apply(
+            lambda row: row["partita"].replace("-", row["risultato"]), axis=1
+        )
+        top = top.reset_index(drop=True)
+        area = self.get_area_from_name("PreviousEncounters")
+        result_grid = area.children[0]
+        year_grid = area.children[1]
+        for i in range(N_RESULT):
+            res_label = result_grid.children[i]
+            res_label.text = top.loc[i, "label"]
+            year_label = year_grid.children[i]
+            year_label.text = str(top.loc[i, "anno"])
 
     def change_match(self, move):
         self.match_id += move

@@ -54,3 +54,26 @@ def transform_previous_encounters(df: pd.DataFrame) -> pd.DataFrame:
         ["squadra_casa", "squadra_trasferta", "goal_casa", "goal_trasferta"], axis=1
     )
     return df
+
+
+def view_ranking(leagues: dict) -> pd.DataFrame:
+    df = leagues["goals"].copy()
+    df = filter_latest_day(df)
+    df = df.sort_values(by=["posizione"])
+    df = df[["squadra", "giornata", "gol_fatti", "gol_subiti"]]
+    return df
+
+
+def view_momentum(leagues: dict) -> pd.DataFrame:
+    df = leagues["goals"].copy()
+    df = filter_latest_day(df)
+    df = df.set_index("squadra")
+    df = df[[col for col in df.columns if "esito" in col]]
+    df = df.replace({1: "V", 0: "N", -1: "S"})
+    return df
+
+
+def filter_latest_day(df: pd.DataFrame) -> pd.DataFrame:
+    df = df[df.anno == df.anno.max()]
+    df = df[df.giornata == df.giornata.max()]
+    return df
