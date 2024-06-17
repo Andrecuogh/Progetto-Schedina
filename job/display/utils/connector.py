@@ -111,3 +111,7 @@ class Loader(RepoConnector):
     def load_ranking(self):
         df = pd.read_csv(f"{self.accessories_path}/ranking.csv")
         return df
+
+    def load_momentum(self):
+        df = pd.read_csv(f"{self.accessories_path}/momentum.csv")
+        return df

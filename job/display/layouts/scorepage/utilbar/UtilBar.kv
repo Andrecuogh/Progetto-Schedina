@@ -1,22 +1,25 @@
 <UtilsButton@Button>:
     background_color: app.colors["label"]
     background_normal: ""
-    font_size: 50*app.scale_factor
+    font_size: 80*app.sf
     bold: True
 
 
 <UtilBar@FloatLayout>:
+    area: "UtilBar"
+    pad: 20
     canvas:
         Color:
             rgba: app.colors["utilbar"]
         RoundedRectangle:
-            pos: root.size[0] * 0.01, root.size[1] * 0.915
-            size: root.size[0] * 0.98, root.size[1] * 0.08
+            pos: ((root.size[0] * 0.00) + (self.pad*app.sf), (root.size[1] * 0.90) + (self.pad*app.sf))
+            size: ((root.size[0] * 1.00) - (self.pad*2*app.sf), (root.size[1] * 0.10) - (self.pad*2*app.sf))
     GridLayout:
         cols: 3
-        pos_hint: {'x': 0.02, 'y': 0.925}
-        size_hint: 0.96, 0.06
-        spacing: [20*app.scale_factor, 0*app.scale_factor]
+        pos_hint: {'x': 0.00, 'y': 0.90}
+        size_hint: 1.00, 0.10
+        spacing: [20*app.sf, 0*app.sf]
+        padding: 50*app.sf
         UtilsButton:
             text: "Help"
             on_press:

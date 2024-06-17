@@ -1,0 +1,45 @@
+<ScoredReceived@FloatLayout>:
+    area: "ScoredReceived"
+    pad: 5
+    LabelButton:
+        text: "GOL"
+        pos_hint: {"x": 0.05 + (root.pad/root.size[0]*app.sf), "y": 0.865 + (root.pad/root.size[1]*app.sf)}
+        size_hint: (0.15 - (root.pad/root.size[0]*2*app.sf), 0.075 - (root.pad/root.size[1]*2*app.sf))
+        font_size: 50*app.sf
+    LabelButton:
+        text: "Home"
+        pos_hint: {"x": 0.05 + (root.pad/root.size[0]*app.sf), "y": 0.765 + (root.pad/root.size[1]*app.sf)}
+        size_hint: (0.15 - (root.pad/root.size[0]*2*app.sf), 0.1 - (root.pad/root.size[1]*2*app.sf))
+        font_size: 50*app.sf
+    LabelButton:
+        text: "Away"
+        pos_hint: {"x": 0.05 + (root.pad/root.size[0]*app.sf), "y": 0.665 + (root.pad/root.size[1]*app.sf)}
+        size_hint: (0.15 - (root.pad/root.size[0]*2*app.sf), 0.1 - (root.pad/root.size[1]*2*app.sf))
+        font_size: 50*app.sf
+    CustomGrid: 
+        cols: 5
+        pos_hint: {"x": 0.2, "y": 0.865}
+        size_hint: (0.75, 0.075)
+        LabelButton:
+        LabelButton:
+        LabelButton:
+        LabelButton:
+        LabelButton:
+    CustomGrid:
+        cols: 5
+        pos_hint: {"x": 0.2, "y": 0.765}
+        size_hint: (0.75, 0.1)
+        ProbabilityButton:
+        ProbabilityButton:
+        ProbabilityButton:
+        ProbabilityButton:
+        ProbabilityButton:
+    CustomGrid:
+        cols: 5
+        pos_hint: {"x": 0.2, "y": 0.665}
+        size_hint: (0.75, 0.1)
+        ProbabilityButton:
+        ProbabilityButton:
+        ProbabilityButton:
+        ProbabilityButton:
+        ProbabilityButton:

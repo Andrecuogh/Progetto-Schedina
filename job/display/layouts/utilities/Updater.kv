@@ -2,7 +2,7 @@
     background_color: app.colors["label"]
     background_normal: ""
     size_hint: (0.225, 0.05)
-    font_size: 40*app.scale_factor
+    font_size: 40*app.sf
 
 <Updater@Screen>:
     name: "updatebox"
@@ -34,7 +34,7 @@
             halign: "center"
             size_hint: (0.5, 0.2)
             pos_hint: {"center_x": 0.5, "center_y": 0.6}
-            font_size: 50*app.scale_factor
+            font_size: 50*app.sf
             text_size: self.size
             valign: 'middle'
         UtilBar:

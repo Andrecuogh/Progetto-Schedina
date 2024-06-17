@@ -1,0 +1,16 @@
+#:include layouts/scorepage/utilbar/UtilBar.kv
+#:include layouts/scorepage/navigation/PageNavigator.kv
+#:include layouts/scorepage/ResultBox.kv
+
+
+<ScorePage@Screen>:
+    name: "scorepage"
+    canvas:
+        Color:
+            rgba: app.colors["label"]
+        Rectangle:
+            pos: root.size[0] * 0.00, root.size[1] * 0.80
+            size: root.size[0] * 1.00, root.size[1] * 0.2
+    UtilBar:
+    PageNavigator:
+    ResultBox:

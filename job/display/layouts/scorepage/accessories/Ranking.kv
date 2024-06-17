@@ -1,0 +1,34 @@
+<Ranking@FloatLayout>:
+    area: "Ranking"
+    GridLayout:
+        pos_hint: {'x': 0.05, 'y': 0.35}
+        size_hint: (0.9, 0.05)
+        cols: 4
+        orientation: 'lr-tb'
+        PrevLabelButton:
+            text: ""
+        PrevLabelButton:
+            text: "squadra"
+        PrevLabelButton:
+            text: "Gf"
+        PrevLabelButton:
+            text: "Gs"
+    ScrollView:
+        pos_hint: {'x': 0.05, 'y': 0.05}
+        size_hint: (0.9, 0.30)
+        GridLayout:
+            size_hint_y: None
+            size: (root.size[0], root.size[1]*1)
+            rows: 20
+            cols: 4
+            scroll_y: 0
+            orientation: 'lr-tb'
+            do_scroll_x: False
+            always_overscroll: False
+            spacing: (0, 10*app.sf)  
+
+Button:
+    background_color: app.colors["colorbar"][50]
+    background_normal: ""
+    font_size: 50*app.sf
+    text: "default"

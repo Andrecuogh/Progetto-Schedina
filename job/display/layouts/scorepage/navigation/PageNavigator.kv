@@ -1,0 +1,58 @@
+<NavigationLabel@Button>:
+    background_normal: ""
+    bold: True
+    font_size: 60*app.sf
+
+
+<ImageButton@Button>:
+    background_normal: ""
+    background_color: app.colors["transparent"]
+
+
+<PageNavigator@FloatLayout>:
+    GridLayout:
+        cols: 2
+        pos_hint: {"x": 0.00, "y": 0.8}
+        size_hint: (1, 0.05)
+        NavigationLabel:
+            text: "Probabilità"
+            background_color: app.colors["label_pressed"]
+            on_press:
+                app.score_sm.transition.direction = 'right'
+                app.score_sm.current = "probabilities"
+            on_release:
+                self.background_color = app.colors["label_pressed"]
+                root.children[0].background_color = app.colors["label"]
+        NavigationLabel:
+            text: "Momento di forma"
+            background_color: app.colors["label"]
+            on_press:
+                app.score_sm.transition.direction = 'left'
+                app.score_sm.current = "accessories"
+            on_release:
+                self.background_color = app.colors["label_pressed"]
+                root.children[1].background_color = app.colors["label"]
+    Image:
+        source: "layouts/scorepage/navigation/leftarrow.png"
+        pos_hint: {"x": 0.15, "y": 0.85}
+        size_hint: (0.075, 0.05)
+    ImageButton:
+        pos_hint: {"x": 0.15, "y": 0.85}
+        size_hint: (0.075, 0.05)
+        on_press:
+            app.change_match(-1)
+    Image:
+        source: "layouts/scorepage/navigation/rightarrow.png"
+        pos_hint: {"x": 0.75, "y": 0.85}
+        size_hint: (0.075, 0.05)
+    ImageButton:
+        pos_hint: {"x": 0.75, "y": 0.85}
+        size_hint: (0.075, 0.05)
+        on_press:
+            app.change_match(1)
+    Label:
+        pos_hint: {"center_x": 0.5, "y": 0.85}
+        size_hint: (0.1, 0.05)
+        text: "DEF - DEF"
+        bold: True
+            

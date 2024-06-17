@@ -1,0 +1,15 @@
+#:include layouts/scorepage/accessories/PrevEncounters.kv
+#:include layouts/scorepage/accessories/Ranking.kv
+#:include layouts/scorepage/accessories/Momentum.kv
+
+<PrevLabelButton@Button>:
+    background_color: app.colors["label"]
+    background_normal: ""
+    font_size: 55*app.sf
+
+
+<AccessoriesScreen@Screen>:
+    name: "accessories"
+    PrevEncounter:
+    Ranking:
+    Momentum:

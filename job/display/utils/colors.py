@@ -10,9 +10,11 @@ colorbar = np.concatenate((colorbar1, colorbar2))
 colors1 = {
     "button": get_color_from_hex("#334b53"),
     "label": get_color_from_hex("#26383e"),
+    "label_pressed": get_color_from_hex("#1E2C31"),
     "background": get_color_from_hex("#80BDD1"),
     "warning": [0.682, 0.239, 0.341, 1.0],
     "utilbar": get_color_from_hex("#e8f7ca"),
     "tutorial": get_color_from_hex("#FA8072"),
+    "transparent": (0, 0, 0, 0),
     "colorbar": colorbar,
 }

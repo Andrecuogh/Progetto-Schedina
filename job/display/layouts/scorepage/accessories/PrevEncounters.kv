@@ -1,0 +1,29 @@
+<PrevEncounter@FloatLayout>:
+    area: "PreviousEncounters"
+    FloatLayout:
+        PrevLabelButton:
+            pos_hint: {'x': 0.05, 'y': 0.922}
+            size_hint: (0.225, 0.048)
+            text: "Anno"
+        PrevLabelButton:
+            pos_hint: {'x': 0.275, 'y': 0.922}
+            size_hint: (0.675, 0.048)
+            text: "Precedenti"
+    GridLayout:
+        pos_hint: {'x': 0.05, 'y': 0.73}
+        size_hint: (0.225, 0.192)
+        rows: 3
+        orientation: "lr-bt"
+        spacing: 5*app.sf
+        ProbabilityButton:
+        ProbabilityButton:
+        ProbabilityButton:
+    GridLayout:
+        pos_hint: {'x': 0.275, 'y': 0.73}
+        size_hint: (0.675, 0.192)
+        rows: 3
+        orientation: "lr-bt"
+        spacing: 5*app.sf
+        ProbabilityButton:
+        ProbabilityButton:
+        ProbabilityButton:
