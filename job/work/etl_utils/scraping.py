@@ -1,5 +1,5 @@
 import pandas as pd
-import logging
+from etl_config.log import logger
 
 
 def remove_junk_rows(df: pd.DataFrame) -> pd.DataFrame:
@@ -24,7 +24,7 @@ def clean_link(link: list, day: int) -> pd.DataFrame:
     df.columns = ["squadra_casa", "risultato", "squadra_trasferta"]
     df = remove_junk_rows(df)
     df = strip_teams_names(df)
-    df["giornata"] = day
+    df["giornata"] = day + 1
     return df
 
 
@@ -70,7 +70,6 @@ def get_next_matches(link: list, days: int) -> pd.DataFrame:
 
 def scrape_sky(year: int, ongoing: bool, days: int) -> None:
     """Flow of data scraping"""
-    logging.info(f"Scraping from SkySport: season {year}")
     link = get_pd_html(year, ongoing)
     df = pd.DataFrame()
     for day in range(days):

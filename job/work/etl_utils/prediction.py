@@ -1,6 +1,6 @@
 import pandas as pd
 from sklearn.ensemble import GradientBoostingClassifier
-import logging
+from etl_config.log import logger
 
 models = {
     "Gf": GradientBoostingClassifier(
@@ -75,8 +75,14 @@ def Xy_split(dataframe: pd.DataFrame, target: list) -> tuple[pd.DataFrame]:
 
 def predict_scores(df: pd.DataFrame) -> dict:
     """Predict probabilities of events"""
-    logging.info("Predicting scores")
-    Xnot = df.sort_values(by=["anno", "giornata"]).iloc[-10:]
+    logger.info("Start prediction of scores")
+    df = df.sort_values(by=["anno", "giornata"])
+    logging_df = pd.DataFrame(
+        df.squadra.iloc[-20:].values.reshape(2, 10), index=["Last 10", "Next 10"]
+    ).T
+    logger.info(f"Last/Next matches:\n{logging_df}")
+    Xnot = df.iloc[-10:].copy()
+    df = df.iloc[0:-10].copy()
     probabilities = {
         "giornata": Xnot.giornata.max(),
         "anno": Xnot.anno.max(),
@@ -92,5 +98,5 @@ def predict_scores(df: pd.DataFrame) -> dict:
             y_pred, columns=model.classes_, index=probabilities["partite"]
         )
         probabilities.update({target: df_proba})
-
+    logger.info("End prediction of scores\n")
     return probabilities

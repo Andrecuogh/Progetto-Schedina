@@ -113,5 +113,7 @@ class Loader(RepoConnector):
         return df
 
     def load_momentum(self):
-        df = pd.read_csv(f"{self.accessories_path}/momentum.csv")
+        df = pd.read_csv(f"{self.accessories_path}/previous_encounters.csv")
+        df[["casa", "trasferta"]] = df.partita.str.split(" - ", expand=True)
+        df = df.sort_values(by=["anno", "giornata"], ascending=False)
         return df

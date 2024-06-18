@@ -1,9 +1,18 @@
+<MomentumButton@ProbabilityButton>:
+    halign: "center"
+    markup: True
+
+
 <Momentum@FloatLayout>:
     area: "momentum"
     PrevLabelButton:
-        text: "Risultati precedenti"
         pos_hint: {'x': 0.05, 'y': 0.641}
         size_hint: (0.9, 0.04)
+        markup: True
+        win_string: "W: [font=arial][color=#DAA520]██[/color][/font]   "
+        draw_string: "D: [font=arial][color=#088F8F]██[/color][/font]   "
+        loss_string: "L: [font=arial][color=#E97451]██[/color][/font]"
+        text: "Risultati precedenti   " + self.win_string + self.draw_string + self.loss_string
     GridLayout:
         cols: 1
         pos_hint: {'x': 0.05, 'y': 0.6}
@@ -45,13 +54,14 @@
         rows: 2
         spacing: 3*app.sf
         padding: 1*app.sf 
-        ProbabilityButton:
-        ProbabilityButton:
-        ProbabilityButton:
-        ProbabilityButton:
-        ProbabilityButton:
-        ProbabilityButton:
-        ProbabilityButton:
-        ProbabilityButton:
-        ProbabilityButton:
-        ProbabilityButton:
+        orientation: "rl-bt"
+        MomentumButton:
+        MomentumButton:
+        MomentumButton:
+        MomentumButton:
+        MomentumButton:
+        MomentumButton:
+        MomentumButton:
+        MomentumButton:
+        MomentumButton:
+        MomentumButton:

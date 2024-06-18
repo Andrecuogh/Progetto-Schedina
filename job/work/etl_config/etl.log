@@ -1,11 +1,127 @@
-2024-06-16 01:48:55,376 [INFO] etl_flow: Import completed
-2024-06-16 01:48:55,376 [INFO] etl_flow: checking available data for year 2019...
-2024-06-16 01:48:55,392 [INFO] etl_flow: Output: True
-2024-06-16 01:48:55,393 [INFO] etl_flow: checking available data for year 2020...
-2024-06-16 01:48:55,393 [INFO] etl_flow: Output: True
-2024-06-16 01:48:55,393 [INFO] etl_flow: checking available data for year 2021...
-2024-06-16 01:48:55,393 [INFO] etl_flow: Output: True
-2024-06-16 01:48:55,393 [INFO] etl_flow: checking available data for year 2022...
-2024-06-16 01:48:55,394 [INFO] etl_flow: Output: True
-2024-06-16 01:48:55,394 [INFO] etl_flow: checking available data for year 2023...
-2024-06-16 01:48:55,394 [INFO] etl_flow: Output: False. Downloading data from skysport.com
+2024-06-19 00:50:06,544 [INFO] etl_flow: Import completed
+
+2024-06-19 00:50:06,544 [INFO] etl_flow: Start validation of input data
+2024-06-19 00:50:06,544 [INFO] etl_flow: checking available data for year 2019...
+2024-06-19 00:50:06,544 [INFO] etl_flow: Output: True
+2024-06-19 00:50:06,544 [INFO] etl_flow: checking available data for year 2020...
+2024-06-19 00:50:06,544 [INFO] etl_flow: Output: True
+2024-06-19 00:50:06,544 [INFO] etl_flow: checking available data for year 2021...
+2024-06-19 00:50:06,544 [INFO] etl_flow: Output: True
+2024-06-19 00:50:06,544 [INFO] etl_flow: checking available data for year 2022...
+2024-06-19 00:50:06,544 [INFO] etl_flow: Output: True
+2024-06-19 00:50:06,544 [INFO] etl_flow: checking available data for year 2023...
+2024-06-19 00:50:06,544 [INFO] etl_flow: Output: False. Downloading data from skysport.com
+2024-06-19 00:50:08,811 [INFO] etl_flow: End validation of input data
+
+2024-06-19 00:50:08,811 [INFO] etl_flow: Start ingestion of data
+2024-06-19 00:50:08,811 [INFO] etl_flow: Dataframe for year 2019 contains 10.0 matches per 38 matchdays
+2024-06-19 00:50:08,884 [INFO] etl_flow: Dataframe for year 2020 contains 10.0 matches per 38 matchdays
+2024-06-19 00:50:08,947 [INFO] etl_flow: Dataframe for year 2021 contains 10.0 matches per 38 matchdays
+2024-06-19 00:50:09,001 [INFO] etl_flow: Dataframe for year 2022 contains 10.0 matches per 38 matchdays
+2024-06-19 00:50:09,068 [INFO] etl_flow: Dataframe for year 2023 contains 10.0 matches per 38 matchdays
+2024-06-19 00:50:09,135 [INFO] etl_flow: End ingestion of data
+
+2024-06-19 00:50:09,139 [INFO] etl_flow: Start transformation of data
+2024-06-19 00:50:09,191 [INFO] etl_flow: Years:           0     1     2     3     4
+anno   2019  2020  2021  2022  2023
+max      38    38    38    38    38
+count   330   330   330   330   330
+2024-06-19 00:50:09,191 [INFO] etl_flow: End transformation of data
+
+2024-06-19 00:50:09,191 [INFO] etl_flow: Start prediction of scores
+2024-06-19 00:50:09,204 [INFO] etl_flow: Last/Next matches:
+              Last 10              Next 10
+0   Fiorentina-Napoli  Cagliari-Fiorentina
+1      Lecce-Atalanta        Genoa-Bologna
+2        Torino-Milan       Juventus-Monza
+3   Sassuolo-Cagliari    Milan-Salernitana
+4     Monza-Frosinone      Atalanta-Torino
+5      Udinese-Empoli         Napoli-Lecce
+6         Inter-Lazio          Empoli-Roma
+7          Roma-Genoa    Frosinone-Udinese
+8  Salernitana-Verona         Verona-Inter
+9    Bologna-Juventus       Lazio-Sassuolo
+2024-06-19 00:50:13,214 [INFO] etl_flow: End prediction of scores
+
+2024-06-19 00:50:13,214 [INFO] etl_flow: Start reportage of results
+2024-06-19 00:50:13,250 [INFO] etl_flow: giornata: 38
+2024-06-19 00:50:13,250 [INFO] etl_flow: anno: 2023
+2024-06-19 00:50:13,250 [INFO] etl_flow: partite:
+1640    Cagliari-Fiorentina
+1641          Genoa-Bologna
+1642         Juventus-Monza
+1643      Milan-Salernitana
+1644        Atalanta-Torino
+1645           Napoli-Lecce
+1646            Empoli-Roma
+1647      Frosinone-Udinese
+1648           Verona-Inter
+1649         Lazio-Sassuolo
+Name: squadra, dtype: object
+2024-06-19 00:50:13,284 [INFO] etl_flow: Gf:
+                        0     1     2     3     4
+Partita                                          
+Cagliari-Fiorentina  0.41  0.30  0.15  0.09  0.04
+Genoa-Bologna        0.53  0.21  0.20  0.05  0.02
+Juventus-Monza       0.21  0.25  0.36  0.15  0.02
+Milan-Salernitana    0.11  0.15  0.38  0.18  0.18
+Atalanta-Torino      0.30  0.35  0.18  0.13  0.04
+Napoli-Lecce         0.18  0.21  0.38  0.18  0.05
+Empoli-Roma          0.34  0.21  0.36  0.07  0.01
+Frosinone-Udinese    0.24  0.44  0.15  0.15  0.02
+Verona-Inter         0.70  0.18  0.09  0.02  0.01
+Lazio-Sassuolo       0.20  0.29  0.35  0.11  0.05
+2024-06-19 00:50:13,300 [INFO] etl_flow: Gs:
+                        0     1     2     3     4
+Partita                                          
+Cagliari-Fiorentina  0.15  0.27  0.32  0.15  0.10
+Genoa-Bologna        0.20  0.30  0.42  0.07  0.01
+Juventus-Monza       0.49  0.31  0.14  0.05  0.01
+Milan-Salernitana    0.54  0.35  0.06  0.05  0.00
+Atalanta-Torino      0.33  0.43  0.16  0.07  0.01
+Napoli-Lecce         0.34  0.47  0.13  0.05  0.01
+Empoli-Roma          0.24  0.34  0.14  0.26  0.02
+Frosinone-Udinese    0.20  0.38  0.24  0.14  0.05
+Verona-Inter         0.09  0.15  0.49  0.16  0.11
+Lazio-Sassuolo       0.42  0.34  0.15  0.08  0.00
+2024-06-19 00:50:13,329 [INFO] etl_flow: 1X2:
+                        1     X     2
+Partita                              
+Cagliari-Fiorentina  0.10  0.11  0.79
+Genoa-Bologna        0.17  0.26  0.57
+Juventus-Monza       0.51  0.35  0.14
+Milan-Salernitana    0.84  0.10  0.06
+Atalanta-Torino      0.50  0.26  0.25
+Napoli-Lecce         0.54  0.28  0.18
+Empoli-Roma          0.19  0.17  0.64
+Frosinone-Udinese    0.25  0.23  0.52
+Verona-Inter         0.05  0.06  0.89
+Lazio-Sassuolo       0.68  0.23  0.09
+2024-06-19 00:50:13,345 [INFO] etl_flow: GG-NG:
+                       GG    NG
+Partita                        
+Cagliari-Fiorentina  0.46  0.54
+Genoa-Bologna        0.20  0.80
+Juventus-Monza       0.44  0.56
+Milan-Salernitana    0.46  0.54
+Atalanta-Torino      0.40  0.60
+Napoli-Lecce         0.47  0.53
+Empoli-Roma          0.28  0.72
+Frosinone-Udinese    0.49  0.51
+Verona-Inter         0.20  0.80
+Lazio-Sassuolo       0.39  0.61
+2024-06-19 00:50:13,362 [INFO] etl_flow: O-U:
+                        O     U
+Partita                        
+Cagliari-Fiorentina  0.59  0.41
+Genoa-Bologna        0.48  0.52
+Juventus-Monza       0.31  0.69
+Milan-Salernitana    0.62  0.38
+Atalanta-Torino      0.42  0.58
+Napoli-Lecce         0.53  0.47
+Empoli-Roma          0.44  0.56
+Frosinone-Udinese    0.52  0.48
+Verona-Inter         0.58  0.42
+Lazio-Sassuolo       0.60  0.40
+2024-06-19 00:50:13,365 [INFO] etl_flow: End reportage of results
+

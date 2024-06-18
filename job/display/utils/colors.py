@@ -16,5 +16,10 @@ colors1 = {
     "utilbar": get_color_from_hex("#e8f7ca"),
     "tutorial": get_color_from_hex("#FA8072"),
     "transparent": (0, 0, 0, 0),
+    "results": {
+        "win": get_color_from_hex("#DAA520"),
+        "draw": get_color_from_hex("#088F8F"),
+        "loss": get_color_from_hex("#E97451"),
+    },
     "colorbar": colorbar,
 }

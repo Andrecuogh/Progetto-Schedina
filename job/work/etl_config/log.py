@@ -1,4 +1,6 @@
 import os
+import logging
+import logging.config
 
 config_dir = os.path.dirname(os.path.abspath(__file__))
 log_file_path = os.path.join(config_dir, "etl.log")
@@ -16,7 +18,7 @@ LOG_CONFIG = {
             "class": "logging.StreamHandler",
         },
         "file": {
-            "level": "DEBUG",
+            "level": "INFO",
             "formatter": "standard",
             "class": "logging.FileHandler",
             "mode": "w",
@@ -36,3 +38,6 @@ LOG_CONFIG = {
         },
     },
 }
+
+logging.config.dictConfig(LOG_CONFIG)
+logger = logging.getLogger("etl_flow")

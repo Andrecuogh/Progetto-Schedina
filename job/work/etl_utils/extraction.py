@@ -76,7 +76,6 @@ def cleaning_df(df: pd.DataFrame) -> pd.DataFrame:
         [
             "differenza_reti",
             "avversario",
-            "punti",
             "esito",
         ],
         axis=1,

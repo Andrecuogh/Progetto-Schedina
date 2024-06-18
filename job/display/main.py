@@ -7,22 +7,18 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.screenmanager import ScreenManager
 from kivy.uix.button import Button
 from utils.colors import colors1 as cmap
-from utils.connector import Updater, Loader
+from utils.connector import Updater
+from utils.data_provider import DataProvider
 
 ssl._create_default_https_context = ssl._create_stdlib_context
 
 
 class MainApp(App):
     def __init__(self, *args, **kwargs):
-        self.sf = 0.3  # prod: 1.0 test 0.3
+        self.sf = 0.3  # prod: 1.0; test 0.3
         super().__init__(*args, **kwargs)
         self.kv_directory = "layouts"
-        self.match_id = 0
-        LabelBase.register(
-            DEFAULT_FONT,
-            "utils/fonts/calibri/calibri.ttf",
-            fn_bold="utils/fonts/calibri/calibrib.ttf",
-        )
+        self.register_fonts()
         self.colors = cmap
         Window.clearcolor = self.colors["background"]
         Window.size = (
@@ -30,16 +26,8 @@ class MainApp(App):
             2400 * self.sf,
         )  # only for testing in pc
 
-    def get_data(self):
-        loader = Loader()
-        self.dfs = loader.load_dfs()
-        self.readme = loader.download_readme()
-        self.prev_enc = loader.extract_previous_encounters()
-        self.ranking = loader.load_ranking()
-        self.momentum = loader.load_momentum()
-
     def build(self) -> ScreenManager:
-        self.get_data()
+        self.dp = DataProvider()
         self.sm = Builder.load_file(f"{self.kv_directory}/Schedina.kv")
         self.score_sm = self.sm.get_screen("scorepage").children[0]
         self.tutorial_boxes = self.load_tutorial()
@@ -49,6 +37,15 @@ class MainApp(App):
         self.add_ranking()
         self.update_if_any()
         return self.sm
+
+    def register_fonts(self):
+        font_path = "utils/fonts"
+        LabelBase.register(
+            DEFAULT_FONT,
+            f"{font_path}/calibri/calibri.ttf",
+            fn_bold=f"{font_path}/calibri/calibrib.ttf",
+        )
+        LabelBase.register("arial", f"{font_path}/arial/arial.ttf")
 
     def update_if_any(self):
         self.updater = Updater()
@@ -70,7 +67,7 @@ class MainApp(App):
 
     def add_about_box(self) -> Button:
         about = Builder.load_file(f"{self.kv_directory}/scorepage/utilbar/About.kv")
-        about.text = self.readme
+        about.text = self.dp.readme
         return about
 
     def add_labels(self):
@@ -81,7 +78,7 @@ class MainApp(App):
 
     def add_label_text(self, target: str, area_name: str, grid_id: int = 1):
         area = self.get_area_from_name(area_name)
-        labels = self.dfs[target].columns
+        labels = self.dp.get_columns(target)
         grid = area.children[grid_id]
         for widget, label in zip(grid.children, labels):
             widget.text = label
@@ -98,26 +95,25 @@ class MainApp(App):
 
     def add_value_text(self, target: str, area_name: str, grid_id: int = 0):
         area = self.get_area_from_name(area_name)
-        df = self.dfs[target].iloc[self.match_id]
+        df = self.dp.get_current_match_row(target)
         grid = area.children[grid_id]
         for i, widget in enumerate(grid.children):
-            widget.text = "{:.0%}".format(df.iloc[i])
-            widget.background_color = self.colors["colorbar"][int(df.iloc[i] * 100)]
+            text, color_i = self.dp.format_perc(df, i)
+            widget.text = text
+            widget.background_color = self.colors["colorbar"][color_i]
 
     def add_teams_labels(self):
-        home, away = self.dfs["Gf"].index[self.match_id].split("-")
-        h_short = home[0:3].upper()
-        a_short = away[0:3].upper()
+        home, away = self.dp.get_current_matches(short=True)
         proba_area = self.get_area_from_name("ScoredReceived")
-        proba_area.children[-2].text = h_short
-        proba_area.children[-3].text = a_short
+        proba_area.children[-2].text = home
+        proba_area.children[-3].text = away
         form_area = self.get_area_from_name("momentum", screen="accessories")
         form_grid = form_area.children[2]
-        form_grid.children[1].text = h_short
-        form_grid.children[0].text = a_short
+        form_grid.children[1].text = home
+        form_grid.children[0].text = away
         navigation_area = self.sm.get_screen("scorepage").children[1]
         label = navigation_area.children[0]
-        label.text = f"{h_short} - {a_short}"
+        label.text = f"{home} - {away}"
 
     def get_area_from_name(self, area_name: str, screen: str = "probabilities"):
         screen = self.sm.get_screen("scorepage").children[0].get_screen(screen)
@@ -126,48 +122,36 @@ class MainApp(App):
                 return child
 
     def add_previous_encounters(self):
-        home, away = self.dfs["Gf"].index[self.match_id].split("-")
-        home_match = f"{home} - {away}"
-        away_match = f"{away} - {home}"
-        df = self.prev_enc[self.prev_enc.partita.isin([home_match, away_match])]
-        df = df.sort_values(by=["anno", "giornata"], ascending=False)
         N_RESULT = 3
-        top = df.head(N_RESULT).copy()
-        top["label"] = top.apply(
-            lambda row: row["partita_short"].replace("-", row["risultato"]), axis=1
-        )
-        top = top.reset_index(drop=True)
+        df = self.dp.get_direct_encounters(n_encounters=N_RESULT)
         area = self.get_area_from_name("PreviousEncounters", screen="accessories")
         result_grid = area.children[0]
         year_grid = area.children[1]
-        for i in range(len(top)):
+        for i in range(len(df)):
             res_label = result_grid.children[i]
-            res_label.text = top.loc[i, "label"]
+            res_label.text = df.loc[i, "label"]
             year_label = year_grid.children[i]
-            year_label.text = str(top.loc[i, "anno"])
+            year_label.text = str(df.loc[i, "anno"])
 
     def add_momentum(self):
-        teams = self.dfs["Gf"].index[self.match_id].split("-")
+        df = self.dp.get_momentum_labels()
         area = self.get_area_from_name("momentum", screen="accessories")
         grid = area.children[0]
+        for child, row in zip(grid.children, df.itertuples()):
+            child.text = row.label
+            child.background_color = self.colors["results"][row.color]
 
     def add_ranking(self):
         area = self.get_area_from_name("Ranking", screen="accessories")
         grid = area.children[0].children[0]
-        labels = self.ranking.values.reshape(-1, 1)
+        labels = self.dp.get_ranking()
         for label in labels:
-            button = Builder.load_file(
-                f"{self.kv_directory}/scorepage/accessories/Ranking.kv"
-            )
+            button = Builder.load_string(grid.button_string)
             grid.add_widget(button)
             button.text = str(label[0])
 
     def change_match(self, move):
-        self.match_id += move
-        if self.match_id < 0:
-            self.partita = 9
-        elif self.match_id > 9:
-            self.match_id = 0
+        self.dp.update_id(move)
         self.add_values()
 
 

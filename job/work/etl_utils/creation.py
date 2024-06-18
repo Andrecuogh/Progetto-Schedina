@@ -1,5 +1,5 @@
 import pandas as pd
-import numpy as np
+from etl_config.log import logger
 
 
 def merge_df(df: pd.DataFrame) -> pd.DataFrame:
@@ -42,6 +42,8 @@ def standardize_goals(df: pd.DataFrame) -> pd.DataFrame:
             "gol_subiti_cum_trasferta",
             "gol_fatti_cum_trasferta",
             "gol_subiti_cum_casa",
+            "punti_casa",
+            "punti_trasferta",
         ],
         axis=1,
     )
@@ -50,9 +52,12 @@ def standardize_goals(df: pd.DataFrame) -> pd.DataFrame:
 
 def create_dataset(df: pd.DataFrame) -> pd.DataFrame:
     """Pipeline of processes"""
+    logger.info("Start transformation of data")
     df = merge_df(df)
     df = create_match_label(df)
     df = standardize_goals(df)
+    logger.info(f"Years: {df.groupby("anno", as_index=False)["giornata"].agg({"count", "max"}).T}")
+    logger.info("End transformation of data\n")
     return df
 
 
@@ -85,23 +90,14 @@ def view_ranking(leagues: dict) -> pd.DataFrame:
     df["squadra"] = df["squadra"].apply(reduce_teams_names)
     df = df[
         [
-            "squadra",
             "posizione",
+            "squadra",
+            "punti",
             "gol_fatti_cum",
             "gol_subiti_cum",
         ]
     ]
-    df.columns = ["squadra", "posizione", "Gf", "Gs"]
-    df = df.set_index("posizione")
-    return df
-
-
-def view_momentum(leagues: dict) -> pd.DataFrame:
-    df = leagues["goals"].copy()
-    df = filter_latest_day(df)
-    df = df.set_index("squadra")
-    df = df[[col for col in df.columns if "esito" in col]]
-    df = df.replace({1: "V", 0: "N", -1: "S"})
+    df.columns = ["posizione", "squadra", "punti", "Gf", "Gs"]
     return df
 
 

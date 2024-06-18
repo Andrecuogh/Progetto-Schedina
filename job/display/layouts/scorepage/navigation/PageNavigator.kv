@@ -22,7 +22,7 @@
                 app.score_sm.current = "probabilities"
             on_release:
                 self.background_color = app.colors["label_pressed"]
-                root.children[0].background_color = app.colors["label"]
+                root.children[-1].children[0].background_color = app.colors["label"]
         NavigationLabel:
             text: "Momento di forma"
             background_color: app.colors["label"]
@@ -31,7 +31,7 @@
                 app.score_sm.current = "accessories"
             on_release:
                 self.background_color = app.colors["label_pressed"]
-                root.children[1].background_color = app.colors["label"]
+                root.children[-1].children[1].background_color = app.colors["label"]
     Image:
         source: "layouts/scorepage/navigation/leftarrow.png"
         pos_hint: {"x": 0.15, "y": 0.85}

@@ -1,6 +1,6 @@
 import os
-import logging
 import pandas as pd
+from etl_config.log import logger
 
 targets = ["Gf", "Gs", "1X2", "GG-NG", "O-U"]
 
@@ -19,7 +19,6 @@ def compatible(pred: dict) -> dict:
     """Make predictions compatible with display API"""
     for target in targets:
         pred[target].index.name = "Partita"
-    pred["1X2"] = pred["1X2"].rename({"1": "V", "X": "N", "2": "P"}, axis=1)
     return pred
 
 
@@ -42,22 +41,24 @@ def save_accessories_tables(accessories: dict) -> None:
     accessories["previous_encounters"].to_csv(
         f"{path}/previous_encounters.csv", index=False
     )
-    accessories["momentum"].to_csv(f"{path}/momentum.csv")
-    accessories["ranking"].to_csv(f"{path}/ranking.csv")
+    accessories["ranking"].to_csv(f"{path}/ranking.csv", index=False)
 
 
 def display_report(pred: dict) -> None:
     """Print predictions"""
     for name, df in pred.items():
-        print(name)
-        print(df, end="\n\n")
+        if type(df) in [pd.Series, pd.DataFrame]:
+            logger.info(f"{name}:\n{df}")
+        else:
+            logger.info(f"{name}: {df}")
 
 
 def report(accessories: dict, pred: dict) -> None:
     """Report the results of predictions"""
-    logging.info("Reporting results")
+    logger.info("Start reportage of results")
     pred = formatt(pred)
     pred = compatible(pred)
     save_report(pred)
     save_accessories_tables(accessories)
     display_report(pred)
+    logger.info("End reportage of results\n")
