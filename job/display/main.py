@@ -15,7 +15,7 @@ ssl._create_default_https_context = ssl._create_stdlib_context
 
 class MainApp(App):
     def __init__(self, *args, **kwargs):
-        self.sf = 0.1  # prod: 1.0; test 0.3
+        self.sf = 1.0  # prod: 1.0; test 0.3
         super().__init__(*args, **kwargs)
         self.kv_directory = "layouts"
         self.register_fonts()
