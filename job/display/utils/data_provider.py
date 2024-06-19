@@ -122,5 +122,11 @@ class DataProvider:
             raise Exception()
 
     def get_ranking(self):
-        labels = self.ranking.values.reshape(-1, 1)
-        return labels
+        df = pd.DataFrame(self.ranking.values.reshape(-1, 1), columns=["label"])
+        df["label"] = df.astype(str)
+        home_i = df[df.label == self.h_short].index[0]
+        away_i = df[df.label == self.a_short].index[0]
+        df["highlight"] = False
+        for i in [home_i, away_i]:
+            df.loc[i - 1 : i + 3, "highlight"] = True
+        return df

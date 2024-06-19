@@ -3,12 +3,14 @@
     GridLayout:
         pos_hint: {'x': 0.05, 'y': 0.35}
         size_hint: (0.9, 0.05)
-        cols: 4
+        cols: 5
         orientation: 'lr-tb'
         PrevLabelButton:
             text: ""
         PrevLabelButton:
             text: "squadra"
+        PrevLabelButton:
+            text: "punti"
         PrevLabelButton:
             text: "Gf"
         PrevLabelButton:
@@ -17,9 +19,10 @@
         pos_hint: {'x': 0.05, 'y': 0.05}
         size_hint: (0.9, 0.30)
         GridLayout:
-            button_string: "Button: \n    background_color: app.colors['colorbar'][50]\n    background_normal: '' \n    font_size: 60*app.sf "
+            simple_child: "Button: \n    background_color: app.colors['colorbar'][50]\n    background_normal: '' \n    font_size: 60*app.sf "
+            highlighted_child: "Button: \n    background_color: app.colors['highlighted']\n    background_normal: '' \n    font_size: 60*app.sf "
             size_hint_y: None
-            size: (root.size[0], root.size[1]*1)
+            size: (root.size[0], root.size[1])
             rows: 20
             cols: 5
             scroll_y: 0

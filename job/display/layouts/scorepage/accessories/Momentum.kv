@@ -1,11 +1,21 @@
-<MomentumButton@ProbabilityButton>:
+<MomentumButton@Button>:
+    background_color: app.colors["colorbar"][50]
+    background_normal: ""
+    font_size: 50*app.sf
+    text: "default"
     halign: "center"
     markup: True
+    
+
+<MomLabelButton@Button>:
+    background_color: app.colors["label"]
+    background_normal: ""
+    font_size: 50*app.sf
 
 
 <Momentum@FloatLayout>:
     area: "momentum"
-    PrevLabelButton:
+    MomLabelButton:
         pos_hint: {'x': 0.05, 'y': 0.641}
         size_hint: (0.9, 0.04)
         markup: True
@@ -37,15 +47,15 @@
         cols: 5
         spacing: 3*app.sf
         padding: 1*app.sf 
-        PrevLabelButton:
+        MomLabelButton:
             text: "1"
-        PrevLabelButton:
+        MomLabelButton:
             text: "2"
-        PrevLabelButton:
+        MomLabelButton:
             text: "3"
-        PrevLabelButton:
+        MomLabelButton:
             text: "4"
-        PrevLabelButton:
+        MomLabelButton:
             text: "5"
     GridLayout:
         pos_hint: {'x': 0.15, 'y': 0.44}

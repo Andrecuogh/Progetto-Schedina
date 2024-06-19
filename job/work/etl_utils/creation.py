@@ -71,6 +71,7 @@ def reduce_teams_names(squadra: str, single=True) -> str:
 
 
 def transform_previous_encounters(df: pd.DataFrame) -> pd.DataFrame:
+    df = df.iloc[:-10].copy()
     df["partita"] = df["squadra_casa"] + " - " + df["squadra_trasferta"]
     df["risultato"] = (
         df["goal_casa"].astype(str) + " - " + df["goal_trasferta"].astype(str)

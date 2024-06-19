@@ -1,7 +1,11 @@
+#:import NoTransition kivy.uix.screenmanager.NoTransition
+#:import SlideTransition kivy.uix.screenmanager.SlideTransition
+#:import Clock kivy.clock.Clock
+
 <NavigationLabel@Button>:
     background_normal: ""
     bold: True
-    font_size: 60*app.sf
+    font_size: 55*app.sf
 
 
 <ImageButton@Button>:
@@ -40,7 +44,8 @@
         pos_hint: {"x": 0.15, "y": 0.85}
         size_hint: (0.075, 0.05)
         on_press:
-            app.change_match(-1)
+            app.sm.transition = SlideTransition(direction="down", duration=0.6)
+            Clock.schedule_once(app.go_to_fake_screen, 0.1)
     Image:
         source: "layouts/scorepage/navigation/rightarrow.png"
         pos_hint: {"x": 0.75, "y": 0.85}
@@ -49,7 +54,8 @@
         pos_hint: {"x": 0.75, "y": 0.85}
         size_hint: (0.075, 0.05)
         on_press:
-            app.change_match(1)
+            app.sm.transition = SlideTransition(direction="up", duration=0.6)
+            Clock.schedule_once(app.go_to_fake_screen, 0.1)
     Label:
         pos_hint: {"center_x": 0.5, "y": 0.85}
         size_hint: (0.1, 0.05)

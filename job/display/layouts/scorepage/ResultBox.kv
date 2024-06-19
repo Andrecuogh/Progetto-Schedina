@@ -1,8 +1,14 @@
 #:include layouts/scorepage/probabilities/ProbabilityScreen.kv
 #:include layouts/scorepage/accessories/AccessoriesScreen.kv
 
-<ResultBox@ScreenManager>:
+<ResultBox@ScrollView>:
     pos_hint: {"x": 0.00, "y": 0.00}
     size_hint: (1.00, 0.8)
-    ProbabilityScreen:
-    AccessoriesScreen:
+    pos_default: self.pos
+    on_scroll_start: 
+        app.change_view(args[1].button)
+    ScreenManager:
+        size_hint: (None, None)
+        size: (root.size[0]*1.01, root.size[1]*1.01)
+        ProbabilityScreen:
+        AccessoriesScreen:

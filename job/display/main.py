@@ -6,6 +6,8 @@ from kivy.core.window import Window
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.screenmanager import ScreenManager
 from kivy.uix.button import Button
+from kivy.uix.screenmanager import SlideTransition
+from kivy.clock import Clock
 from utils.colors import colors1 as cmap
 from utils.connector import Updater
 from utils.data_provider import DataProvider
@@ -15,21 +17,17 @@ ssl._create_default_https_context = ssl._create_stdlib_context
 
 class MainApp(App):
     def __init__(self, *args, **kwargs):
-        self.sf = 1.0  # prod: 1.0; test 0.3
         super().__init__(*args, **kwargs)
+        self.init_screen()
         self.kv_directory = "layouts"
         self.register_fonts()
         self.colors = cmap
         Window.clearcolor = self.colors["background"]
-        # Window.size = (
-        #     1080 * self.sf,
-        #     2400 * self.sf,
-        # )  # only for testing in pc
 
     def build(self) -> ScreenManager:
         self.dp = DataProvider()
         self.sm = Builder.load_file(f"{self.kv_directory}/Schedina.kv")
-        self.score_sm = self.sm.get_screen("scorepage").children[0]
+        self.score_sm = self.sm.get_screen("scorepage").children[0].children[0]
         self.tutorial_boxes = self.load_tutorial()
         self.about_box = self.add_about_box()
         self.add_labels()
@@ -37,6 +35,14 @@ class MainApp(App):
         self.add_ranking()
         self.update_if_any()
         return self.sm
+
+    def init_screen(self):
+        self.sf = 1.0  # prod: 1.0; test 0.314
+        self.screen_to_body = 0.852
+        # Window.size = (
+        #     1080 * self.screen_to_body * self.sf,
+        #     2400 * self.screen_to_body * self.sf,
+        # )  # only for testing in pc
 
     def register_fonts(self):
         font_path = "utils/fonts"
@@ -116,7 +122,9 @@ class MainApp(App):
         label.text = f"{home} - {away}"
 
     def get_area_from_name(self, area_name: str, screen: str = "probabilities"):
-        screen = self.sm.get_screen("scorepage").children[0].get_screen(screen)
+        screen = (
+            self.sm.get_screen("scorepage").children[0].children[0].get_screen(screen)
+        )
         for child in screen.children:
             if child.area == area_name:
                 return child
@@ -144,15 +152,49 @@ class MainApp(App):
     def add_ranking(self):
         area = self.get_area_from_name("Ranking", screen="accessories")
         grid = area.children[0].children[0]
-        labels = self.dp.get_ranking()
-        for label in labels:
-            button = Builder.load_string(grid.button_string)
+        df = self.dp.get_ranking()
+        for row in df.itertuples():
+            if row.highlight:
+                button = Builder.load_string(grid.highlighted_child)
+            else:
+                button = Builder.load_string(grid.simple_child)
+            button.text = row.label
             grid.add_widget(button)
-            button.text = str(label[0])
+
+    def change_view(self, scroll_type):
+        if scroll_type == "scrollup":
+            navigation_button = self.sm.get_screen("scorepage").children[1].children[1]
+            navigation_button.trigger_action(0)
+        elif scroll_type == "scrolldown":
+            navigation_button = self.sm.get_screen("scorepage").children[1].children[3]
+            navigation_button.trigger_action(0)
+        elif scroll_type == "scrollright":
+            navigation_button = (
+                self.sm.get_screen("scorepage").children[1].children[-1].children[1]
+            )
+            navigation_button.trigger_action(0)
+            navigation_button.trigger_action(1)
+        elif scroll_type == "scrollleft":
+            navigation_button = (
+                self.sm.get_screen("scorepage").children[1].children[-1].children[0]
+            )
+            navigation_button.trigger_action(0)
+            navigation_button.trigger_action(1)
 
     def change_match(self, move):
         self.dp.update_id(move)
         self.add_values()
+
+    def go_to_fake_screen(self, event):
+        self.sm.current = "fake"
+        if self.sm.transition.direction == "up":
+            self.change_match(1)
+        elif self.sm.transition.direction == "down":
+            self.change_match(-1)
+        Clock.schedule_once(self.go_to_real_screen, 0.2)
+
+    def go_to_real_screen(self, event):
+        self.sm.current = "scorepage"
 
 
 if __name__ == "__main__":
