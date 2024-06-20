@@ -24,7 +24,7 @@
             background_color: app.colors["label_pressed"]
             on_press:
                 app.score_sm.transition.direction = 'right'
-                app.score_sm.current = "probabilities_new"
+                app.score_sm.current = "probability_current"
             on_release:
                 self.background_color = app.colors["label_pressed"]
                 root.children[-1].children[0].background_color = app.colors["label"]
@@ -33,7 +33,7 @@
             background_color: app.colors["label"]
             on_press:
                 app.score_sm.transition.direction = 'left'
-                app.score_sm.current = "accessories_new"
+                app.score_sm.current = "accessory_current"
             on_release:
                 self.background_color = app.colors["label_pressed"]
                 root.children[-1].children[1].background_color = app.colors["label"]

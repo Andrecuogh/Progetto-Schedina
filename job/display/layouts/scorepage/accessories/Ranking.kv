@@ -15,14 +15,15 @@
             text: "Gf"
         PrevLabelButton:
             text: "Gs"
-    ScrollView:
+    RecycleView:
         pos_hint: {'x': 0.05, 'y': 0.05}
-        size_hint: (0.9, 0.30)
-        GridLayout:
-            simple_child: "Button: \n    background_color: app.colors['colorbar'][50]\n    background_normal: '' \n    font_size: 60*app.sf "
-            highlighted_child: "Button: \n    background_color: app.colors['highlighted']\n    background_normal: '' \n    font_size: 60*app.sf "
-            size_hint_y: None
+        size_hint: (0.9, 0.3)
+        viewclass: 'Button'
+        data: [{"text": x, "background_normal": "", "font_size": 60*app.sf} for x in app.dp.get_ranking().label]
+        RecycleGridLayout:
+            default_size_hint: 1, 1
             size: (root.size[0], root.size[1])
+            size_hint_y: None
             rows: 20
             cols: 5
             scroll_y: 0

@@ -4,8 +4,7 @@ from kivy.lang import Builder
 from kivy.core.text import LabelBase, DEFAULT_FONT
 from kivy.core.window import Window
 from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.screenmanager import ScreenManager, Screen
-from kivy.effects.dampedscroll import DampedScrollEffect
+from kivy.uix.screenmanager import ScreenManager
 from kivy.uix.button import Button
 from kivy.clock import Clock
 from utils.colors import colors1 as cmap
@@ -13,14 +12,6 @@ from utils.connector import Updater
 from utils.data_provider import DataProvider
 
 ssl._create_default_https_context = ssl._create_stdlib_context
-
-
-class ProbabilityScreen(Screen):
-    pass
-
-
-class AccessoriesScreen(Screen):
-    pass
 
 
 class MainApp(App):
@@ -36,13 +27,9 @@ class MainApp(App):
         self.dp = DataProvider()
         self.sm = Builder.load_file(f"{self.kv_directory}/Schedina.kv")
         self.score_sm = self.sm.get_screen("scorepage").children[0].children[0]
-        scroll_effect = DampedScrollEffect(edge_damping=0.5)
-        self.sm.get_screen("scorepage").children[0].effect_y = scroll_effect
         self.tutorial_boxes = self.load_tutorial()
         self.about_box = self.add_about_box()
-        self.add_labels()
         self.add_values()
-        self.add_ranking()
         self.update_if_any()
         return self.sm
 
@@ -86,12 +73,6 @@ class MainApp(App):
         about.text = self.dp.readme
         return about
 
-    def add_labels(self):
-        self.add_label_text(target="Gf", area_name="ScoredReceived", grid_id=2)
-        self.add_label_text(target="1X2", area_name="1X2")
-        self.add_label_text(target="GG-NG", area_name="Gol-NoGol")
-        self.add_label_text(target="O-U", area_name="OverUnder")
-
     def add_label_text(self, target: str, area_name: str, grid_id: int = 1):
         area = self.get_area_from_name(area_name)
         labels = self.dp.get_columns(target)
@@ -100,14 +81,21 @@ class MainApp(App):
             widget.text = label
 
     def add_values(self):
+        self.add_probabilities_values()
+        self.add_accessories_values()
+
+    def add_probabilities_values(self):
         self.add_value_text(target="Gf", area_name="ScoredReceived", grid_id=1)
         self.add_value_text(target="Gs", area_name="ScoredReceived")
         self.add_value_text(target="1X2", area_name="1X2")
         self.add_value_text(target="GG-NG", area_name="Gol-NoGol")
         self.add_value_text(target="O-U", area_name="OverUnder")
         self.add_teams_labels()
+
+    def add_accessories_values(self):
         self.add_previous_encounters()
         self.add_momentum()
+        self.add_ranking()
 
     def add_value_text(self, target: str, area_name: str, grid_id: int = 0):
         area = self.get_area_from_name(area_name)
@@ -123,7 +111,7 @@ class MainApp(App):
         proba_area = self.get_area_from_name("ScoredReceived")
         proba_area.children[-2].text = home
         proba_area.children[-3].text = away
-        form_area = self.get_area_from_name("momentum", screen="accessories_new")
+        form_area = self.get_area_from_name("momentum", screen="accessory_current")
         form_grid = form_area.children[2]
         form_grid.children[1].text = home
         form_grid.children[0].text = away
@@ -131,7 +119,7 @@ class MainApp(App):
         label = navigation_area.children[0]
         label.text = f"{home} - {away}"
 
-    def get_area_from_name(self, area_name: str, screen: str = "probabilities_new"):
+    def get_area_from_name(self, area_name: str, screen: str = "probability_current"):
         screen = (
             self.sm.get_screen("scorepage").children[0].children[0].get_screen(screen)
         )
@@ -142,7 +130,7 @@ class MainApp(App):
     def add_previous_encounters(self):
         N_RESULT = 3
         df = self.dp.get_direct_encounters(n_encounters=N_RESULT)
-        area = self.get_area_from_name("PreviousEncounters", screen="accessories_new")
+        area = self.get_area_from_name("PreviousEncounters", screen="accessory_current")
         result_grid = area.children[0]
         year_grid = area.children[1]
         for i in range(len(df)):
@@ -153,23 +141,23 @@ class MainApp(App):
 
     def add_momentum(self):
         df = self.dp.get_momentum_labels()
-        area = self.get_area_from_name("momentum", screen="accessories_new")
+        area = self.get_area_from_name("momentum", screen="accessory_current")
         grid = area.children[0]
         for child, row in zip(grid.children, df.itertuples()):
             child.text = row.label
             child.background_color = self.colors["results"][row.color]
 
     def add_ranking(self):
-        area = self.get_area_from_name("Ranking", screen="accessories_new")
-        grid = area.children[0].children[0]
+        area = self.get_area_from_name("Ranking", screen="accessory_current")
+        grid = area.children[0]
         df = self.dp.get_ranking()
-        for row in df.itertuples():
-            if row.highlight:
-                button = Builder.load_string(grid.highlighted_child)
+        for button, highlight in zip(grid.data, df.highlight):
+            if highlight:
+                color = self.colors["highlighted"]
             else:
-                button = Builder.load_string(grid.simple_child)
-            button.text = row.label
-            grid.add_widget(button)
+                color = self.colors["colorbar"][90]
+            button["background_color"] = color
+        grid.refresh_from_data()
 
     def change_view(self, touch):
         x0, y0 = touch.pos_initial
@@ -177,7 +165,7 @@ class MainApp(App):
         dx = x1 - x0
         dy = y1 - y0
         navigation_area = self.sm.get_screen("scorepage").children[1]
-        if y0 < touch.size[1] * 0.4 and self.score_sm.current == "accessories_new":
+        if y0 < touch.size[1] * 0.4 and self.score_sm.current == "accessory_current":
             pass
         elif dy > touch.swipe_distance:
             navigation_button = navigation_area.children[1]
@@ -196,19 +184,24 @@ class MainApp(App):
 
     def change_match(self, move):
         self.dp.update_id(move)
-        self.add_labels()
         self.add_values()
-        self.add_ranking()
 
     def go_to_screen(self, direction):
+        screen_list = {
+            2: "probability_current",
+            3: "accessory_current",
+            0: "probability_next",
+            1: "accessory_next",
+        }
         self.score_sm.transition.direction = direction
-        self.score_sm.get_screen("probabilities_new").name = "probabilities_old"
-        self.score_sm.get_screen("accessories_new").name = "accessories_old"
-        self.score_sm.add_widget(ProbabilityScreen(name="probabilities_new"))
-        self.score_sm.add_widget(AccessoriesScreen(name="accessories_new"))
-        self.score_sm.current = self.score_sm.current.replace("old", "new")
-        self.score_sm.remove_widget(self.score_sm.get_screen("probabilities_old"))
-        self.score_sm.remove_widget(self.score_sm.get_screen("accessories_old"))
+        self.score_sm.current = self.score_sm.current.replace("current", "next")
+        for i, name in screen_list.items():
+            self.score_sm.screen_list[i].name = f"{name}_temp"
+        for screen in self.score_sm.screens:
+            screen.name = screen.name.replace("_temp", "")
+        self.score_sm.screen_list = [
+            self.score_sm.get_screen(name) for name in screen_list.values()
+        ]
 
 
 if __name__ == "__main__":
