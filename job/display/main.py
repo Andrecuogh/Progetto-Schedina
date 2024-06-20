@@ -4,15 +4,23 @@ from kivy.lang import Builder
 from kivy.core.text import LabelBase, DEFAULT_FONT
 from kivy.core.window import Window
 from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.screenmanager import ScreenManager
+from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.effects.dampedscroll import DampedScrollEffect
 from kivy.uix.button import Button
-from kivy.uix.screenmanager import SlideTransition
 from kivy.clock import Clock
 from utils.colors import colors1 as cmap
 from utils.connector import Updater
 from utils.data_provider import DataProvider
 
 ssl._create_default_https_context = ssl._create_stdlib_context
+
+
+class ProbabilityScreen(Screen):
+    pass
+
+
+class AccessoriesScreen(Screen):
+    pass
 
 
 class MainApp(App):
@@ -28,6 +36,8 @@ class MainApp(App):
         self.dp = DataProvider()
         self.sm = Builder.load_file(f"{self.kv_directory}/Schedina.kv")
         self.score_sm = self.sm.get_screen("scorepage").children[0].children[0]
+        scroll_effect = DampedScrollEffect(edge_damping=0.5)
+        self.sm.get_screen("scorepage").children[0].effect_y = scroll_effect
         self.tutorial_boxes = self.load_tutorial()
         self.about_box = self.add_about_box()
         self.add_labels()
@@ -113,7 +123,7 @@ class MainApp(App):
         proba_area = self.get_area_from_name("ScoredReceived")
         proba_area.children[-2].text = home
         proba_area.children[-3].text = away
-        form_area = self.get_area_from_name("momentum", screen="accessories")
+        form_area = self.get_area_from_name("momentum", screen="accessories_new")
         form_grid = form_area.children[2]
         form_grid.children[1].text = home
         form_grid.children[0].text = away
@@ -121,7 +131,7 @@ class MainApp(App):
         label = navigation_area.children[0]
         label.text = f"{home} - {away}"
 
-    def get_area_from_name(self, area_name: str, screen: str = "probabilities"):
+    def get_area_from_name(self, area_name: str, screen: str = "probabilities_new"):
         screen = (
             self.sm.get_screen("scorepage").children[0].children[0].get_screen(screen)
         )
@@ -132,7 +142,7 @@ class MainApp(App):
     def add_previous_encounters(self):
         N_RESULT = 3
         df = self.dp.get_direct_encounters(n_encounters=N_RESULT)
-        area = self.get_area_from_name("PreviousEncounters", screen="accessories")
+        area = self.get_area_from_name("PreviousEncounters", screen="accessories_new")
         result_grid = area.children[0]
         year_grid = area.children[1]
         for i in range(len(df)):
@@ -143,14 +153,14 @@ class MainApp(App):
 
     def add_momentum(self):
         df = self.dp.get_momentum_labels()
-        area = self.get_area_from_name("momentum", screen="accessories")
+        area = self.get_area_from_name("momentum", screen="accessories_new")
         grid = area.children[0]
         for child, row in zip(grid.children, df.itertuples()):
             child.text = row.label
             child.background_color = self.colors["results"][row.color]
 
     def add_ranking(self):
-        area = self.get_area_from_name("Ranking", screen="accessories")
+        area = self.get_area_from_name("Ranking", screen="accessories_new")
         grid = area.children[0].children[0]
         df = self.dp.get_ranking()
         for row in df.itertuples():
@@ -161,40 +171,44 @@ class MainApp(App):
             button.text = row.label
             grid.add_widget(button)
 
-    def change_view(self, scroll_type):
-        if scroll_type == "scrollup":
-            navigation_button = self.sm.get_screen("scorepage").children[1].children[1]
+    def change_view(self, touch):
+        x0, y0 = touch.pos_initial
+        x1, y1 = touch.pos_final
+        dx = x1 - x0
+        dy = y1 - y0
+        navigation_area = self.sm.get_screen("scorepage").children[1]
+        if y0 < touch.size[1] * 0.4 and self.score_sm.current == "accessories_new":
+            pass
+        elif dy > touch.swipe_distance:
+            navigation_button = navigation_area.children[1]
             navigation_button.trigger_action(0)
-        elif scroll_type == "scrolldown":
-            navigation_button = self.sm.get_screen("scorepage").children[1].children[3]
+        elif dy < -touch.swipe_distance:
+            navigation_button = navigation_area.children[3]
             navigation_button.trigger_action(0)
-        elif scroll_type == "scrollright":
-            navigation_button = (
-                self.sm.get_screen("scorepage").children[1].children[-1].children[1]
-            )
+        elif dx > touch.swipe_distance:
+            navigation_button = navigation_area.children[-1].children[1]
             navigation_button.trigger_action(0)
             navigation_button.trigger_action(1)
-        elif scroll_type == "scrollleft":
-            navigation_button = (
-                self.sm.get_screen("scorepage").children[1].children[-1].children[0]
-            )
+        elif dx < -touch.swipe_distance:
+            navigation_button = navigation_area.children[-1].children[0]
             navigation_button.trigger_action(0)
             navigation_button.trigger_action(1)
 
     def change_match(self, move):
         self.dp.update_id(move)
+        self.add_labels()
         self.add_values()
+        self.add_ranking()
 
-    def go_to_fake_screen(self, event):
-        self.sm.current = "fake"
-        if self.sm.transition.direction == "up":
-            self.change_match(1)
-        elif self.sm.transition.direction == "down":
-            self.change_match(-1)
-        Clock.schedule_once(self.go_to_real_screen, 0.2)
-
-    def go_to_real_screen(self, event):
-        self.sm.current = "scorepage"
+    def go_to_screen(self, direction):
+        self.score_sm.transition.direction = direction
+        self.score_sm.get_screen("probabilities_new").name = "probabilities_old"
+        self.score_sm.get_screen("accessories_new").name = "accessories_old"
+        self.score_sm.add_widget(ProbabilityScreen(name="probabilities_new"))
+        self.score_sm.add_widget(AccessoriesScreen(name="accessories_new"))
+        self.score_sm.current = self.score_sm.current.replace("old", "new")
+        self.score_sm.remove_widget(self.score_sm.get_screen("probabilities_old"))
+        self.score_sm.remove_widget(self.score_sm.get_screen("accessories_old"))
 
 
 if __name__ == "__main__":

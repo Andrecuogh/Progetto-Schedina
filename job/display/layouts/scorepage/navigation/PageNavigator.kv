@@ -1,5 +1,6 @@
 #:import NoTransition kivy.uix.screenmanager.NoTransition
 #:import SlideTransition kivy.uix.screenmanager.SlideTransition
+#:import CardTransition kivy.uix.screenmanager.CardTransition
 #:import Clock kivy.clock.Clock
 
 <NavigationLabel@Button>:
@@ -23,7 +24,7 @@
             background_color: app.colors["label_pressed"]
             on_press:
                 app.score_sm.transition.direction = 'right'
-                app.score_sm.current = "probabilities"
+                app.score_sm.current = "probabilities_new"
             on_release:
                 self.background_color = app.colors["label_pressed"]
                 root.children[-1].children[0].background_color = app.colors["label"]
@@ -32,7 +33,7 @@
             background_color: app.colors["label"]
             on_press:
                 app.score_sm.transition.direction = 'left'
-                app.score_sm.current = "accessories"
+                app.score_sm.current = "accessories_new"
             on_release:
                 self.background_color = app.colors["label_pressed"]
                 root.children[-1].children[1].background_color = app.colors["label"]
@@ -44,8 +45,8 @@
         pos_hint: {"x": 0.15, "y": 0.85}
         size_hint: (0.075, 0.05)
         on_press:
-            app.sm.transition = SlideTransition(direction="down", duration=0.6)
-            Clock.schedule_once(app.go_to_fake_screen, 0.1)
+            app.go_to_screen("down")
+            app.change_match(-1)
     Image:
         source: "layouts/scorepage/navigation/rightarrow.png"
         pos_hint: {"x": 0.75, "y": 0.85}
@@ -54,8 +55,8 @@
         pos_hint: {"x": 0.75, "y": 0.85}
         size_hint: (0.075, 0.05)
         on_press:
-            app.sm.transition = SlideTransition(direction="up", duration=0.6)
-            Clock.schedule_once(app.go_to_fake_screen, 0.1)
+            app.go_to_screen("up")
+            app.change_match(1)
     Label:
         pos_hint: {"center_x": 0.5, "y": 0.85}
         size_hint: (0.1, 0.05)

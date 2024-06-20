@@ -4,9 +4,12 @@
 <ResultBox@ScrollView>:
     pos_hint: {"x": 0.00, "y": 0.00}
     size_hint: (1.00, 0.8)
-    pos_default: self.pos
-    on_scroll_start: 
-        app.change_view(args[1].button)
+    swipe_distance: 200*app.sf
+    on_touch_down:
+        self.pos_initial = args[1].pos
+    on_touch_up:
+        self.pos_final = args[1].pos
+        app.change_view(self)
     ScreenManager:
         size_hint: (None, None)
         size: (root.size[0]*1.01, root.size[1]*1.01)
