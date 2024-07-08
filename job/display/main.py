@@ -1,4 +1,5 @@
 import ssl
+import certifi
 from kivy.app import App
 from kivy.core.text import LabelBase, DEFAULT_FONT
 from kivy.core.window import Window
@@ -6,7 +7,7 @@ from utils.connector import AppUpdater
 from utils.colors import colors1 as cmap
 from layouts.layouts import SchedinaLayout
 
-ssl._create_default_https_context = ssl._create_stdlib_context
+ssl_context = ssl.create_default_context(cafile=certifi.where())
 
 
 class SchedinaApp(App):
