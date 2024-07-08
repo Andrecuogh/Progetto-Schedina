@@ -5,7 +5,7 @@ from kivy.core.text import LabelBase, DEFAULT_FONT
 from kivy.core.window import Window
 from utils.connector import AppUpdater
 from utils.colors import colors1 as cmap
-from layouts.layouts import SchedinaLayout, ReadmeLabel, ReadmePopup
+from layouts.layouts import SchedinaLayout
 
 ssl._create_default_https_context = ssl._create_stdlib_context
 
@@ -45,12 +45,6 @@ class SchedinaApp(App):
         self.updater = AppUpdater()
         need_to_update = self.updater.search_update()
         self.root.set_initial_screen(need_to_update)
-
-    def add_about_box(self):
-        about = ReadmePopup()
-        about.content = ReadmeLabel()
-        about.open()
-        return about
 
 
 if __name__ == "__main__":

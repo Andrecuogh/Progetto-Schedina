@@ -335,11 +335,3 @@ class Ranking(FloatLayout):
             button["background_color"] = color
             button.update({"text": value.label})
         self.grid.refresh_from_data()
-
-
-class ReadmePopup(Popup):
-    pass
-
-
-class ReadmeLabel(Button):
-    pass
