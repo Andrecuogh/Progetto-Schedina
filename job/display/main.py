@@ -1,6 +1,5 @@
 import ssl
 from kivy.app import App
-from kivy.lang import Builder
 from kivy.core.text import LabelBase, DEFAULT_FONT
 from kivy.core.window import Window
 from utils.connector import AppUpdater

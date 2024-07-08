@@ -8,8 +8,6 @@ from kivy.properties import (
     BooleanProperty,
     ListProperty,
 )
-from kivy.uix.popup import Popup
-from kivy.uix.button import Button
 from utils.data_provider import DataProvider
 from utils.colors import colors1 as cmap
 
