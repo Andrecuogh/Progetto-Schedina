@@ -42,7 +42,8 @@ class SchedinaApp(App):
         LabelBase.register("arial", f"{font_path}/arial/arial.ttf")
 
     def update_if_any(self):
-        need_to_update = AppUpdater().search_update()
+        self.updater = AppUpdater()
+        need_to_update = self.updater.search_update()
         self.root.set_initial_screen(need_to_update)
 
     def add_about_box(self):

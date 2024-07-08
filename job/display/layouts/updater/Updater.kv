@@ -22,12 +22,14 @@
             pos_hint: {"center_x": 0.375, "center_y": 0.45}
             on_press:
                 app.updater.update_app()
+                app.stop()
         UpdateButton:
             text: "Non ora"
             pos_hint: {"center_x": 0.625, "center_y": 0.45}
             on_press:
                 app.root.transition.direction = 'up'
                 app.root.current = "scorepage"
+                app.root.current_screen.match_id = 0
         Label:
             text: "E' disponibile un nuovo aggiornamento.\n\nAggiornare?"
             halign: "center"
