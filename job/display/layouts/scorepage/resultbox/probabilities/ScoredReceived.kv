@@ -1,5 +1,8 @@
-<ScoredReceived@FloatLayout>:
-    area: "ScoredReceived"
+<ScoredReceived>:
+    scored: scored
+    received: received
+    home: home
+    away: away
     pad: 5
     LabelButton:
         text: "GOL"
@@ -7,11 +10,13 @@
         size_hint: (0.15 - (root.pad/root.size[0]*2*app.sf), 0.075 - (root.pad/root.size[1]*2*app.sf))
         font_size: 50*app.sf
     LabelButton:
+        id: home
         text: "Home"
         pos_hint: {"x": 0.05 + (root.pad/root.size[0]*app.sf), "y": 0.765 + (root.pad/root.size[1]*app.sf)}
         size_hint: (0.15 - (root.pad/root.size[0]*2*app.sf), 0.1 - (root.pad/root.size[1]*2*app.sf))
         font_size: 50*app.sf
     LabelButton:
+        id: away
         text: "Away"
         pos_hint: {"x": 0.05 + (root.pad/root.size[0]*app.sf), "y": 0.665 + (root.pad/root.size[1]*app.sf)}
         size_hint: (0.15 - (root.pad/root.size[0]*2*app.sf), 0.1 - (root.pad/root.size[1]*2*app.sf))
@@ -31,6 +36,7 @@
         LabelButton:
             text: "0"
     CustomGrid:
+        id: scored
         cols: 5
         pos_hint: {"x": 0.2, "y": 0.765}
         size_hint: (0.75, 0.1)
@@ -40,6 +46,7 @@
         ProbabilityButton:
         ProbabilityButton:
     CustomGrid:
+        id: received
         cols: 5
         pos_hint: {"x": 0.2, "y": 0.665}
         size_hint: (0.75, 0.1)

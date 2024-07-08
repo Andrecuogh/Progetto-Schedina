@@ -1,5 +1,7 @@
-<PrevEncounter@FloatLayout>:
-    area: "PreviousEncounters"
+<PrevEncounter>:
+    matches: matches
+    years: years
+    disabled: True
     FloatLayout:
         PrevLabelButton:
             pos_hint: {'x': 0.05, 'y': 0.922}
@@ -10,6 +12,7 @@
             size_hint: (0.675, 0.048)
             text: "Precedenti"
     GridLayout:
+        id: years
         pos_hint: {'x': 0.05, 'y': 0.73}
         size_hint: (0.225, 0.192)
         rows: 3
@@ -19,6 +22,7 @@
         ProbabilityButton:
         ProbabilityButton:
     GridLayout:
+        id: matches
         pos_hint: {'x': 0.275, 'y': 0.73}
         size_hint: (0.675, 0.192)
         rows: 3

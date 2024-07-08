@@ -1,8 +1,3 @@
-#:import NoTransition kivy.uix.screenmanager.NoTransition
-#:import SlideTransition kivy.uix.screenmanager.SlideTransition
-#:import CardTransition kivy.uix.screenmanager.CardTransition
-#:import Clock kivy.clock.Clock
-
 <NavigationLabel@Button>:
     background_normal: ""
     bold: True
@@ -14,29 +9,26 @@
     background_color: app.colors["transparent"]
 
 
-<PageNavigator@FloatLayout>:
+<PageNavigator>:
+    match: match
+    proba_button: proba_button
+    accessory_button: accessory_button
     GridLayout:
         cols: 2
         pos_hint: {"x": 0.00, "y": 0.8}
         size_hint: (1, 0.05)
         NavigationLabel:
+            id: proba_button
             text: "Probabilità"
             background_color: app.colors["label_pressed"]
             on_press:
-                app.score_sm.transition.direction = 'right'
-                app.score_sm.current = "probability_current"
-            on_release:
-                self.background_color = app.colors["label_pressed"]
-                root.children[-1].children[0].background_color = app.colors["label"]
+                root.parent.resultbox.change_screen("right")
         NavigationLabel:
+            id: accessory_button
             text: "Momento di forma"
             background_color: app.colors["label"]
             on_press:
-                app.score_sm.transition.direction = 'left'
-                app.score_sm.current = "accessory_current"
-            on_release:
-                self.background_color = app.colors["label_pressed"]
-                root.children[-1].children[1].background_color = app.colors["label"]
+                root.parent.resultbox.change_screen("left")
     Image:
         source: "layouts/scorepage/navigation/leftarrow.png"
         pos_hint: {"x": 0.15, "y": 0.85}
@@ -45,8 +37,7 @@
         pos_hint: {"x": 0.15, "y": 0.85}
         size_hint: (0.075, 0.05)
         on_press:
-            app.go_to_screen("down")
-            app.change_match(-1)
+            root.parent.resultbox.change_match("down")
     Image:
         source: "layouts/scorepage/navigation/rightarrow.png"
         pos_hint: {"x": 0.75, "y": 0.85}
@@ -55,9 +46,9 @@
         pos_hint: {"x": 0.75, "y": 0.85}
         size_hint: (0.075, 0.05)
         on_press:
-            app.go_to_screen("up")
-            app.change_match(1)
+            root.parent.resultbox.change_match("up")
     Label:
+        id: match
         pos_hint: {"center_x": 0.5, "y": 0.85}
         size_hint: (0.1, 0.05)
         text: "DEF - DEF"

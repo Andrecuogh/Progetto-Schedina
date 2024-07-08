@@ -1,0 +1,22 @@
+#:include layouts/scorepage/resultbox/accessories/PrevEncounters.kv
+#:include layouts/scorepage/resultbox/accessories/Ranking.kv
+#:include layouts/scorepage/resultbox/accessories/Momentum.kv
+
+<PrevLabelButton@Button>:
+    background_color: app.colors["label"]
+    background_normal: ""
+    font_size: 50*app.sf
+    background_disabled_normal: ""
+    disabled_color: [1, 1, 1, 1]
+
+
+<AccessoriesScreen>:
+    prevencounter: prevencounter
+    ranking: ranking
+    momentum: momentum
+    PrevEncounter:
+        id: prevencounter
+    Ranking:
+        id: ranking
+    Momentum:
+        id: momentum

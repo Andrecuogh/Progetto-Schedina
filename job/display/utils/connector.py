@@ -32,7 +32,7 @@ class RepoConnector:
         return wrapper
 
 
-class Updater(RepoConnector):
+class AppUpdater(RepoConnector):
 
     def __init__(self):
         super().__init__()
@@ -98,7 +98,7 @@ class Loader(RepoConnector):
         content = requests.get(url).text
         md_to_kv_translator = {
             r"\*\*(.*?)\*\*": r"[b]\1[/b]",  # header 1
-            r"# (.*?)(?=\n|$)": r"[size=50]\1[/size]",  # bold
+            r"# (.*?)(?=\n|$)": r"[b]\1[/b]" + "\n",  # bold
         }
         for md, kv in md_to_kv_translator.items():
             content = re.sub(md, kv, content)

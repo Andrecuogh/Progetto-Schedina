@@ -1,5 +1,8 @@
-<Ranking@FloatLayout>:
-    area: "Ranking"     
+#:import ScrollEffect kivy.effects.scroll.ScrollEffect
+
+<Ranking>:
+    grid: grid
+    cst_fsize: 60*app.sf
     GridLayout:
         pos_hint: {'x': 0.05, 'y': 0.35}
         size_hint: (0.9, 0.05)
@@ -16,10 +19,13 @@
         PrevLabelButton:
             text: "Gs"
     RecycleView:
+        id: grid
         pos_hint: {'x': 0.05, 'y': 0.05}
         size_hint: (0.9, 0.3)
         viewclass: 'Button'
-        data: [{"text": x, "background_normal": "", "font_size": 60*app.sf} for x in app.dp.get_ranking().label]
+        data: [{"background_normal": "", "font_size": root.cst_fsize} for _ in range(100)]
+        effect_y: ScrollEffect()
+        effect_x: ScrollEffect()
         RecycleGridLayout:
             default_size_hint: 1, 1
             size: (root.size[0], root.size[1])

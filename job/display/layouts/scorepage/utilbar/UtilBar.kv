@@ -1,3 +1,6 @@
+#:include layouts/scorepage/utilbar/Readme.kv
+#:include layouts/scorepage/utilbar/Tutorial.kv
+
 <UtilsButton@Button>:
     background_color: app.colors["button"]
     background_normal: ""
@@ -5,35 +8,30 @@
     bold: True
 
 
-<UtilBar@FloatLayout>:
-    area: "UtilBar"
-    pad: 20
+<UtilBar>:
+    pad: 5
+    tutorial_button: tutorial_button
     canvas:
         Color:
             rgba: app.colors["utilbar"]
         RoundedRectangle:
-            pos: ((root.size[0] * 0.00) + (self.pad*app.sf), (root.size[1] * 0.90) + (self.pad*app.sf))
-            size: ((root.size[0] * 1.00) - (self.pad*2*app.sf), (root.size[1] * 0.10) - (self.pad*2*app.sf))
-    GridLayout:
-        cols: 3
-        pos_hint: {'x': 0.00, 'y': 0.90}
-        size_hint: 1.00, 0.10
-        spacing: [20*app.sf, 0*app.sf]
-        padding: 50*app.sf
-        UtilsButton:
-            text: "Help"
-            on_press:
-                app.sm.current_screen.add_widget(app.tutorial_boxes[app.sm.current])
-            on_release:
-                app.sm.current_screen.remove_widget(app.tutorial_boxes[app.sm.current])         
-        UtilsButton:
-            text: "About"
-            on_press:
-                app.sm.current_screen.add_widget(app.about_box)
-            on_release:
-                app.sm.current_screen.remove_widget(app.about_box)
-        UtilsButton:
-            text: "Quit"
-            on_press:
-                app.stop()
-    
+            pos: self.parent.size[0] * 0.01, self.parent.size[1] * 0.90
+            size: ((self.parent.size[0] * 1.00) - (self.pad*2*app.sf), (self.parent.size[1] * 0.10) - (self.pad*2*app.sf))
+    cols: 3
+    pos_hint: {'x': 0.00, 'y': 0.90}
+    size_hint: 1.00, 0.10
+    spacing: [20*app.sf, 0*app.sf]
+    padding: 50*app.sf
+    UtilsButton:
+        id: tutorial_button
+        text: "Help"
+        on_release:
+            self.parent.load_tutorial()    
+    UtilsButton:
+        text: "About"
+        on_release:
+            self.parent.load_readme()
+    UtilsButton:
+        text: "Quit"
+        on_press:
+            if not root.parent.input_disabled: app.stop()

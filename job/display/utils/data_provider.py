@@ -1,11 +1,15 @@
 import pandas as pd
 from utils.connector import Loader
+from utils.colors import colors1 as cmap
+from utils.tutorial_strings import strings
 
 
 class DataProvider:
     def __init__(self):
         self.get_data()
         self.store_match_info()
+        self.colors = cmap
+        self.tutorial_strings = strings
 
     def get_data(self):
         loader = Loader()
@@ -37,20 +41,15 @@ class DataProvider:
         df = self.dfs[target].copy()
         return df.iloc[self.id]
 
-    def format_perc(self, df, i):
-        value = df.iloc[i]
-        text = "{:.0%}".format(value)
-        color_i = int(value * 100)
-        return text, color_i
-
-    def get_current_matches(self, short=False):
+    def get_current_matches(self, match_id, short=False):
+        self.store_match_info(match_id)
         if short:
             return self.h_short, self.a_short
         else:
             return self.home, self.away
 
-    def get_direct_encounters(self, n_encounters):
-        home, away = self.get_current_matches()
+    def get_direct_encounters(self, match_id, n_encounters):
+        home, away = self.get_current_matches(match_id)
         home_match = f"{home} - {away}"
         away_match = f"{away} - {home}"
         encounters = [home_match, away_match]
@@ -63,7 +62,8 @@ class DataProvider:
         top = top.reset_index(drop=True)
         return top
 
-    def get_momentum_labels(self):
+    def get_momentum_labels(self, match_id):
+        self.store_match_info(match_id)
         home_matches = self.momentum[
             self.momentum.partita_short.str.contains(self.h_short)
         ].head(5)
@@ -121,7 +121,8 @@ class DataProvider:
         else:
             raise Exception()
 
-    def get_ranking(self):
+    def get_ranking(self, match_id):
+        self.store_match_info(match_id)
         df = pd.DataFrame(self.ranking.values.reshape(-1, 1), columns=["label"])
         df["label"] = df.astype(str)
         home_i = df[df.label == self.h_short].index[0]
@@ -130,3 +131,6 @@ class DataProvider:
         for i in [home_i, away_i]:
             df.loc[i - 1 : i + 3, "highlight"] = True
         return df
+
+    def get_tutorials_strings(self):
+        return self.tutorial_strings

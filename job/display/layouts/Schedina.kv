@@ -1,10 +1,12 @@
 #:include layouts/scorepage/ScorePage.kv
-#:include layouts/utilities/Updater.kv
+#:include layouts/updater/Updater.kv
 
-<Fake@Screen>:
-    name: "fake"
-
-ScreenManager:
-    Fake:
+<SchedinaLayout>:
+    canvas:
+        Color:
+            rgba: app.colors["background"]
+        RoundedRectangle:
+            pos: root.pos
+            size: root.size
     ScorePage:
     Updater:

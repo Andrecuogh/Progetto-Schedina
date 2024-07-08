@@ -4,8 +4,7 @@
     size_hint: (0.225, 0.05)
     font_size: 60*app.sf
 
-<Updater@Screen>:
-    name: "updatebox"
+<Updater>:
     FloatLayout:
         canvas:
             Color:
@@ -27,8 +26,8 @@
             text: "Non ora"
             pos_hint: {"center_x": 0.625, "center_y": 0.45}
             on_press:
-                app.sm.transition.direction = 'up'
-                app.sm.current = "scorepage"
+                app.root.transition.direction = 'up'
+                app.root.current = "scorepage"
         Label:
             text: "E' disponibile un nuovo aggiornamento.\n\nAggiornare?"
             halign: "center"

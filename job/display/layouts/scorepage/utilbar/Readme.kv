@@ -1,0 +1,32 @@
+<Readme>:
+    readmelabel: readmelabel
+    canvas:
+        Color:
+            rgba: app.colors['tutorial']
+            a: 0.99
+        Rectangle:
+            pos: (root.size[0]*0.02, root.size[1]*0.02)
+            size: (root.size[0]*0.96, root.size[1]*0.96)
+    ScrollView:
+        pos_hint: {"x": 0.05, "y": 0.2}
+        size_hint: (0.9, 0.75)
+        Label:
+            id: readmelabel
+            size: (root.size[0], root.size[1]*2)
+            size_hint_y: None
+            text: "ciao"
+            font_size: 50*app.sf
+            text_size: self.size
+            valign: "top"
+            padding: root.size[0] * 0.05
+            markup: True
+    Button:
+        pos_hint: {"x": 0.1, "y": 0.05}
+        size_hint: (0.8, 0.1)
+        background_color: app.colors["label"]
+        background_normal: ''
+        font_size: 60*app.sf
+        bold: True
+        text: "Exit"
+        on_release:
+            root.parent.utilbar.exit_readme()

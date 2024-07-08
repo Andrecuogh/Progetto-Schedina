@@ -1,0 +1,16 @@
+#:include layouts/scorepage/resultbox/probabilities/ProbabilityScreen.kv
+#:include layouts/scorepage/resultbox/accessories/AccessoriesScreen.kv
+
+<ResultBox>:
+    pos_hint: {"x": 0.00, "y": 0.00}
+    size_hint: (1.00, 0.8)
+    # on_touch_up:
+        # app.swipe_shortcut(args[1])
+    ProbabilityScreen:
+        name: "probability_current"
+    AccessoriesScreen:
+        name: "accessory_current"
+    ProbabilityScreen:
+        name: "probability_next"
+    AccessoriesScreen
+        name: "accessory_next"
