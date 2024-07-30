@@ -4,6 +4,7 @@ import certifi
 ssl._create_default_https_context = ssl._create_unverified_context
 
 from kivy.app import App
+from kivy.lang.builder import Builder
 from kivy.core.text import LabelBase, DEFAULT_FONT
 from kivy.core.window import Window
 from utils.connector import AppUpdater
@@ -15,7 +16,7 @@ class SchedinaApp(App):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.colors = cmap
-        self.kv_directory = "layouts"
+        # self.kv_directory = "layouts"
         self._init_screen()
         self.register_fonts()
 
@@ -28,6 +29,7 @@ class SchedinaApp(App):
         # )  # only for testing in pc
 
     def build(self):
+        Builder.load_file("layouts/Schedina.kv")
         self.root = SchedinaLayout()
         self.update_if_any()
         self.root.current_screen.match_id = 0
