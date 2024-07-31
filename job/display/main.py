@@ -16,7 +16,6 @@ class SchedinaApp(App):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.colors = cmap
-        # self.kv_directory = "layouts"
         self._init_screen()
         self.register_fonts()
 

@@ -1,6 +1,21 @@
+<CircleButton@Button>:
+    color: "yellow"
+    text: ""
+    background_color: [1, 1, 1, 0]
+    background_normal: ""
+    background_disabled_normal: ""
+
+<FakeCircle@Button>:
+    text: ""
+    background_color: [1, 1, 1, 0]
+    background_normal: ""
+    background_disabled_normal: ""
+
 <Tutorial>:
     text_area: text_area
-    skipbutton: skipbutton
+    skipbutton: skipbutton.__self__
+    startbutton: startbutton.__self__
+    circle_grid: circle_grid
     canvas:
         Color:
             rgb: app.colors["button"]
@@ -15,10 +30,38 @@
         valign: "top"
     Button:
         id: skipbutton
-        pos_hint: {"x": 0.04, "y": 0.3}
-        size_hint: (0.92, 0.1)
+        text: "Exit"
+        pos_hint: {"x": 0.1, "y": 0.3}
+        size_hint: (0.80, 0.1)
         background_color: "blue"
         background_normal: ""
         bold: True
         on_press: root.parent.utilbar.skip_tutorial()
+    Button:
+        id: startbutton
+        text: "Start"
+        pos_hint: {"x": 0.1, "y": 0.425}
+        size_hint: (0.80, 0.1)
+        background_color: "red"
+        background_normal: ""
+        bold: True
+        on_press: root.page_index += 1
+    GridLayout:
+        id: circle_grid
+        orientation: "rl-tb"
+        pos_hint: {"x": 0.1, "y": 0.0}
+        size_hint: (0.8, 0.04)
+        cols: 11
+        rows: 1
+        FakeCircle:
+        CircleButton:
+        CircleButton:
+        CircleButton:
+        CircleButton:
+        CircleButton:
+        CircleButton:
+        CircleButton:
+        CircleButton:
+        CircleButton:
+        FakeCircle:
 

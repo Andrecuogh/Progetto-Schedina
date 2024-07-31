@@ -1,20 +1,19 @@
 # Progetto-Schedina
-The aim of the project is to predict the results of football matches in the Italian Serie A championship.
-Therefore I built a statistical model that allows you to calculate the probabilities that a certain event occurs.
 
-In total there are 5 events:
-- **Goals scored**: probability that the home team scores from 0 to 4 goals.
-- **Goals received**: probability that the home team concedes from 0 to 4 goals.
-- **1X2**: probability that the match ends in victory (W), draw (N) or defeat (P) for the home team.
-- **GG_NG**: probability that both teams score (GG) or that at least one of the two does not score (NG)
-- **OU 2.5**: probability that the total goals of the match are greater (Over) or less (Under) than 2.5
+L'obiettivo del progetto è prevedere i risultati delle partite di calcio del campionato italiano di Serie A. Pertanto, ho costruito un modello statistico che consente di calcolare le probabilità che si verifichi un determinato evento.
 
-The dataframe consists of the results of all Serie A matches played from 2019 to the current ones. For each meeting the following variables were created:
-1. the goals scored by the home team in the match, the goals conceded by the home team in the match
-2. the 5 previous results of the home team, the 5 previous results of the away team.
-3. the goals scored by the home team in the previous 5 matchdays, the goals conceded by the home team in the previous 5 matchdays, the goals scored by the away team in the previous 5 matchdays, the goals conceded by the away team in the previous 5 matchdays.
-4. the ranking position of the home team, the ranking position of the away team.
-5. the average goals scored and the average goals conceded of the home team, the average goals scored and the average goals conceded of the away team, the standard deviation of goals scored and the standard deviation of goals conceded of the home team, the deviation standard of goals scored and the standard deviation of goals conceded of the home team
+In totale ci sono 5 eventi:
+- **Goal segnati**: probabilità che la squadra di casa segni da 0 a 4 goal.
+- **Goal subiti**: probabilità che la squadra di casa subisca da 0 a 4 goal.
+- **1X2**: probabilità che la partita finisca in vittoria (W), pareggio (N) o sconfitta (P) per la squadra di casa.
+- **GG_NG**: probabilità che entrambe le squadre segnino (GG) o che almeno una delle due non segni (NG).
+- **OU 2.5**: probabilità che i goal totali della partita siano superiori (Over) o inferiori (Under) a 2.5.
 
-Point 1. represents the target variable (y) of the statistical model. Points 2-5 represent the explanatory variables (X) of the model.
-Depending on the forecasting objective, either a Logistic Regression or a NaiveBayes model was used
+Il dataframe è composto dai risultati di tutte le partite di Serie A giocate dal 2019 a quelle attuali. Per ciascun incontro sono state create le seguenti variabili:
+1. i goal segnati dalla squadra di casa nella partita, i goal segnati dalla squadra in trasferta nella partita.
+2. i 5 risultati precedenti della squadra di casa, i 5 risultati precedenti della squadra in trasferta.
+3. i goal segnati dalla squadra di casa nelle precedenti 5 giornate, i goal subiti dalla squadra di casa nelle precedenti 5 giornate, i goal segnati dalla squadra in trasferta nelle precedenti 5 giornate, i goal subiti dalla squadra in trasferta nelle precedenti 5 giornate.
+4. la posizione in classifica della squadra di casa, la posizione in classifica della squadra in trasferta.
+5. la media dei goal segnati e la media dei goal subiti della squadra di casa, la media dei goal segnati e la media dei goal subiti della squadra in trasferta, la deviazione standard dei goal segnati e la deviazione standard dei goal subiti della squadra di casa, la deviazione standard dei goal segnati e la deviazione standard dei goal subiti della squadra in trasferta.
+
+Il punto 1 rappresenta la variabile target (y) del modello statistico. I punti 2-5 rappresentano le variabili esplicative (X) del modello. Il modello statistico utilizzato è un GradientBosstingClassifier.

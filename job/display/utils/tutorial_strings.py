@@ -2,7 +2,7 @@ t0 = """Benvenuto nel tutorial.
 
 Questo tutorial ti spiegherà come utilizzare l'applicazione. 
 
-Scorri a destra per iniziare, oppure premi il tasto "Skip" per uscire dal tutorial.
+Premi "Start" per iniziare, oppure premi il tasto "Exit" per uscire dal tutorial.
 """
 
 tutstring0 = {
@@ -17,6 +17,8 @@ t1 = """La barra gialla in alto presenta tre bottoni:
 - Help: apre il tutorial
 - About: spiega brevemente il progetto
 - Quit: chiude l'applicazione
+
+Scorri a destra per continuare
 """
 
 tutstring1 = {
@@ -40,7 +42,8 @@ E' possibile navigare fra le pagine:
 
 In alternativa, è possibile anche scrollare verticalmente (per spostarsi fra le partite) oppure orizzontalmente (per spostarsi fra le viste)
 
-Ora approfondiamo la vista 'Probabilità'
+Ora approfondiamo la vista 'Probabilità'.
+Scorri a destra per continuare oppure scorri a sinistra per tornare indietro.
 """
 
 tutstring2 = {
@@ -97,6 +100,9 @@ t6 = """
 Il quarto riquadro indica la probabilità che: 
 - la partita termini con 3 gol o più (Over) 
 - oppure 2 gol o meno (Under)
+
+Ora approfondiamo la vista 'Momento di forma'.
+Scorri a destra per continuare oppure scorri a sinistra per tornare indietro.
 """
 
 tutstring6 = {
@@ -136,7 +142,10 @@ tutstring8 = {
 }
 
 t9 = """
-Il terzo riquadro mostra la classifica del campionato (posizione, punti, gol fatti e gol subiti)
+Il terzo riquadro mostra la classifica del campionato (posizione, punti, gol fatti e gol subiti).
+Scrolla su e giù per scorrere fra le squadre.
+
+Scorri a destra per continuare oppure scorri a sinistra per tornare indietro
 """
 
 tutstring9 = {
@@ -149,8 +158,6 @@ tutstring9 = {
 
 t10 = """
 Il tutorial è terminato!
-
-Scorri a destra per uscire oppure clicca il bottone 'Exit'
 """
 
 tutstring10 = {
@@ -161,11 +168,8 @@ tutstring10 = {
     "text": t10,
 }
 
-endstring = """
-Scorri a destra per continuare
-"""
-
 strings = [
+    tutstring0,
     tutstring1,
     tutstring2,
     tutstring3,
@@ -175,9 +179,5 @@ strings = [
     tutstring7,
     tutstring8,
     tutstring9,
+    tutstring10,
 ]
-for s in strings:
-    s["text"] += endstring
-
-strings.insert(0, tutstring0)
-strings.append(tutstring10)

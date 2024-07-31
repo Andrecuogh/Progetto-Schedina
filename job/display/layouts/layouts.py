@@ -55,7 +55,6 @@ class UtilBar(GridLayout):
         self.parent.input_disabled = True
         self.parent.add_widget(self.tutorials)
         self.tutorials.page_index = 0
-        self.tutorials.skipbutton.text = "Skip"
 
     def skip_tutorial(self):
         self.parent.input_disabled = False
@@ -79,33 +78,43 @@ class Tutorial(FloatLayout):
     page_index = NumericProperty(-1)
     text_area = ObjectProperty(None)
     skipbutton = ObjectProperty(None)
+    startbutton = ObjectProperty(None)
+    disabled_swipe = BooleanProperty(True)
+    circle_grid = ObjectProperty(None)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
     def on_touch_up(self, touch):
-        swipe_distance = 0.15
-        x0, x1 = touch.osx, touch.psx
-        dx = x1 - x0
-        if dx < -swipe_distance:
-            self.page_index += 1
+        if not self.disabled_swipe:
+            swipe_distance = 0.15
+            x0, x1 = touch.osx, touch.psx
+            dx = x1 - x0
+            if dx < -swipe_distance:
+                self.page_index += 1
+            elif dx > swipe_distance:
+                self.page_index -= 1
 
     def on_page_index(self, instance, value):
-        if value == 11:
-            self.parent.utilbar.skip_tutorial()
-        else:
-            if value == 2:
-                self.skipbutton.pos_hint = {"x": 0.04, "y": 0.92}
-                self.skipbutton.size_hint = (0.92, 0.07)
-            if value == 7:
-                self.parent.input_disabled = False
-                self.parent.resultbox.change_screen("left")
-                self.parent.input_disabled = True
-            elif value == 10:
-                self.skipbutton.text = "Exit"
-                self.skipbutton.pos_hint = {"x": 0.04, "y": 0.3}
-                self.skipbutton.size_hint = (0.92, 0.1)
-            self.change_layout(value)
+        if value == 0:
+            if self.startbutton not in self.children:
+                self.add_widget(self.startbutton)
+        elif value == 1:
+            self.remove_widget(self.skipbutton)
+            self.remove_widget(self.startbutton)
+            self.disabled_swipe = False
+        elif value == 6:
+            self.parent.input_disabled = False
+            self.parent.resultbox.change_screen("right")
+            self.parent.input_disabled = True
+        elif value == 7:
+            self.parent.input_disabled = False
+            self.parent.resultbox.change_screen("left")
+            self.parent.input_disabled = True
+        elif value == 10:
+            self.add_widget(self.skipbutton)
+            self.disabled_swipe = True
+        self.change_layout(value)
 
     def change_layout(self, i):
         tdicts = self.texts[i]
@@ -116,11 +125,21 @@ class Tutorial(FloatLayout):
         self.text_area.pos_hint = tdicts["label"]["pos_hint"]
         self.text_area.size_hint = tdicts["label"]["size_hint"]
         self.text_area.texture_update()
+        self.change_circle_ref(i)
 
     def change_rect_dims(self, i, dims):
         s = self.parent.size
         self.canvas.children[i].pos = [s[j] * dims["pos"][j] for j in range(2)]
         self.canvas.children[i].size = [s[j] * dims["size"][j] for j in range(2)]
+
+    def change_circle_ref(self, i):
+        if i not in [0, 10]:
+            for j in range(1, 10):
+                self.circle_grid.children[j].text = "○"
+            self.circle_grid.children[i].text = "●"
+        else:
+            for j in range(1, 10):
+                self.circle_grid.children[j].text = ""
 
 
 class Readme(FloatLayout):
@@ -169,7 +188,8 @@ class ResultBox(ScreenManager):
         self.accessory.change_matches_data(match_id)
 
     def on_touch_up(self, touch):
-        swipe_distance = 0.15
+        swipe_distance_x = 0.15
+        swipe_distance_y = 0.1
         x0, x1, y0, y1 = touch.osx, touch.psx, touch.osy, touch.psy
         dx = x1 - x0
         dy = y1 - y0
@@ -177,13 +197,13 @@ class ResultBox(ScreenManager):
         if invalid_touch:
             pass
         else:
-            if dy > swipe_distance:
+            if dy > swipe_distance_y:
                 self.change_match("up")
-            elif dy < -swipe_distance:
+            elif dy < -swipe_distance_y:
                 self.change_match("down")
-            elif dx > swipe_distance:
+            elif dx > swipe_distance_x:
                 self.change_screen("right")
-            elif dx < -swipe_distance:
+            elif dx < -swipe_distance_x:
                 self.change_screen("left")
 
     def check_swipe_touch_border(self, x, y):
