@@ -152,7 +152,7 @@ tutstring9 = {
     "top": {"pos": (0, 0.34), "size": (1, 0.66)},
     "mid": {"pos": (0, 0), "size": (0, 0)},
     "bottom": {"pos": (0, 0), "size": (1, 0.03)},
-    "label": {"pos_hint": {"x": 0.05, "y": 0}, "size_hint": (0.8, 0.51)},
+    "label": {"pos_hint": {"x": 0.05, "y": 0}, "size_hint": (0.8, 0.55)},
     "text": t9,
 }
 
@@ -164,7 +164,7 @@ tutstring10 = {
     "top": {"pos": (0, 0.7), "size": (1, 0.3)},
     "mid": {"pos": (0, 0.4), "size": (1, 0.3)},
     "bottom": {"pos": (0, 0), "size": (1, 0.4)},
-    "label": {"pos_hint": {"x": 0.05, "y": 0}, "size_hint": (0.8, 0.65)},
+    "label": {"pos_hint": {"x": 0.15, "y": 0}, "size_hint": (0.8, 0.65)},
     "text": t10,
 }
 
