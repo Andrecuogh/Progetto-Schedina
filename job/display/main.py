@@ -20,12 +20,12 @@ class SchedinaApp(App):
         self.register_fonts()
 
     def _init_screen(self):
-        self.sf = 1.0  # prod: 1.0; test 0.314
+        self.sf = 0.314  # prod: 1.0; test 0.314
         self.screen_to_body = 0.852
-        # Window.size = (
-        #     1080 * self.screen_to_body * self.sf,
-        #     2400 * self.screen_to_body * self.sf,
-        # )  # only for testing in pc
+        Window.size = (
+            1080 * self.screen_to_body * self.sf,
+            2400 * self.screen_to_body * self.sf,
+        )  # only for testing in pc
 
     def build(self):
         Builder.load_file("layouts/Schedina.kv")

@@ -1,3 +1,5 @@
+#:import Clock kivy.clock.Clock
+
 <UpdateButton@Button>:
     background_color: app.colors["label"]
     background_normal: ""
@@ -22,7 +24,7 @@
             pos_hint: {"center_x": 0.375, "center_y": 0.45}
             on_press:
                 app.updater.update_app()
-                Clock.schedule_once(app.stop, 5)
+                Clock.schedule_once(app.stop, 4)
         UpdateButton:
             text: "Non ora"
             pos_hint: {"center_x": 0.625, "center_y": 0.45}
