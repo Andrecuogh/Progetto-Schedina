@@ -1,10 +1,10 @@
 [app]
 
 # (str) Title of your application
-title = schedina
+title = BetBoom
 
 # (str) Package name
-package.name = schedina
+package.name = betboom
 
 # (str) Package domain (needed for android/ios packaging)
 package.domain = andrecuogh.com
@@ -22,14 +22,14 @@ source.include_exts = py,png,jpg,kv,atlas,ttf,txt
 source.exclude_exts = spec,csv,md
 
 # (list) List of directory to exclude (let empty to not exclude anything)
-source.exclude_dirs = data
+source.exclude_dirs = data, work
 
 # (list) List of exclusions using pattern matching
 # Do not prefix with './'
 #source.exclude_patterns = license,images/*/*.jpg
 
 # (str) Application versioning (method 1)
-version = 1.0.8
+version = 1.0.9
 
 # (str) Application versioning (method 2)
 # version.regex = __version__ = ['"](.*)['"]
@@ -47,7 +47,7 @@ requirements = python3,certifi,kivy,pandas,numpy,lxml==5.2.1
 #presplash.filename = %(source.dir)s/data/presplash.png
 
 # (str) Icon of the application
-#icon.filename = %(source.dir)s/data/icon.png
+icon.filename = %(source.dir)s/utils/icon.png
 
 # (list) Supported orientations
 # Valid options are: landscape, portrait, portrait-reverse or landscape-reverse

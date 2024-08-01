@@ -1,7 +1,7 @@
 import ssl
 import certifi
 
-ssl._create_default_https_context = ssl._create_unverified_context
+ssl._create_default_https_context = ssl._create_stdlib_context
 
 from kivy.app import App
 from kivy.lang.builder import Builder

@@ -69,8 +69,7 @@ for check in checks.values():
 
 
 if all(check_output):
-    print("Checks successful. Buildozer starting")
-    subprocess.run("buildozer -v android debug", shell=True)
+    print("Checks successful. Buildozer ready")
 else:
     print("Checks unsuccessful. Exiting")
     print(check_output)
