@@ -29,7 +29,7 @@ source.exclude_dirs = data, work
 #source.exclude_patterns = license,images/*/*.jpg
 
 # (str) Application versioning (method 1)
-version = 1.0.9
+version = 2.0.0
 
 # (str) Application versioning (method 2)
 # version.regex = __version__ = ['"](.*)['"]
@@ -44,7 +44,7 @@ requirements = python3,certifi,kivy,pandas,numpy,lxml==5.2.1
 # requirements.source.kivy = ../../kivy
 
 # (str) Presplash of the application
-#presplash.filename = %(source.dir)s/data/presplash.png
+presplash.filename = %(source.dir)s/utils/icon.png
 
 # (str) Icon of the application
 icon.filename = %(source.dir)s/utils/icon.png
