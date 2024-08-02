@@ -3,10 +3,23 @@
 <Ranking>:
     grid: grid
     cst_fsize: 60*app.sf
+    canvas:
+        Color:
+            rgba: (0, 0, 0, 0.7)
+        BoxShadow:
+            pos: self.parent.size[0] * 0.05, self.parent.size[1] * 0.05
+            size: self.parent.size[0] * 0.9, self.parent.size[1] * 0.35
+            offset: 0, -10*app.sf
+        Color:
+            rgba: app.colors["background_shadow"]
+        Rectangle:
+            pos: self.parent.size[0] * 0.05, self.parent.size[1] * 0.05
+            size: self.parent.size[0] * 0.9, self.parent.size[1] * 0.35
     GridLayout:
         pos_hint: {'x': 0.05, 'y': 0.35}
         size_hint: (0.9, 0.05)
         cols: 5
+        padding: 5*app.sf
         orientation: 'lr-tb'
         PrevLabelButton:
             text: ""
@@ -37,3 +50,4 @@
             do_scroll_x: False
             always_overscroll: False
             spacing: (0, 10*app.sf) 
+            padding: 5*app.sf

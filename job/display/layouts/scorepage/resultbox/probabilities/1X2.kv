@@ -1,5 +1,17 @@
 <OneXTwo>:
     grid: grid
+    canvas:
+        Color:
+            rgba: (0, 0, 0, 0.7)
+        BoxShadow:
+            pos: self.parent.size[0] * 0.05, self.parent.size[1] * 0.46
+            size: self.parent.size[0] * 0.9, self.parent.size[1] * 0.175
+            offset: 0, -10*app.sf
+        Color:
+            rgba: app.colors["background_shadow"]
+        Rectangle:
+            pos: self.parent.size[0] * 0.05, self.parent.size[1] * 0.46
+            size: self.parent.size[0] * 0.9, self.parent.size[1] * 0.175
     CustomGrid:
         cols: 3
         pos_hint: {"x": 0.05, "y": 0.56}

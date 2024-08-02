@@ -16,4 +16,5 @@ version,latest
 "1.0.8",False
 "1.0.9",False
 "2.0.0",False
-"2.0.1",True
+"2.0.1",False
+"2.0.2",True

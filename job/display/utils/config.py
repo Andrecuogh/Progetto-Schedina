@@ -1,5 +1,6 @@
-VERSION = "2.0.1"
+VERSION = "2.0.2"
 REPOPATH = "Andrecuogh/Progetto-Schedina"
 TARGETS = ["Gf", "Gs", "1X2", "GG-NG", "O-U"]
 CURRENT_YEAR = 2023
 PREVIOUS_YEARS = [2019, 2020, 2021, 2022]
+ENVIRONMENT = "prod"

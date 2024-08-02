@@ -6,17 +6,31 @@
     background_normal: ""
     font_size: 80*app.sf
     bold: True
+    canvas:
+        Color:
+            rgba: (0.8, 0.8, 0.8, 0.9)
+        BoxShadow:
+            inset: True
+            pos: self.pos
+            size: self.size
+            offset: 0, -5*app.sf
+            blur_radius: 20*app.sf
 
 
 <UtilBar>:
-    pad: 5
     tutorial_button: tutorial_button
     canvas:
         Color:
+            rgba: (0, 0, 0, 0.7)
+        BoxShadow:
+            pos: self.parent.size[0] * 0.02, self.parent.size[1] * 0.905
+            size: self.parent.size[0] * 0.96, self.parent.size[1] * 0.070
+            offset: 0, -5*app.sf
+        Color:
             rgba: app.colors["utilbar"]
         RoundedRectangle:
-            pos: self.parent.size[0] * 0.01, self.parent.size[1] * 0.90
-            size: ((self.parent.size[0] * 1.00) - (self.pad*2*app.sf), (self.parent.size[1] * 0.10) - (self.pad*2*app.sf))
+            pos: self.parent.size[0] * 0.01, self.parent.size[1] * 0.905
+            size: self.parent.size[0] * 0.98, self.parent.size[1] * 0.090
     cols: 3
     pos_hint: {'x': 0.00, 'y': 0.90}
     size_hint: 1.00, 0.10

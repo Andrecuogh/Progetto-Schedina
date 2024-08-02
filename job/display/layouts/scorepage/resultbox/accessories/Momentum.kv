@@ -21,20 +21,35 @@
     home: home
     away: away
     grid: grid
-    MomLabelButton:
+    canvas:
+        Color:
+            rgba: (0, 0, 0, 0.7)
+        BoxShadow:
+            pos: self.parent.size[0] * 0.05, self.parent.size[1] * 0.44
+            size: self.parent.size[0] * 0.9, self.parent.size[1] * 0.241
+            offset: 0, -10*app.sf
+        Color:
+            rgba: app.colors["background_shadow"]
+        Rectangle:
+            pos: self.parent.size[0] * 0.05, self.parent.size[1] * 0.44
+            size: self.parent.size[0] * 0.9, self.parent.size[1] * 0.241
+    GridLayout:
+        rows: 1
+        padding: 3*app.sf
         pos_hint: {'x': 0.05, 'y': 0.641}
         size_hint: (0.9, 0.04)
-        markup: True
-        win_string: "W: [font=arial][color=#DAA520]██[/color][/font]   "
-        draw_string: "D: [font=arial][color=#088F8F]██[/color][/font]   "
-        loss_string: "L: [font=arial][color=#E97451]██[/color][/font]"
-        text: "Risultati precedenti   " + self.win_string + self.draw_string + self.loss_string
+        MomLabelButton:
+            markup: True
+            win_string: "W: [font=arial][color=#DAA520]██[/color][/font]   "
+            draw_string: "D: [font=arial][color=#088F8F]██[/color][/font]   "
+            loss_string: "L: [font=arial][color=#E97451]██[/color][/font]"
+            text: "Risultati precedenti   " + self.win_string + self.draw_string + self.loss_string
     GridLayout:
         cols: 1
         pos_hint: {'x': 0.05, 'y': 0.6}
         size_hint: (0.10, 0.04)
         spacing: 3*app.sf
-        padding: 1*app.sf 
+        padding: [5*app.sf, 0, 5*app.sf, 1*app.sf]
         disabled: True
         PrevLabelButton:
             text: ""
@@ -43,7 +58,7 @@
         size_hint: (0.10, 0.160)
         rows: 2 
         spacing: 3*app.sf
-        padding: 1*app.sf 
+        padding: 5*app.sf 
         disabled: True
         PrevLabelButton:
             id: home
@@ -56,7 +71,7 @@
         size_hint: (0.80, 0.04)
         cols: 5
         spacing: 3*app.sf
-        padding: 1*app.sf 
+        padding: [5*app.sf, 0, 5*app.sf, 1*app.sf]
         disabled: True
         MomLabelButton:
             text: "1"
@@ -75,7 +90,7 @@
         cols: 5
         rows: 2
         spacing: 3*app.sf
-        padding: 1*app.sf 
+        padding: 5*app.sf 
         orientation: "rl-bt"
         disabled: True
         MomentumButton:

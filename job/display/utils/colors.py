@@ -13,6 +13,7 @@ colors1 = {
     "label": get_color_from_hex("#26383e"),
     "label_pressed": get_color_from_hex("#1E2C31"),
     "background": get_color_from_hex("#80BDD1"),
+    "background_shadow": get_color_from_hex("#6697A7"),
     "warning": [0.682, 0.239, 0.341, 1.0],
     "utilbar": get_color_from_hex("#e8f7ca"),
     "tutorial": get_color_from_hex("#FA8072"),

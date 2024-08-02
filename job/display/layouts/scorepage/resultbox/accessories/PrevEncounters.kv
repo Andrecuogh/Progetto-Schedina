@@ -2,14 +2,29 @@
     matches: matches
     years: years
     disabled: True
-    FloatLayout:
+    canvas:
+        Color:
+            rgba: (0, 0, 0, 0.7)
+        BoxShadow:
+            pos: self.parent.size[0] * 0.05, self.parent.size[1] * 0.73
+            size: self.parent.size[0] * 0.9, self.parent.size[1] * 0.24
+            offset: 0, -10*app.sf
+        Color:
+            rgba: app.colors["background_shadow"]
+        Rectangle:
+            pos: self.parent.size[0] * 0.05, self.parent.size[1] * 0.73
+            size: self.parent.size[0] * 0.9, self.parent.size[1] * 0.24
+    GridLayout:
+        cols: 2
+        spacing: 5*app.sf
+        padding: [5*app.sf, 5*app.sf, 5*app.sf, 0]
+        pos_hint: {'x': 0.05, 'y': 0.922}
+        size_hint: (0.9, 0.048)
         PrevLabelButton:
-            pos_hint: {'x': 0.05, 'y': 0.922}
-            size_hint: (0.225, 0.048)
+            size_hint_x: 0.225
             text: "Anno"
         PrevLabelButton:
-            pos_hint: {'x': 0.275, 'y': 0.922}
-            size_hint: (0.675, 0.048)
+            size_hint_x: 0.675
             text: "Precedenti"
     GridLayout:
         id: years
@@ -18,6 +33,7 @@
         rows: 3
         orientation: "lr-bt"
         spacing: 5*app.sf
+        padding: 5*app.sf
         ProbabilityButton:
         ProbabilityButton:
         ProbabilityButton:
@@ -28,6 +44,7 @@
         rows: 3
         orientation: "lr-bt"
         spacing: 5*app.sf
+        padding: 5*app.sf
         ProbabilityButton:
         ProbabilityButton:
         ProbabilityButton:
