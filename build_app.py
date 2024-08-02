@@ -1,6 +1,6 @@
-import subprocess
 import pandas as pd
 from job.display.utils.config import VERSION as kivy_app_version
+from job.display.utils.config import ENVIRONMENT as env
 
 
 def raise_reading_file_exception(func):
@@ -46,17 +46,9 @@ def check_version():
 
 
 def check_layout():
-    with open("job/display/main.py", "r") as file:
-        for line in file:
-            if "self.sf = " in line:
-                scale_factor_line = line
-            elif "Window.size = " in line:
-                size_line = line
-        check = (
-            float(scale_factor_line.split(" = ")[1][0:3]) == 1.0 and "#" in size_line
-        )
-        metadata = {"scale_factor": scale_factor_line, "size": size_line}
-        return check, metadata
+    check = env == "prod"
+    metadata = {"environment": env}
+    return check, metadata
 
 
 checks = {"version": check_version(), "layout": check_layout()}
