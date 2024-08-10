@@ -71,6 +71,7 @@ def reduce_teams_names(squadra: str, single=True) -> str:
 
 
 def transform_previous_encounters(df: pd.DataFrame) -> pd.DataFrame:
+    df = df.sort_values(by=["anno", "giornata"])
     df = df.iloc[:-10].copy()
     df["partita"] = df["squadra_casa"] + " - " + df["squadra_trasferta"]
     df["risultato"] = (
@@ -84,8 +85,12 @@ def transform_previous_encounters(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def view_ranking(leagues: dict) -> pd.DataFrame:
-    df = leagues["goals"].copy()
-    df = filter_latest_day(df, step=1)
+    data = leagues["goals"].copy()
+    df = filter_latest_day(data, step=1)
+    if df.empty:
+        df = filter_latest_day(data, step=0)
+        df["posizione"] = df.squadra.rank()
+        df[["punti", "gol_fatti_cum", "gol_subiti_cum"]] = 0
     df = df.sort_values(by=["posizione"])
     df["posizione"] = df.posizione.astype(int)
     df["squadra"] = df["squadra"].apply(reduce_teams_names)

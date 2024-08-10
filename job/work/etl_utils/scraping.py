@@ -40,10 +40,10 @@ def get_pd_html(year: int, ongoing: bool) -> pd.DataFrame:
     return link
 
 
-def handle_postponed(df: pd.DataFrame) -> pd.DataFrame:
+def handle_new_or_postponed(df: pd.DataFrame) -> pd.DataFrame:
     """Handle postponed matches"""
-    postponed = df.risultato == "-"
-    df.loc[postponed, "risultato"] = "0 - 0"
+    invalid = df.risultato.str.contains(r"^(?!\d+ - \d+$)")
+    df.loc[invalid, "risultato"] = "0 - 0"
     return df
 
 
@@ -53,8 +53,9 @@ def separate_goals(df: pd.DataFrame) -> pd.DataFrame:
         scored = 1
         received = 0
     """
-    goal_cols = ["goal_casa", "goal_trasferta"]
-    df[goal_cols] = df.risultato.str.split(" - ", expand=True).astype(int)
+    df[["goal_casa", "goal_trasferta"]] = df.risultato.str.split(
+        " - ", expand=True
+    ).astype(int)
     df = df.drop("risultato", axis=1)
     return df
 
@@ -75,12 +76,7 @@ def scrape_sky(year: int, ongoing: bool, days: int) -> None:
     for day in range(days):
         matchday = clean_link(link, day)
         df = pd.concat([df, matchday], ignore_index=True)
-    df = handle_postponed(df)
+    df = handle_new_or_postponed(df)
     df = separate_goals(df)
-    if ongoing:
-        next = get_next_matches(link, days)
-    else:
-        next = pd.DataFrame()
-    df = pd.concat([df, next], ignore_index=True)
     df["anno"] = year
     df.to_csv(f"data/leagues/{year}.csv")

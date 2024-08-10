@@ -81,6 +81,7 @@ def cleaning_df(df: pd.DataFrame) -> pd.DataFrame:
         axis=1,
     )
     df = df.dropna()
+    df = df[df.giornata > 5]
     return df
 
 
@@ -91,8 +92,25 @@ def compute_mean_goals(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
+def input_preseason(df: pd.DataFrame) -> pd.DataFrame:
+    """If there aren't 5 previous matches, the missing previous
+    encounters are inputted based on preaseason matches
+    """
+    latest = df.giornata.max()
+    if latest < 6:
+        preseason = pd.read_csv("data/leagues/2024pre_season.csv")
+        preseason["giornata"] += 1
+        df = pd.concat([df, preseason], ignore_index=True)
+        missing_days = 6 - latest
+        df["giornata"] += missing_days
+        df = df[df.giornata > 0]
+    return df
+
+
 def extract_features(leagues: pd.DataFrame) -> tuple[pd.DataFrame]:
     """Extract relevant features from the data"""
+
+    leagues = input_preseason(leagues)
     matches = leagues.drop(["goal_casa", "goal_trasferta"], axis=1)
     dataframe = count_goals(leagues)
     dataframe = assign_points(dataframe)
