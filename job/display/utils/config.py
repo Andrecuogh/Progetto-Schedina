@@ -1,4 +1,4 @@
-VERSION = "2.0.2"
+VERSION = "2.0.3"
 REPOPATH = "Andrecuogh/Progetto-Schedina"
 TARGETS = ["Gf", "Gs", "1X2", "GG-NG", "O-U"]
 CURRENT_YEAR = 2024
