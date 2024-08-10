@@ -313,6 +313,9 @@ class PrevEncounter(FloatLayout):
     years = ObjectProperty(None)
 
     def change_values(self, match_id):
+        for match, year in zip(self.matches.children, self.years.children):
+            match.text = ""
+            year.text = ""
         N_RESULT = 3
         df = dp.get_direct_encounters(match_id, N_RESULT)
         for i in range(len(df)):
@@ -330,6 +333,9 @@ class Momentum(FloatLayout):
     def change_values(self, match_id):
         self.change_team_labels(match_id)
         df = dp.get_momentum_labels(match_id)
+        for block in self.grid.children:
+            block.text = ""
+            block.background_color = cmap["colorbar"][50]
         for child, row in zip(self.grid.children, df.itertuples()):
             child.text = row.label
             child.background_color = cmap["results"][row.color]

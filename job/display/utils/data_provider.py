@@ -56,10 +56,11 @@ class DataProvider:
         df = self.prev_enc[self.prev_enc.partita.isin(encounters)]
         df = df.sort_values(by=["anno", "giornata"], ascending=False)
         top = df.head(n_encounters).copy()
-        top["label"] = top.apply(
-            lambda row: row["partita_short"].replace("-", row["risultato"]), axis=1
-        )
-        top = top.reset_index(drop=True)
+        if not top.empty:
+            top["label"] = top.apply(
+                lambda row: row["partita_short"].replace("-", row["risultato"]), axis=1
+            )
+            top = top.reset_index(drop=True)
         return top
 
     def get_momentum_labels(self, match_id):
@@ -67,37 +68,39 @@ class DataProvider:
         home_matches = self.momentum[
             self.momentum.partita_short.str.contains(self.h_short)
         ].head(5)
+        if not home_matches.empty:
+            home_matches["score"] = home_matches.apply(
+                self.get_markup_score, team=self.home, axis=1
+            )
+            home_matches["color"] = home_matches.apply(
+                self.get_color_from_result, team=self.home, axis=1
+            )
+            home_matches["label"] = (
+                " vs "
+                + home_matches.partita_short.str.replace(self.h_short, "").str.replace(
+                    " - ", ""
+                )
+                + "\n"
+                + home_matches.score
+            )
         away_matches = self.momentum[
             self.momentum.partita_short.str.contains(self.a_short)
         ].head(5)
-        home_matches["score"] = home_matches.apply(
-            self.get_markup_score, team=self.home, axis=1
-        )
-        away_matches["score"] = away_matches.apply(
-            self.get_markup_score, team=self.away, axis=1
-        )
-        home_matches["color"] = home_matches.apply(
-            self.get_color_from_result, team=self.home, axis=1
-        )
-        away_matches["color"] = away_matches.apply(
-            self.get_color_from_result, team=self.away, axis=1
-        )
-        home_matches["label"] = (
-            " vs "
-            + home_matches.partita_short.str.replace(self.h_short, "").str.replace(
-                " - ", ""
+        if not away_matches.empty:
+            away_matches["score"] = away_matches.apply(
+                self.get_markup_score, team=self.away, axis=1
             )
-            + "\n"
-            + home_matches.score
-        )
-        away_matches["label"] = (
-            " vs "
-            + away_matches.partita_short.str.replace(self.a_short, "").str.replace(
-                " - ", ""
+            away_matches["color"] = away_matches.apply(
+                self.get_color_from_result, team=self.away, axis=1
             )
-            + "\n"
-            + away_matches.score
-        )
+            away_matches["label"] = (
+                " vs "
+                + away_matches.partita_short.str.replace(self.a_short, "").str.replace(
+                    " - ", ""
+                )
+                + "\n"
+                + away_matches.score
+            )
         labels = pd.concat([home_matches, away_matches])
         return labels
 
