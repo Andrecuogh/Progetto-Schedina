@@ -36,6 +36,7 @@ class SchedinaApp(App):
         self.root = SchedinaLayout()
         self.update_if_any()
         self.root.current_screen.match_id = 0
+        self.root.get_screen("scorepage").navigation.preseason()
         return self.root
 
     def register_fonts(self):

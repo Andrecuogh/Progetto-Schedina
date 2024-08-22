@@ -18,6 +18,7 @@ class DataProvider:
         self.prev_enc = loader.extract_previous_encounters()
         self.ranking = loader.load_ranking()
         self.momentum = loader.load_momentum()
+        self.matchday = loader.matchday
 
     def store_match_info(self, match_index=0):
         self.id = match_index
@@ -31,7 +32,7 @@ class DataProvider:
             new_id = 9
         elif new_id > 9:
             new_id = 0
-        self.store_match_info(new_id)
+        return new_id
 
     def get_columns(self, target):
         df = self.dfs[target].copy()

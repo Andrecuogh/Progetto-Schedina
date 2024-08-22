@@ -9,6 +9,34 @@
     background_color: app.colors["transparent"]
 
 
+<WarningIcon>:
+    Image:
+        source: "layouts/scorepage/navigation/warning.png"
+        pos_hint: {"x": 0.6, "y": 0.84}
+        size_hint: (0.075, 0.075)
+    ImageButton:
+        pos_hint: {"x": 0.6, "y": 0.84}
+        size_hint: (0.075, 0.075)
+        always_release: True
+        on_press:
+            root.poppingup()
+        on_release:
+            root.poppingdown()
+
+
+<WarningPopup>:
+    Button:
+        pos_hint: {"center_x": 0.5, "y": 0.775}
+        size_hint: (0.8, 0.15)
+        background_color: "red"
+        background_normal: ""
+        text: "L'algoritmo ha bisogno di 5 incontri precedenti per poter calcolare le probabilità. Dato che ancora non ci sono state 5 partite i dati mancanti sono stati riempiti con i risultati delle amichevoli precampionato"
+        font_size: 40*app.sf
+        text_size: self.size
+        valign: "top"
+        padding: root.size[0] * 0.05
+
+
 <PageNavigator>:
     match: match
     proba_button: proba_button

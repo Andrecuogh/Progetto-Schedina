@@ -150,10 +150,31 @@ class Readme(FloatLayout):
         self.readmelabel.text = dp.readme
 
 
+class WarningIcon(FloatLayout):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.pops = WarningPopup()
+
+    def poppingup(self):
+        self.add_widget(self.pops)
+
+    def poppingdown(self):
+        self.remove_widget(self.pops)
+
+
+class WarningPopup(FloatLayout):
+    pass
+
+
 class PageNavigator(FloatLayout):
     match = ObjectProperty(None)
     proba_button = ObjectProperty(None)
     accessory_button = ObjectProperty(None)
+
+    def preseason(self):
+        if dp.matchday == 6:
+            self.match.pos_hint = {"center_x": 0.45, "y": 0.85}
+            self.add_widget(WarningIcon())
 
     def change_labels(self, match_id):
         home, away = dp.get_current_matches(match_id, short=True)
@@ -218,7 +239,7 @@ class ResultBox(ScreenManager):
         self.current = self.current.replace("current", "next")
         self.update_screen_list()
         move = {"up": 1, "down": -1}
-        self.parent.match_id += move[direction]
+        self.parent.match_id = dp.update_id(move[direction])
 
     def update_screen_list(self):
         screen_list = {
