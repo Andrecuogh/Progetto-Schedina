@@ -22,14 +22,14 @@ source.include_exts = py,png,jpg,kv,atlas,ttf,txt
 source.exclude_exts = spec,csv,md
 
 # (list) List of directory to exclude (let empty to not exclude anything)
-source.exclude_dirs = data, work
+source.exclude_dirs = data, work, bin, .env
 
 # (list) List of exclusions using pattern matching
 # Do not prefix with './'
 #source.exclude_patterns = license,images/*/*.jpg
 
 # (str) Application versioning (method 1)
-version = 2.0.3
+version = 2.0.4
 
 # (str) Application versioning (method 2)
 # version.regex = __version__ = ['"](.*)['"]
