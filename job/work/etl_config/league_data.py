@@ -23,7 +23,7 @@ seasons = {
             "Venezia",
         ],
         "ongoing": True,
-        "days": 2,
+        "days": 3,
     },
     "2023": {
         "teams": [
