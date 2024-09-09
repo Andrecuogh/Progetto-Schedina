@@ -30,10 +30,7 @@ def clean_link(link: list, day: int) -> pd.DataFrame:
 
 def get_pd_html(year: int, ongoing: bool) -> pd.DataFrame:
     """Read skysport.com data"""
-    if ongoing:
-        link_year = ""
-    else:
-        link_year = year
+    link_year = "" if ongoing else year
     link = pd.read_html(
         f"https://sport.sky.it/calcio/serie-a/{link_year}/calendario-risultati#giornata-38"
     )
