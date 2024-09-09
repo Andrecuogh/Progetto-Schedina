@@ -1,21 +1,11 @@
 #:include layouts/scorepage/utilbar/Readme.kv
 #:include layouts/scorepage/utilbar/Tutorial.kv
 
-<UtilsButton@Button>:
-    background_color: app.colors["button"]
-    background_normal: ""
-    font_size: 80*app.sf
-    bold: True
-    canvas:
-        Color:
-            rgba: (0.8, 0.8, 0.8, 0.9)
-        BoxShadow:
-            inset: True
-            pos: self.pos
-            size: self.size
-            offset: 0, -5*app.sf
-            blur_radius: 20*app.sf
+<UtilsButton@ButtonBehavior+Label>:
+    color: 'black'
+    font_size: '10sp'
 
+<UtilsIcon@ButtonBehavior+Image>:
 
 <UtilBar>:
     tutorial_button: tutorial_button
@@ -23,29 +13,45 @@
         Color:
             rgba: (0, 0, 0, 0.7)
         BoxShadow:
-            pos: self.parent.size[0] * 0.02, self.parent.size[1] * 0.905
-            size: self.parent.size[0] * 0.96, self.parent.size[1] * 0.070
+            pos: self.pos
+            size: self.size
             offset: 0, -5*app.sf
         Color:
             rgba: app.colors["utilbar"]
-        RoundedRectangle:
-            pos: self.parent.size[0] * 0.01, self.parent.size[1] * 0.905
-            size: self.parent.size[0] * 0.98, self.parent.size[1] * 0.090
-    cols: 3
-    pos_hint: {'x': 0.00, 'y': 0.90}
-    size_hint: 1.00, 0.10
-    spacing: [20*app.sf, 0*app.sf]
-    padding: 50*app.sf
-    UtilsButton:
-        id: tutorial_button
-        text: "Help"
-        on_release:
-            self.parent.load_tutorial()    
-    UtilsButton:
-        text: "About"
-        on_release:
-            self.parent.load_readme()
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    cols: 4
+    rows: 2
+    orientation: "tb-lr"
+    spacing: dp(2)
+    padding: dp(2)
+    UtilsIcon:
+        source: "icons/officon.png"
+        size_hint: (0.2, 0.7)
+        on_press: if not root.parent.input_disabled: app.stop()
     UtilsButton:
         text: "Quit"
-        on_press:
-            if not root.parent.input_disabled: app.stop()
+        size_hint: (0.2, 0.3)
+        on_press: if not root.parent.input_disabled: app.stop()
+    Label:
+        size_hint: (0.2, 0.7)
+    Label:
+        size_hint: (0.2, 0.3)
+    UtilsIcon:
+        source: "icons/officon.png"
+        size_hint: (0.2, 0.7)
+        on_release: self.parent.load_tutorial()
+    UtilsButton:
+        id: tutorial_button
+        size_hint: (0.2, 0.3)
+        text: "Help"
+        on_release: self.parent.load_tutorial()
+    UtilsIcon:
+        source: "icons/officon.png"
+        size_hint: (0.2, 0.7)
+        on_release: self.parent.load_readme()
+    UtilsButton:
+        text: "About"
+        size_hint: (0.2, 0.3)
+        on_release: self.parent.load_readme()

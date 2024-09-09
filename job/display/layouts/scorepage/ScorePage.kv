@@ -7,14 +7,10 @@
     utilbar: utilbar
     navigation: navigation
     resultbox: resultbox
-    canvas:
-        Color:
-            rgba: app.colors["label"]
-        Rectangle:
-            pos: root.size[0] * 0.00, root.size[1] * 0.80
-            size: root.size[0] * 1.00, root.size[1] * 0.2
     UtilBar:
         id: utilbar
+        pos_hint: {'x': 0.00, 'y': 0.95}
+        size_hint: 1.00, 0.05
     PageNavigator:
         id: navigation
     ResultBox:
