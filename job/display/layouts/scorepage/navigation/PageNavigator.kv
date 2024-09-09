@@ -1,28 +1,21 @@
 <NavigationLabel@Button>:
     background_normal: ""
     bold: True
-    font_size: 55*app.sf
+    font_size: '14sp'
 
 
-<ImageButton@Button>:
-    background_normal: ""
-    background_color: app.colors["transparent"]
+<NavigationImage@ButtonBehavior+Image>:
 
 
 <WarningIcon>:
-    Image:
-        source: "layouts/scorepage/navigation/warning.png"
-        pos_hint: {"x": 0.6, "y": 0.84}
-        size_hint: (0.075, 0.075)
-    ImageButton:
+    NavigationImage:
+        source: "icons/warning.png"
         pos_hint: {"x": 0.6, "y": 0.84}
         size_hint: (0.075, 0.075)
         always_release: True
-        on_press:
-            root.poppingup()
-        on_release:
-            root.poppingdown()
-
+        on_press: root.poppingup()
+        on_release: root.poppingdown()
+        
 
 <WarningPopup>:
     Button:
@@ -31,54 +24,54 @@
         background_color: "red"
         background_normal: ""
         text: "L'algoritmo ha bisogno di 5 incontri precedenti per poter calcolare le probabilità. Dato che ancora non ci sono state 5 partite i dati mancanti sono stati riempiti con i risultati delle amichevoli precampionato"
-        font_size: 40*app.sf
+        font_size: '12sp'
         text_size: self.size
         valign: "top"
-        padding: root.size[0] * 0.05
+        padding: dp(1)
 
 
 <PageNavigator>:
     match: match
     proba_button: proba_button
     accessory_button: accessory_button
+    cols: 1
+    rows: 2
+    canvas.before:
+        Color:
+            rgba: (0, 0, 0, 0.8)
+        BoxShadow:
+            pos: self.pos
+            size: self.size
+            offset: 0, -dp(2)
+        Color:
+            rgba: app.colors['label']
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    GridLayout:
+        cols: 3
+        NavigationImage:
+            source: "icons/leftarrow.png"
+            on_press: root.parent.resultbox.change_match("down")
+        Label:
+            id: match
+            text: "DEF - DEF"
+            bold: True    
+        NavigationImage:
+            source: "icons/rightarrow.png"
+            on_press: root.parent.resultbox.change_match("up")   
     GridLayout:
         cols: 2
-        pos_hint: {"x": 0.00, "y": 0.8}
-        size_hint: (1, 0.05)
         NavigationLabel:
             id: proba_button
             text: "Probabilità"
             background_color: app.colors["label_pressed"]
-            on_press:
-                root.parent.resultbox.change_screen("right")
+            on_press: root.parent.resultbox.change_screen("right")
         NavigationLabel:
             id: accessory_button
             text: "Momento di forma"
             background_color: app.colors["label"]
-            on_press:
-                root.parent.resultbox.change_screen("left")
-    Image:
-        source: "layouts/scorepage/navigation/leftarrow.png"
-        pos_hint: {"x": 0.15, "y": 0.85}
-        size_hint: (0.075, 0.05)
-    ImageButton:
-        pos_hint: {"x": 0.15, "y": 0.85}
-        size_hint: (0.075, 0.05)
-        on_press:
-            root.parent.resultbox.change_match("down")
-    Image:
-        source: "layouts/scorepage/navigation/rightarrow.png"
-        pos_hint: {"x": 0.75, "y": 0.85}
-        size_hint: (0.075, 0.05)
-    ImageButton:
-        pos_hint: {"x": 0.75, "y": 0.85}
-        size_hint: (0.075, 0.05)
-        on_press:
-            root.parent.resultbox.change_match("up")
-    Label:
-        id: match
-        pos_hint: {"center_x": 0.5, "y": 0.85}
-        size_hint: (0.1, 0.05)
-        text: "DEF - DEF"
-        bold: True
+            on_press: root.parent.resultbox.change_screen("left")
+           
+    
             

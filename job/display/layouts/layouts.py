@@ -166,15 +166,16 @@ class WarningPopup(FloatLayout):
     pass
 
 
-class PageNavigator(FloatLayout):
+class PageNavigator(GridLayout):
     match = ObjectProperty(None)
     proba_button = ObjectProperty(None)
     accessory_button = ObjectProperty(None)
 
     def preseason(self):
         if dp.matchday == 6:
-            self.match.pos_hint = {"center_x": 0.45, "y": 0.85}
-            self.add_widget(WarningIcon())
+            pass
+            # self.match.pos_hint = {"center_x": 0.45, "y": 0.85}
+            # self.add_widget(WarningIcon())
 
     def change_labels(self, match_id):
         home, away = dp.get_current_matches(match_id, short=True)
