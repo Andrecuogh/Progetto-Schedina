@@ -32,6 +32,7 @@ def save_report(pred: dict) -> None:
     metadata = pd.read_csv("data/metadata.csv")
     metadata_to_add = pd.DataFrame({"anno": [anno], "giornata": [giornata]})
     metadata = pd.concat([metadata, metadata_to_add], ignore_index=True)
+    meatdata = metadata.drop_duplicates()
     metadata.to_csv("data/metadata.csv", index=False)
 
 
