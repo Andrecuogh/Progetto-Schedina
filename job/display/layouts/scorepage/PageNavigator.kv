@@ -6,7 +6,7 @@
 
 <WarningIcon>:
     NavigationImage:
-        source: "icons/warning.png"
+        source: "data/icons/warning.png"
         pos_hint: {"x": 0.6, "y": 0.84}
         size_hint: (0.075, 0.075)
         always_release: True
@@ -43,14 +43,14 @@
     GridLayout:
         cols: 3
         NavigationImage:
-            source: "icons/leftarrow.png"
+            source: "data/icons/leftarrow.png"
             on_press: root.parent.resultbox.change_match("down")
         Label:
             id: match
             text: "DEF - DEF"
             bold: True    
         NavigationImage:
-            source: "icons/rightarrow.png"
+            source: "data/icons/rightarrow.png"
             on_press: root.parent.resultbox.change_match("up")   
     GridLayout:
         cols: 2
