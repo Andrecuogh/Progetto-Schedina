@@ -4,6 +4,23 @@
 <CustomGrid@BasicGridLayout>:
     orientation: "rl-tb"
 
+<TeamIcon@GridLayout>:
+    img: img
+    cols: 1
+    rows: 1
+    source: ""
+    canvas.before:
+        Color:
+            rgba: app.colors["label"]
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    padding: dp(4)
+    on_source: img.source = self.source
+    Image:
+        id: img
+        source: ""
+
 <ResultBox>:
     ProbabilityScreen:
         name: "probability_current"

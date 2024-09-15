@@ -1,4 +1,6 @@
-
+<LabelButton@BasicButton>:
+    background_color: app.colors["label"]
+    font_size: '18sp'
 
 <ProbabilityButton@BasicButton>:
     background_color: app.colors["colorbar"][50]
@@ -37,16 +39,12 @@
             text: "GOL"
             size_hint_y: 0.2
             font_size: '14sp'
-        LabelButton:
+        TeamIcon:
             id: home
-            text: "Home"
             size_hint_y: 0.4
-            font_size: '13sp'
-        LabelButton:
+        TeamIcon:
             id: away
-            text: "Away"
             size_hint_y: 0.4
-            font_size: '13sp'
     GridLayout:
         size_hint_x: 0.85
         rows: 3

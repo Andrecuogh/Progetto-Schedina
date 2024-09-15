@@ -2,7 +2,7 @@
 
 <PrevLabelButton@BasicButton>:
     background_color: app.colors["label"]
-    font_size: '16sp'
+    font_size: '18sp'
 
 <MomentumButton@BasicButton>:
     background_color: app.colors["colorbar"][50]
@@ -101,14 +101,12 @@
             PrevLabelButton:
                 size_hint_y: 0.2
                 text: ""
-            PrevLabelButton:
+            TeamIcon:
                 id: home
                 size_hint_y: 0.4
-                text: "Home" 
-            PrevLabelButton:
+            TeamIcon:
                 id: away
                 size_hint_y: 0.4
-                text: "Away" 
         GridLayout:
             size_hint_x: 0.85
             rows: 2

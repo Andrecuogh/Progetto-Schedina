@@ -295,9 +295,9 @@ class ProbabilityScreen(Screen):
         self.add_values(self.ou.grid, dp.dfs["O-U"], match_id)
 
     def change_team_labels(self, match_id):
-        home, away = dp.get_current_matches(match_id, short=True)
-        self.gfgs.home.text = home
-        self.gfgs.away.text = away
+        home, away = dp.get_current_matches(match_id, short=False)
+        self.gfgs.home.source = f"data/teamlogos/{home}.png"
+        self.gfgs.away.source = f"data/teamlogos/{away}.png"
 
 
 class AccessoriesScreen(Screen):
@@ -335,9 +335,9 @@ class AccessoriesScreen(Screen):
             child.background_color = cmap["results"][row.color]
 
     def change_team_labels(self, match_id):
-        home, away = dp.get_current_matches(match_id, short=True)
-        self.momentum.home.text = home
-        self.momentum.away.text = away
+        home, away = dp.get_current_matches(match_id, short=False)
+        self.momentum.home.source = f"data/teamlogos/{home}.png"
+        self.momentum.away.source = f"data/teamlogos/{away}.png"
 
     def change_ranking(self, match_id):
         df = dp.get_ranking(match_id)
