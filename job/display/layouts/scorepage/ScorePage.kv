@@ -1,6 +1,6 @@
-#:include layouts/scorepage/utilbar/UtilBar.kv
-#:include layouts/scorepage/navigation/PageNavigator.kv
-#:include layouts/scorepage/resultbox/ResultBox.kv
+#:include layouts/scorepage/UtilBar.kv
+#:include layouts/scorepage/PageNavigator.kv
+#:include layouts/scorepage/ResultBox.kv
 
 
 <ScorePage>:
@@ -17,3 +17,5 @@
         size_hint: (1, 0.1)
     ResultBox:
         id: resultbox
+        pos_hint: {"x": 0.05, "y": 0.0}
+        size_hint: (0.9, 0.85)

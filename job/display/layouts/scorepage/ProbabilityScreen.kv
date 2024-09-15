@@ -1,0 +1,163 @@
+
+
+<ProbabilityButton@BasicButton>:
+    background_color: app.colors["colorbar"][50]
+    font_size: '16sp'
+
+<ProbabilityGrid@GridLayout>:
+    canvas.before:
+        Color:
+            rgba: (0, 0, 0, 0.8)
+        BoxShadow:
+            pos: self.pos
+            size: self.size
+            offset: 0, -dp(2)
+            blur_radius: dp(4)
+        Color:
+            rgba: app.colors["background_shadow"]
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    padding: [dp(2), dp(1)]
+
+<ScoredReceived@ProbabilityGrid>:
+    scored: scored
+    received: received
+    home: home
+    away: away
+    rows: 1
+    cols: 2
+    GridLayout:
+        size_hint_x: 0.15
+        rows: 3
+        cols: 1
+        padding: dp(1)
+        spacing: dp(2)
+        LabelButton:
+            text: "GOL"
+            size_hint_y: 0.2
+            font_size: '14sp'
+        LabelButton:
+            id: home
+            text: "Home"
+            size_hint_y: 0.4
+            font_size: '13sp'
+        LabelButton:
+            id: away
+            text: "Away"
+            size_hint_y: 0.4
+            font_size: '13sp'
+    GridLayout:
+        size_hint_x: 0.85
+        rows: 3
+        cols: 1
+        CustomGrid: 
+            cols: 5
+            orientation: "lr-tb"
+            size_hint_y: 0.2
+            LabelButton:
+                text: "0"
+            LabelButton:
+                text: "1"
+            LabelButton:
+                text: "2"
+            LabelButton:
+                text: "3"
+            LabelButton:
+                text: "4"
+        CustomGrid:
+            id: scored
+            cols: 5
+            size_hint_y: 0.4
+            ProbabilityButton:
+            ProbabilityButton:
+            ProbabilityButton:
+            ProbabilityButton:
+            ProbabilityButton:
+        CustomGrid:
+            id: received
+            cols: 5
+            size_hint_y: 0.4
+            ProbabilityButton:
+            ProbabilityButton:
+            ProbabilityButton:
+            ProbabilityButton:
+            ProbabilityButton:
+
+<OneXTwo@ProbabilityGrid>:
+    grid: grid
+    rows: 2
+    CustomGrid:
+        cols: 3
+        size_hint_y: 0.3
+        LabelButton:
+            text: "2" 
+        LabelButton:
+            text: "X" 
+        LabelButton:
+            text: "1" 
+    CustomGrid:
+        id: grid
+        cols: 3
+        size_hint_y: 0.7
+        ProbabilityButton:
+        ProbabilityButton:
+        ProbabilityButton:
+
+<GolNoGol@ProbabilityGrid>:
+    grid: grid
+    rows: 2
+    CustomGrid:
+        cols: 2
+        size_hint_y: 0.3
+        LabelButton:
+            text: "NG"
+        LabelButton:
+            text: "GG"
+    CustomGrid:
+        id: grid
+        cols: 2
+        size_hint_y: 0.7
+        ProbabilityButton:
+        ProbabilityButton:  
+
+<OverUnder@ProbabilityGrid>:
+    rows: 2
+    grid: grid
+    CustomGrid:
+        cols: 2
+        size_hint_y: 0.3
+        LabelButton:
+            text: "Under"
+        LabelButton:
+            text: "Over"
+    CustomGrid:
+        id: grid
+        cols: 2
+        size_hint_y: 0.7
+        ProbabilityButton:
+        ProbabilityButton:
+
+<ProbabilityScreen>:
+    gfgs: gfgs
+    oxt: oxt
+    ggng: ggng
+    ou: ou
+    disabled: True
+    ScoredReceived:
+        id: gfgs
+        pos_hint: {"x": 0.0, "y": 0.665}
+        size_hint: (1.0, 0.285)
+    OneXTwo:
+        id: oxt
+        pos_hint: {"x": 0.0, "y": 0.46}
+        size_hint: (1.0, 0.175)
+    GolNoGol:
+        id: ggng
+        pos_hint: {"x": 0.0, "y": 0.255}
+        size_hint: (1.0, 0.175)
+    OverUnder:
+        id: ou
+        pos_hint: {"x": 0.0, "y": 0.05}
+        size_hint: (1.0, 0.175)
+

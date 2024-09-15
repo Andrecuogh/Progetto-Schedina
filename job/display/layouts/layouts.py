@@ -287,12 +287,17 @@ class ProbabilityScreen(Screen):
             widget.background_color = cmap["colorbar"][color_i]
 
     def change_proba(self, match_id):
-        self.gfgs.change_team_labels(match_id)
+        self.change_team_labels(match_id)
         self.add_values(self.gfgs.scored, dp.dfs["Gf"], match_id)
         self.add_values(self.gfgs.received, dp.dfs["Gs"], match_id)
         self.add_values(self.oxt.grid, dp.dfs["1X2"], match_id)
         self.add_values(self.ggng.grid, dp.dfs["GG-NG"], match_id)
         self.add_values(self.ou.grid, dp.dfs["O-U"], match_id)
+
+    def change_team_labels(self, match_id):
+        home, away = dp.get_current_matches(match_id, short=True)
+        self.gfgs.home.text = home
+        self.gfgs.away.text = away
 
 
 class AccessoriesScreen(Screen):
@@ -301,83 +306,46 @@ class AccessoriesScreen(Screen):
     ranking = ObjectProperty(None)
 
     def change_matches_data(self, match_id):
-        self.prevencounter.change_values(match_id)
-        self.momentum.change_values(match_id)
-        self.ranking.change_values(match_id)
+        self.change_prevenc(match_id)
+        self.change_momentum(match_id)
+        self.change_ranking(match_id)
 
-
-class ScoredReceived(FloatLayout):
-    scored = ObjectProperty(None)
-    received = ObjectProperty(None)
-    home = ObjectProperty(None)
-    away = ObjectProperty(None)
-
-    def change_team_labels(self, match_id):
-        home, away = dp.get_current_matches(match_id, short=True)
-        self.home.text = home
-        self.away.text = away
-
-
-class OneXTwo(FloatLayout):
-    grid = ObjectProperty(None)
-
-
-class GolNoGol(FloatLayout):
-    grid = ObjectProperty(None)
-
-
-class OverUnder(FloatLayout):
-    grid = ObjectProperty(None)
-
-
-class PrevEncounter(FloatLayout):
-    matches = ObjectProperty(None)
-    years = ObjectProperty(None)
-
-    def change_values(self, match_id):
-        for match, year in zip(self.matches.children, self.years.children):
+    def change_prevenc(self, match_id):
+        for match, year in zip(
+            self.prevencounter.matches.children, self.prevencounter.years.children
+        ):
             match.text = ""
             year.text = ""
         N_RESULT = 3
         df = dp.get_direct_encounters(match_id, N_RESULT)
         for i in range(len(df)):
-            res_label = self.matches.children[i]
+            res_label = self.prevencounter.matches.children[i]
             res_label.text = df.loc[i, "label"]
-            year_label = self.years.children[i]
+            year_label = self.prevencounter.years.children[i]
             year_label.text = str(df.loc[i, "anno"])
 
-
-class Momentum(FloatLayout):
-    home = ObjectProperty(None)
-    away = ObjectProperty(None)
-    grid = ObjectProperty(None)
-
-    def change_values(self, match_id):
+    def change_momentum(self, match_id):
         self.change_team_labels(match_id)
         df = dp.get_momentum_labels(match_id)
-        for block in self.grid.children:
+        for block in self.momentum.grid.children:
             block.text = ""
             block.background_color = cmap["colorbar"][50]
-        for child, row in zip(self.grid.children, df.itertuples()):
+        for child, row in zip(self.momentum.grid.children, df.itertuples()):
             child.text = row.label
             child.background_color = cmap["results"][row.color]
 
     def change_team_labels(self, match_id):
         home, away = dp.get_current_matches(match_id, short=True)
-        self.home.text = home
-        self.away.text = away
+        self.momentum.home.text = home
+        self.momentum.away.text = away
 
-
-class Ranking(FloatLayout):
-    grid = ObjectProperty(None)
-
-    def change_values(self, match_id):
+    def change_ranking(self, match_id):
         df = dp.get_ranking(match_id)
-        for button, value in zip(self.grid.data, df.itertuples(index=False)):
+        for button, value in zip(self.ranking.grid.data, df.itertuples(index=False)):
             if value.highlight:
                 color = cmap["highlighted"]
             else:
                 color = cmap["colorbar"][90]
             button["background_color"] = color
             button.update({"text": value.label})
-        self.grid.refresh_from_data()
+        self.ranking.grid.refresh_from_data()

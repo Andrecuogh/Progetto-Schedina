@@ -1,6 +1,24 @@
 #:include layouts/scorepage/ScorePage.kv
 #:include layouts/updater/Updater.kv
 
+<BasicButton@Button>:
+    text_size: self.size
+    text: ""
+    halign: "center"
+    valign: "center"
+    padding: dp(5)
+    background_normal: ""
+    background_disabled_normal: ""
+    disabled_color: [1, 1, 1, 1]
+
+<LabelButton@BasicButton>:
+    background_color: app.colors["label"]
+    font_size: '16sp'
+
+<BasicGridLayout@GridLayout>:
+    spacing: dp(1)
+    padding: dp(1)
+
 <SchedinaLayout>:
     canvas:
         Color:

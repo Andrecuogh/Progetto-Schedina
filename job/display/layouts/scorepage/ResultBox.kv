@@ -1,0 +1,15 @@
+#:include layouts/scorepage/ProbabilityScreen.kv
+#:include layouts/scorepage/AccessoriesScreen.kv
+
+<CustomGrid@BasicGridLayout>:
+    orientation: "rl-tb"
+
+<ResultBox>:
+    ProbabilityScreen:
+        name: "probability_current"
+    AccessoriesScreen:
+        name: "accessory_current"
+    ProbabilityScreen:
+        name: "probability_next"
+    AccessoriesScreen
+        name: "accessory_next"

@@ -1,0 +1,210 @@
+#:import ScrollEffect kivy.effects.scroll.ScrollEffect
+
+<PrevLabelButton@BasicButton>:
+    background_color: app.colors["label"]
+    font_size: '16sp'
+
+<MomentumButton@BasicButton>:
+    background_color: app.colors["colorbar"][50]
+    markup: True
+    font_size: '14sp'
+
+<MomLabelButton@BasicButton>:
+    background_color: app.colors["label"]
+    font_size: '14sp'
+
+<AccessoryGrid@GridLayout>:
+    canvas.before:
+        Color:
+            rgba: (0, 0, 0, 0.8)
+        BoxShadow:
+            pos: self.pos
+            size: self.size
+            offset: 0, -dp(2)
+            blur_radius: dp(4)
+        Color:
+            rgba: app.colors["background_shadow"]
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    spacing: dp(1)
+
+<PrevEncounter@AccessoryGrid>:
+    matches: matches
+    years: years
+    disabled: True
+    rows: 2
+    orientation: "lr-tb"
+    GridLayout:
+        cols: 2
+        spacing: dp(0)
+        padding: dp(2)
+        size_hint_y: 0.2
+        PrevLabelButton:
+            size_hint_x: 0.225
+            text: "Anno"
+        PrevLabelButton:
+            size_hint_x: 0.675
+            text: "Precedenti"
+    GridLayout:
+        cols: 2
+        size_hint_y: 0.8
+        GridLayout:
+            size_hint_x: 0.225
+            id: years
+            rows: 3
+            orientation: "lr-bt"
+            spacing: dp(1)
+            padding: dp(1)
+            ProbabilityButton:
+            ProbabilityButton:
+            ProbabilityButton:
+        GridLayout:
+            size_hint_x: 0.675
+            id: matches
+            rows: 3
+            orientation: "lr-bt"
+            spacing: dp(1)
+            padding: dp(1)
+            ProbabilityButton:
+            ProbabilityButton:
+            ProbabilityButton:
+
+<Momentum@AccessoryGrid>:
+    home: home
+    away: away
+    grid: grid
+    rows: 2
+    orientation: "lr-tb"
+    GridLayout:
+        size_hint_y: 0.15
+        rows: 1
+        padding: [dp(1), dp(1), dp(1), dp(0)]
+        MomLabelButton:
+            markup: True
+            win_string: "W: [font=arial][color=#DAA520]██[/color][/font]   "
+            draw_string: "D: [font=arial][color=#088F8F]██[/color][/font]   "
+            loss_string: "L: [font=arial][color=#E97451]██[/color][/font]"
+            text: "Risultati precedenti   " + self.win_string + self.draw_string + self.loss_string
+    GridLayout:
+        size_hint_y: 0.85
+        cols: 2   
+        orientation: "lr-tb"
+        padding: dp(1)
+        GridLayout:
+            size_hint_x: 0.15
+            rows: 3
+            orientation: "lr-tb"
+            disabled: True
+            padding: [dp(1), dp(0)]
+            spacing: dp(2)
+            PrevLabelButton:
+                size_hint_y: 0.2
+                text: ""
+            PrevLabelButton:
+                id: home
+                size_hint_y: 0.4
+                text: "Home" 
+            PrevLabelButton:
+                id: away
+                size_hint_y: 0.4
+                text: "Away" 
+        GridLayout:
+            size_hint_x: 0.85
+            rows: 2
+            orientation: "lr-tb"
+            spacing: dp(2)
+            GridLayout:
+                cols: 5
+                size_hint_y: 0.2
+                spacing: dp(1)
+                disabled: True
+                MomLabelButton:
+                    text: "1"
+                MomLabelButton:
+                    text: "2"
+                MomLabelButton:
+                    text: "3"
+                MomLabelButton:
+                    text: "4"
+                MomLabelButton:
+                    text: "5"
+            GridLayout:
+                id: grid
+                cols: 5
+                rows: 2
+                size_hint_y: 0.8
+                spacing: dp(1)
+                padding: dp(1)
+                orientation: "rl-bt"
+                disabled: True
+                MomentumButton:
+                MomentumButton:
+                MomentumButton:
+                MomentumButton:
+                MomentumButton:
+                MomentumButton:
+                MomentumButton:
+                MomentumButton:
+                MomentumButton:
+                MomentumButton:
+
+<Ranking@AccessoryGrid>:
+    grid: grid
+    rows: 2
+    GridLayout:
+        size_hint_y: 0.2
+        cols: 5
+        padding: dp(1)
+        orientation: 'lr-tb'
+        PrevLabelButton:
+            text: "#"
+            size_hint_x: 0.001
+        PrevLabelButton:
+            text: "Squadra"
+            size_hint_x: 0.399
+        PrevLabelButton:
+            text: "Pt"
+            size_hint_x: 0.2
+        PrevLabelButton:
+            text: "Gf"
+            size_hint_x: 0.2
+        PrevLabelButton:
+            text: "Gs"
+            size_hint_x: 0.2
+    RecycleView:
+        id: grid
+        size_hint_x: 0.8
+        viewclass: 'Button'
+        data: [{"background_normal": "", "font_size": '14sp'} for _ in range(100)]
+        effect_y: ScrollEffect()
+        effect_x: ScrollEffect()
+        RecycleGridLayout:
+            default_size_hint: 1, 1
+            size_hint_y: 2
+            rows: 20
+            cols: 5
+            scroll_y: 0
+            orientation: 'lr-tb'
+            do_scroll_x: False
+            always_overscroll: False
+            spacing: (0, dp(2)) 
+            padding: dp(2)
+
+
+<AccessoriesScreen>:
+    prevencounter: prevencounter
+    ranking: ranking
+    momentum: momentum
+    PrevEncounter:
+        id: prevencounter
+        pos_hint: {'x': 0.0, 'y': 0.71}
+        size_hint: (1.0, 0.25)
+    Momentum:
+        id: momentum
+        pos_hint: {'x': 0.0, 'y': 0.445}
+        size_hint: (1.0, 0.25)
+    Ranking:
+        id: ranking
+        pos_hint: {'x': 0.0, 'y': 0.0}
+        size_hint: (1.0, 0.43)
