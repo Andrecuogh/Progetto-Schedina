@@ -2,7 +2,7 @@ import pandas as pd
 import re
 import webbrowser
 import requests
-from utils.config import VERSION, REPOPATH, CURRENT_YEAR, TARGETS
+from utils.config import VERSION, REPOPATH, CURRENT_YEAR, TARGETS, ENVIRONMENT
 
 
 class GitConnectionError(Exception):
@@ -20,6 +20,8 @@ class RepoConnector:
         self.git_url = "https://raw.githubusercontent.com"
         self.repopath = REPOPATH
         self.path = f"{self.git_url}/{self.repopath}/main"
+        if ENVIRONMENT == "test":
+            self.path = "."
 
     def close_connection_if_exception(method):
         def wrapper(self, *args, **kwargs):
@@ -95,7 +97,10 @@ class Loader(RepoConnector):
 
     def download_readme(self) -> str:
         url = f"{self.path}/README.md"
-        content = requests.get(url).text
+        if url.startswith("https"):
+            content = requests.get(url).text
+        else:
+            content = open(url, "r").read()
         md_to_kv_translator = {
             r"\*\*(.*?)\*\*": r"[b]\1[/b]",  # header 1
             r"# (.*?)(?=\n|$)": r"[b]\1[/b]" + "\n",  # bold

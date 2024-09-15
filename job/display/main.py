@@ -21,7 +21,7 @@ class SchedinaApp(App):
         self.register_fonts()
 
     def _init_screen(self):
-        if ENVIRONMENT == "test":
+        if ENVIRONMENT != "prod":
             self.sf = 0.314
             self.screen_to_body = 0.852
             Window.size = (
