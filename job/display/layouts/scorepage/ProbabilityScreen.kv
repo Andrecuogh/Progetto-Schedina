@@ -3,7 +3,7 @@
     font_size: '18sp'
 
 <ProbabilityButton@BasicButton>:
-    background_color: app.colors["colorbar"][50]
+    background_color: app.colors["data"]
     font_size: '16sp'
 
 <ProbabilityGrid@GridLayout>:
@@ -16,7 +16,7 @@
             offset: 0, -dp(2)
             blur_radius: dp(4)
         Color:
-            rgba: app.colors["background_shadow"]
+            rgba: app.colors["on_background"]
         Rectangle:
             pos: self.pos
             size: self.size

@@ -183,11 +183,11 @@ class PageNavigator(GridLayout):
 
     def change_background_color(self, direction):
         if direction == "right":
-            self.proba_button.background_color = cmap["label_pressed"]
-            self.accessory_button.background_color = cmap["label"]
+            self.proba_button.background_color = cmap["navigationbarpressed"]
+            self.accessory_button.background_color = cmap["navigationbar"]
         elif direction == "left":
-            self.proba_button.background_color = cmap["label"]
-            self.accessory_button.background_color = cmap["label_pressed"]
+            self.proba_button.background_color = cmap["navigationbar"]
+            self.accessory_button.background_color = cmap["navigationbarpressed"]
         else:
             raise Exception("Invalid change direction")
 
@@ -345,7 +345,7 @@ class AccessoriesScreen(Screen):
             if value.highlight:
                 color = cmap["highlighted"]
             else:
-                color = cmap["colorbar"][90]
+                color = cmap["data"]
             button["background_color"] = color
             button.update({"text": value.label})
         self.ranking.grid.refresh_from_data()

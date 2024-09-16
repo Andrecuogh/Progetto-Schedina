@@ -5,7 +5,6 @@
     font_size: '18sp'
 
 <MomentumButton@BasicButton>:
-    background_color: app.colors["colorbar"][50]
     markup: True
     font_size: '14sp'
 
@@ -23,7 +22,7 @@
             offset: 0, -dp(2)
             blur_radius: dp(4)
         Color:
-            rgba: app.colors["background_shadow"]
+            rgba: app.colors["on_background"]
         Rectangle:
             pos: self.pos
             size: self.size
@@ -82,9 +81,9 @@
         padding: [dp(1), dp(1), dp(1), dp(0)]
         MomLabelButton:
             markup: True
-            win_string: "W: [font=arial][color=#DAA520]██[/color][/font]   "
-            draw_string: "D: [font=arial][color=#088F8F]██[/color][/font]   "
-            loss_string: "L: [font=arial][color=#E97451]██[/color][/font]"
+            win_string: "W: [font=arial][color=#90832b]██[/color][/font]   "
+            draw_string: "D: [font=arial][color=#3480ae]██[/color][/font]   "
+            loss_string: "L: [font=arial][color=#ae3443]██[/color][/font]"
             text: "Risultati precedenti   " + self.win_string + self.draw_string + self.loss_string
     GridLayout:
         size_hint_y: 0.85

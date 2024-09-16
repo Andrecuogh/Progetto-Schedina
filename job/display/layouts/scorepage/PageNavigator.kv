@@ -17,7 +17,7 @@
     BasicButton:
         pos_hint: {"center_x": 0.5, "y": 0.775}
         size_hint: (0.8, 0.15)
-        background_color: "red"
+        background_color: "tutorialbackground"
         text: "L'algoritmo ha bisogno di 5 incontri precedenti per poter calcolare le probabilità. Dato che ancora non ci sono state 5 partite i dati mancanti sono stati riempiti con i risultati delle amichevoli precampionato"
         valign: "top"
         font_size: '14sp'
@@ -30,18 +30,20 @@
     rows: 2
     canvas.before:
         Color:
-            rgba: (0, 0, 0, 0.8)
+            rgba: (0, 0, 0, 0.9)
         BoxShadow:
             pos: self.pos
             size: self.size
             offset: 0, -dp(2)
+            blur_radius: dp(5)
         Color:
-            rgba: app.colors['label']
+            rgba: app.colors['navigationbar']
         Rectangle:
             pos: self.pos
             size: self.size
     GridLayout:
         cols: 3
+        padding: dp(5)
         NavigationImage:
             source: "data/icons/leftarrow.png"
             on_press: root.parent.resultbox.change_match("down")
@@ -57,12 +59,12 @@
         NavigationLabel:
             id: proba_button
             text: "Probabilità"
-            background_color: app.colors["label_pressed"]
+            background_color: app.colors["navigationbarpressed"]
             on_press: root.parent.resultbox.change_screen("right")
         NavigationLabel:
             id: accessory_button
             text: "Momento di forma"
-            background_color: app.colors["label"]
+            background_color: app.colors["navigationbar"]
             on_press: root.parent.resultbox.change_screen("left")
            
     

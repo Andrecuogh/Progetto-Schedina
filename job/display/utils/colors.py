@@ -1,27 +1,33 @@
 import numpy as np
 from kivy.utils import get_color_from_hex
 
-col_list = [64, 134, 104]
+col_list = [34, 114, 64]
 
 colorbar1 = np.column_stack([np.linspace(x * 1.75, x, 50) / 255 for x in col_list])
 colorbar2 = np.column_stack([np.linspace(x, x * 0.8, 50) / 255 for x in col_list])
 colorbar = np.concatenate((colorbar1, colorbar2))
 
 colors1 = {
-    "button": get_color_from_hex("#334b53"),
-    "highlighted": get_color_from_hex("#8B8000"),
-    "label": get_color_from_hex("#26383e"),
-    "label_pressed": get_color_from_hex("#1E2C31"),
-    "background": get_color_from_hex("#80BDD1"),
-    "background_shadow": get_color_from_hex("#6697A7"),
-    "warning": [0.682, 0.239, 0.341, 1.0],
-    "utilbar": get_color_from_hex("#e8f7ca"),
-    "tutorial": get_color_from_hex("#FA8072"),
+    "primary": get_color_from_hex("#3480ae"),
+    "secondary": get_color_from_hex("#34ae62"),
+    "background": get_color_from_hex("#acd0e6"),
+    "on_background": get_color_from_hex("#8ebfdd"),
+    "utilbar": get_color_from_hex("#193d53"),
+    "navigationbar": get_color_from_hex("#225472"),
+    "navigationbarpressed": get_color_from_hex("#193d53"),
+    "label": get_color_from_hex("#225472"),
+    "data": get_color_from_hex("#34ae62"),
+    "highlighted": get_color_from_hex("#90832b"),
+    "presplash": get_color_from_hex("#225472"),
+    "tutorialbackground": get_color_from_hex("#225472"),
+    "tutorialforth": get_color_from_hex("#34ae62"),
+    "tutorialback": get_color_from_hex("#3480ae"),
+    "tutorialpages": get_color_from_hex("#34ae62"),
     "transparent": (0, 0, 0, 0),
     "results": {
-        "win": get_color_from_hex("#DAA520"),
-        "draw": get_color_from_hex("#088F8F"),
-        "loss": get_color_from_hex("#E97451"),
+        "win": get_color_from_hex("#90832b"),
+        "draw": get_color_from_hex("#3480ae"),
+        "loss": get_color_from_hex("#ae3443"),
     },
     "colorbar": colorbar,
 }

@@ -1,5 +1,5 @@
 <CircleButton@BasicButton>:
-    color: "yellow"
+    color: app.colors["tutorialpages"]
     background_color: [1, 1, 1, 0]
 
 <FakeCircle@BasicButton>:
@@ -14,7 +14,7 @@
     circle_grid: circle_grid
     canvas:
         Color:
-            rgb: app.colors["button"]
+            rgb: app.colors["tutorialbackground"]
             a: 0.9
         Rectangle:
         Rectangle:
@@ -29,7 +29,7 @@
         text: "Exit"
         pos_hint: {"x": 0.1, "y": 0.3}
         size_hint: (0.80, 0.1)
-        background_color: "blue"
+        background_color: app.colors["tutorialback"]
         background_normal: ""
         bold: True
         on_press: root.parent.utilbar.skip_tutorial()
@@ -38,7 +38,7 @@
         text: "Start"
         pos_hint: {"x": 0.1, "y": 0.425}
         size_hint: (0.80, 0.1)
-        background_color: "red"
+        background_color: app.colors["tutorialforth"]
         background_normal: ""
         bold: True
         on_press: root.page_index += 1

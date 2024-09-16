@@ -2,7 +2,7 @@
     readmelabel: readmelabel
     canvas:
         Color:
-            rgba: app.colors['tutorial']
+            rgba: app.colors['tutorialbackground']
             a: 0.99
         Rectangle:
             pos: (root.size[0]*0.02, root.size[1]*0.02)
@@ -23,7 +23,7 @@
     Button:
         pos_hint: {"x": 0.1, "y": 0.05}
         size_hint: (0.8, 0.1)
-        background_color: app.colors["label"]
+        background_color: app.colors["tutorialback"]
         background_normal: ''
         font_size: 60*app.sf
         bold: True

@@ -1,7 +1,7 @@
 #:import Clock kivy.clock.Clock
 
 <UpdateButton@Button>:
-    background_color: app.colors["label"]
+    background_color: app.colors["tutorialforth"]
     background_normal: ""
     size_hint: (0.225, 0.05)
     font_size: 60*app.sf
@@ -15,7 +15,7 @@
                 pos: root.size[0] * 0.2, root.size[1] * 0.4
                 size: root.size[0] * 0.6, root.size[1] * 0.3
             Color:
-                rgba: app.colors["tutorial"]
+                rgba: app.colors["tutorialbackground"]
             RoundedRectangle:
                 pos: root.size[0] * 0.22, root.size[1] * 0.406
                 size: root.size[0] * 0.56, root.size[1] * 0.288
