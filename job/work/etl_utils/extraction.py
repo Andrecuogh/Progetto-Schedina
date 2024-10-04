@@ -1,10 +1,36 @@
 import pandas as pd
 
 
+def input_preseason(df: pd.DataFrame) -> pd.DataFrame:
+    """If there aren't 5 previous matches, the missing previous
+    encounters are inputted based on preaseason matches
+
+    Args:
+        df (pd.DataFrame): season matches dataframe
+
+    Returns:
+        pd.DataFrame: df concatenated with pre-season friendlies
+    """
+    latest = df.giornata.max()
+    if latest < 6:
+        preseason = pd.read_csv("data/leagues/2024pre_season.csv")
+        preseason["giornata"] += 1
+        df = pd.concat([df, preseason], ignore_index=True)
+        missing_days = 6 - latest
+        df["giornata"] += missing_days
+        df = df[df.giornata > 0]
+    return df
+
+
 def count_goals(df: pd.DataFrame) -> pd.DataFrame:
-    """Create a dataframe for home teams
-    Create a dataframe for away teams
-    Concatenate the 2 dataframes together
+    """Create a dataframe for home and away teams
+        and concatenate them together
+
+    Args:
+        df (pd.DataFrame): _description_
+
+    Returns:
+        pd.DataFrame: _description_
     """
     casa_mapper = {
         "squadra_casa": "squadra",
@@ -46,6 +72,13 @@ def cumulative_goals_points(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
+def compute_mean_goals(df: pd.DataFrame) -> pd.DataFrame:
+    """Compute mean goals"""
+    df["media_gol_fatti"] = df.gol_fatti_cum / df.giornata
+    df["media_gol_subiti"] = df.gol_subiti_cum / df.giornata
+    return df
+
+
 def rank_position(df: pd.DataFrame) -> pd.DataFrame:
     """Assign league rankings"""
     ord_cols = ["giornata", "punti", "differenza_reti", "gol_fatti_cum"]
@@ -82,28 +115,6 @@ def cleaning_df(df: pd.DataFrame) -> pd.DataFrame:
     )
     df = df.dropna()
     df = df[df.giornata > 5]
-    return df
-
-
-def compute_mean_goals(df: pd.DataFrame) -> pd.DataFrame:
-    """Compute mean goals"""
-    df["media_gol_fatti"] = df.gol_fatti_cum / df.giornata
-    df["media_gol_subiti"] = df.gol_subiti_cum / df.giornata
-    return df
-
-
-def input_preseason(df: pd.DataFrame) -> pd.DataFrame:
-    """If there aren't 5 previous matches, the missing previous
-    encounters are inputted based on preaseason matches
-    """
-    latest = df.giornata.max()
-    if latest < 6:
-        preseason = pd.read_csv("data/leagues/2024pre_season.csv")
-        preseason["giornata"] += 1
-        df = pd.concat([df, preseason], ignore_index=True)
-        missing_days = 6 - latest
-        df["giornata"] += missing_days
-        df = df[df.giornata > 0]
     return df
 
 
