@@ -91,8 +91,8 @@ def view_ranking(leagues: dict) -> pd.DataFrame:
         df = filter_latest_day(data, step=0)
         df["posizione"] = df.squadra.rank()
         df[["punti", "gol_fatti_cum", "gol_subiti_cum"]] = 0
-    df = df.sort_values(by=["posizione"])
-    df["posizione"] = df.posizione.astype(int)
+    # df = df.sort_values(by=["posizione"])
+    df["posizione"] = range(1, 21)
     df["squadra"] = df["squadra"].apply(reduce_teams_names)
     df = df[
         [
